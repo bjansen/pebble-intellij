@@ -4,8 +4,10 @@ This plugin provides support for the
 [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
 IntelliJ-based IDEs, including IntelliJ IDEA Community Edition.
 
-![IntelliJ plugin for Pebble](images/plugin.png)
-
+<p align="center">
+  <img src="https://github.com/bjansen/pebble-intellij/raw/master/images/plugin.png" 
+       width="594" alt="IntelliJ plugin for Pebble"/>
+<p>
 
 ## Features
 
