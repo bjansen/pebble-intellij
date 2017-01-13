@@ -1,0 +1,16 @@
+// This is a generated file. Not intended for manual editing.
+package com.github.bjansen.intellij.pebble.psi;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
+
+public interface PebbleQualifiedExpression extends PebbleExpression {
+
+  @NotNull
+  List<PebbleFunctionCallExpression> getFunctionCallExpressionList();
+
+  @NotNull
+  List<PebbleIdentifier> getIdentifierList();
+
+}

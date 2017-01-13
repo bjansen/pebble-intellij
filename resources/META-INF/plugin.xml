@@ -1,0 +1,59 @@
+<idea-plugin version="2">
+    <id>com.github.bjansen.intellij.pebble</id>
+    <name>Pebble</name>
+    <version>0.1</version>
+
+    <description><![CDATA[
+      Support for the Pebble templating engine.
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <b>v0.1</b>
+    <ul>
+        <li>basic parser and syntax highlighter (verbatim tag and custom extensions not supported)</li>
+        <li>quote handler</li>
+        <li>brace matcher</li>
+        <li>code commenter</li>
+        <li>code folder</li>
+    </ul>
+    ]]></change-notes>
+
+    <idea-version since-build="141.0"/>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.github.bjansen.intellij.pebble.lang.PebbleFileTypeFactory"/>
+        <lang.parserDefinition language="Pebble"
+                               implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition"/>
+        <editorHighlighterProvider filetype="Pebble"
+                                   implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleEditorHighlighterProvider"/>
+        <annotator language="Pebble"
+                   implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleHighlightAnnotator"/>
+        <quoteHandler fileType="Pebble" className="com.github.bjansen.intellij.pebble.editor.PebbleQuoteHandler"/>
+        <lang.braceMatcher language="Pebble"
+                      implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleBraceMatcher"/>
+        <lang.commenter language="Pebble"
+                        implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleCommenter"/>
+        <lang.foldingBuilder language="Pebble"
+                             implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleFoldingBuilder"/>
+        <indexPatternBuilder implementation="com.github.bjansen.intellij.pebble.lang.PebbleIndexPatternBuilder"/>
+
+        <!-- TODO -->
+        <!--<colorSettingsPage />-->
+        <!--<typedHandler/> to autoclose tags-->
+        <!--<lang.formatter language="Pebble" />-->
+        <!--<completion.contributor language="Pebble"/> for tag and block names etc-->
+        <!--<codeStyleSettingsProvider/>-->
+        <!--<lang.psiStructureViewFactory language="Pebble"/>-->
+        <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
+        <!--<multiHostInjector implementation="PebbleVerbatimInjector"/>-->
+        <!--<liveTemplateContext />-->
+        <!--<defaultLiveTemplatesProvider />-->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>
