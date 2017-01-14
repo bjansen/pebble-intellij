@@ -1,4 +1,4 @@
-# IntelliJ plugin for Pebble
+# IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij)
 
 This plugin provides support for the 
 [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
@@ -20,6 +20,11 @@ DataGrip 1.0, PhpStorm 10, PyCharm 5, RubyMine 8, WebStorm 11) and later.
 
 <sup>1</sup>: *Custom extensions (tags, operators...), `verbatim` tags
 and custom delimiters are currently not supported*.
+
+## Installation
+
+This plugin is available in JetBrains' [plugin repository](https://plugins.jetbrains.com/idea/plugin/9407-pebble),
+from your IDE go to `Preferences > Plugins` and enter `pebble` in the search bar.
 
 ## Mixing Pebble and other languages
 
