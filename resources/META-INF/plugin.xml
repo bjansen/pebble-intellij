@@ -2,6 +2,7 @@
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
     <version>0.1</version>
+    <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
       Support for the Pebble templating engine.
