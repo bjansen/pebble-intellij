@@ -14,7 +14,7 @@ IntelliJ-based IDEs, including IntelliJ IDEA Community Edition.
 * parser/lexer<sup>1</sup> and syntax highlighter
 * braces matching, code folding and commenting
 * quote handler
-* more to come
+* [more to come](https://github.com/bjansen/pebble-intellij/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3At-feature)
 
 <sup>1</sup>: *Custom extensions (tags, operators...), `verbatim` tags
 and custom delimiters are currently not supported*.
