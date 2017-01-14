@@ -2,7 +2,9 @@
 
 This plugin provides support for the 
 [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
-IntelliJ-based IDEs, including IntelliJ IDEA Community Edition.
+IntelliJ-based IDEs, including IntelliJ IDEA Community Edition. It supports
+the IntelliJ platform version 143.x (IntelliJ IDEA 15, AppCode 3.3, CLion 1.2,
+DataGrip 1.0, PhpStorm 10, PyCharm 5, RubyMine 8, WebStorm 11) and later.
 
 <p align="center">
   <img src="https://github.com/bjansen/pebble-intellij/raw/master/images/plugin.png" 
