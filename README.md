@@ -1,4 +1,4 @@
-# IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij)
+# IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij) [![Travis CI](https://travis-ci.org/bjansen/pebble-intellij.svg?branch=master)](https://travis-ci.org/bjansen/pebble-intellij)
 
 This plugin provides support for the 
 [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
