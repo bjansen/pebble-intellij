@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="pebble-intellij" default="all">
+
+
+    <property file="build.properties"/>
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*.yarb/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.war"/>
+        <include name="*.swc"/>
+        <include name="*.apk"/>
+        <include name="*.zip"/>
+        <include name="*.ear"/>
+        <include name="*.egg"/>
+        <include name="*.ane"/>
+        <include name="*.src"/>
+        <include name="*.car"/>
+        <include name="*.jar"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+        <exclude name="**/?*.aj"/>
+        <exclude name="**/?*.ceylon"/>
+    </patternset>
+
+
+    <!-- Global Libraries -->
+    <!-- Register Custom Compiler Taskdefs -->
+    <property name="javac2.home" value="${idea.home}/lib"/>
+    <path id="javac2.classpath">
+        <pathelement location="${javac2.home}/javac2.jar"/>
+        <pathelement location="${javac2.home}/jdom.jar"/>
+        <pathelement location="${javac2.home}/asm-all.jar"/>
+        <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+    </path>
+    <target name="register.custom.compilers">
+        <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+        <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions"
+                 classpathref="javac2.classpath"/>
+    </target>
+
+    <typedef resource="org/jetbrains/kotlin/ant/antlib.xml"
+             classpath="${idea.home}/plugins/Kotlin/kotlinc/lib/kotlin-ant.jar"/>
+
+    <!-- Modules -->
+
+
+    <!-- Module Pebble for IntelliJ -->
+
+    <dirname property="module.pebble_for_intellij.basedir" file="${ant.file}"/>
+
+
+    <property name="compiler.args.pebble_for_intellij" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+
+    <property name="pebble_for_intellij.output.dir"
+              value="${module.pebble_for_intellij.basedir}/out/production/Pebble for IntelliJ"/>
+    <property name="pebble_for_intellij.testoutput.dir"
+              value="${module.pebble_for_intellij.basedir}/out/test/Pebble for IntelliJ"/>
+
+    <path id="pebble_for_intellij.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="pebble_for_intellij.module.production.classpath">
+        <pathelement location="${idea.home}/lib/openapi.jar"/>
+        <pathelement location="${idea.home}/lib/idea.jar"/>
+        <pathelement location="${idea.home}/lib/annotations.jar"/>
+        <pathelement location="${idea.home}/lib/util.jar"/>
+        <pathelement location="${idea.home}/lib/extensions.jar"/>
+    </path>
+
+    <path id="pebble_for_intellij.runtime.production.module.classpath">
+        <pathelement location="${pebble_for_intellij.output.dir}"/>
+    </path>
+
+    <path id="pebble_for_intellij.module.classpath">
+        <pathelement location="${pebble_for_intellij.output.dir}"/>
+    </path>
+
+    <path id="pebble_for_intellij.runtime.module.classpath">
+        <pathelement location="${pebble_for_intellij.testoutput.dir}"/>
+        <pathelement location="${pebble_for_intellij.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.pebble_for_intellij">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.pebble_for_intellij">
+        <patternset refid="excluded.from.module.pebble_for_intellij"/>
+    </patternset>
+
+    <path id="pebble_for_intellij.module.sourcepath">
+        <dirset dir="${module.pebble_for_intellij.basedir}">
+            <include name="src"/>
+            <include name="resources"/>
+            <include name="gen"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.pebble_for_intellij"
+            depends="compile.module.pebble_for_intellij.production,compile.module.pebble_for_intellij.tests"
+            description="Compile module Pebble for IntelliJ"/>
+
+    <target name="compile.module.pebble_for_intellij.production" depends="register.custom.compilers"
+            description="Compile module Pebble for IntelliJ; production classes">
+        <mkdir dir="${pebble_for_intellij.output.dir}"/>
+        <javac2 destdir="${pebble_for_intellij.output.dir}" debug="${compiler.debug}"
+                nowarn="${compiler.generate.no.warnings}" fork="true">
+            <withKotlin/>
+            <compilerarg line="${compiler.args.pebble_for_intellij}"/>
+            <bootclasspath refid="pebble_for_intellij.module.bootclasspath"/>
+            <classpath refid="pebble_for_intellij.module.production.classpath"/>
+            <src refid="pebble_for_intellij.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.pebble_for_intellij"/>
+        </javac2>
+
+        <copy todir="${pebble_for_intellij.output.dir}">
+            <fileset dir="${module.pebble_for_intellij.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+            <fileset dir="${module.pebble_for_intellij.basedir}/resources">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+            <fileset dir="${module.pebble_for_intellij.basedir}/gen">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.pebble_for_intellij.tests"
+            depends="register.custom.compilers,compile.module.pebble_for_intellij.production"
+            description="compile module Pebble for IntelliJ; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.pebble_for_intellij" description="cleanup module">
+        <delete dir="${pebble_for_intellij.output.dir}"/>
+        <delete dir="${pebble_for_intellij.testoutput.dir}"/>
+    </target>
+
+    <property name="pebble_for_intellij.plugin.path.jar"
+              value="${module.pebble_for_intellij.basedir}/Pebble for IntelliJ.jar"/>
+
+    <!-- Build archive for plugin 'Pebble for IntelliJ' -->
+    <target name="plugin.build.jar.pebble_for_intellij" depends="compile.module.pebble_for_intellij"
+            description="Build plugin archive for module &#39;Pebble for IntelliJ&#39;">
+        <jar destfile="${pebble_for_intellij.plugin.path.jar}" duplicate="preserve">
+            <zipfileset dir="${module.pebble_for_intellij.basedir}/out/production/Pebble for IntelliJ"/>
+            <zipfileset file="${module.pebble_for_intellij.basedir}/resources/META-INF/plugin.xml" prefix="META-INF"/>
+            <manifest>
+                <attribute name="Created-By" value="IntelliJ IDEA"/>
+                <attribute name="Manifest-Version" value="1.0"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.pebble_for_intellij" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, plugin.build.jar.pebble_for_intellij"
+            description="build all modules"/>
+
+    <target name="all" depends="build.modules" description="build all"/>
+</project>
