@@ -938,14 +938,14 @@ public class PebbleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // string_literal ':' expression
+  // string_literal OP_COLON expression
   public static boolean map_element(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "map_element")) return false;
     if (!nextTokenIs(b, "<map element>", SINGLE_QUOTED_STRING, STRING)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, MAP_ELEMENT, "<map element>");
     r = string_literal(b, l + 1);
-    r = r && consumeToken(b, ":");
+    r = r && consumeToken(b, OP_COLON);
     r = r && expression(b, l + 1, -1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -1336,7 +1336,7 @@ public class PebbleParser implements PsiParser, LightPsiParser {
         r = expression(b, l, 8);
         exit_section_(b, l, m, COMPARISON_EXPRESSION, r, true, null);
       }
-      else if (g < 9 && consumeTokenSmart(b, "?")) {
+      else if (g < 9 && consumeTokenSmart(b, OP_TERNARY)) {
         r = report_error_(b, expression(b, l, 9));
         r = ternary_expression_1(b, l + 1) && r;
         exit_section_(b, l, m, TERNARY_EXPRESSION, r, true, null);
@@ -1534,12 +1534,12 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ':' expression
+  // OP_COLON expression
   private static boolean ternary_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ternary_expression_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ":");
+    r = consumeToken(b, OP_COLON);
     r = r && expression(b, l + 1, -1);
     exit_section_(b, m, null, r);
     return r;

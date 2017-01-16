@@ -85,6 +85,7 @@ public interface PebbleTypes {
   IElementType NULL = new PebbleTokenType("NULL");
   IElementType NUMERIC = new PebbleTokenType("NUMERIC");
   IElementType OP_ASSIGN = new PebbleTokenType("=");
+  IElementType OP_COLON = new PebbleTokenType("OP_COLON");
   IElementType OP_DIV = new PebbleTokenType("OP_DIV");
   IElementType OP_EQ = new PebbleTokenType("==");
   IElementType OP_GE = new PebbleTokenType("OP_GE");
@@ -97,6 +98,7 @@ public interface PebbleTypes {
   IElementType OP_NEQ = new PebbleTokenType("OP_NEQ");
   IElementType OP_PIPE = new PebbleTokenType("|");
   IElementType OP_PLUS = new PebbleTokenType("OP_PLUS");
+  IElementType OP_TERNARY = new PebbleTokenType("OP_TERNARY");
   IElementType OR = new PebbleTokenType("OR");
   IElementType RBRACE = new PebbleTokenType("}");
   IElementType RBRACKET = new PebbleTokenType("]");

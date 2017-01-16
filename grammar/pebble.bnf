@@ -207,7 +207,7 @@ or_expression ::= expression OR expression
 and_expression ::= expression AND expression
 test_expression ::= expression ((IS test)|(CONTAINS expression))
 comparison_expression ::= expression comparison_op expression
-ternary_expression ::= expression '?' expression ':' expression
+ternary_expression ::= expression OP_TERNARY expression OP_COLON expression
 multiplicative_expression ::= expression multiplicative_op expression
 pipe_expression ::= expression '|' expression
 concat_expression ::= expression '~' expression
@@ -216,7 +216,7 @@ additive_expression ::= expression additive_op expression
 parenthesized_expression ::= LPAREN expression RPAREN
 array_expression ::= '[' (expression (',' expression)*)? ']'
 map_expression ::= '{' (map_element (',' map_element)*)? '}'
-map_element ::= string_literal ':' expression
+map_element ::= string_literal OP_COLON expression
 
 member_expression ::=
     function_call_expression

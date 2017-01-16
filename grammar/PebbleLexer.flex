@@ -130,6 +130,8 @@ KNOWN_TAGS="autoescape"|"endautoescape"|"block"|"endblock"|"cache"|"endcache"|"e
   "/"                    { return OP_DIV; }
   "*"                    { return OP_MULT; }
   "%"                    { return OP_MOD; }
+  "?"                    { return OP_TERNARY; }
+  ":"                    { return OP_COLON; }
   "("                    { return LPAREN; }
   ")"                    { return RPAREN; }
   "{"                    { return LBRACE; }
