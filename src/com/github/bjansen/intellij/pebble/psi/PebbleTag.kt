@@ -5,5 +5,4 @@ import com.intellij.psi.PsiElement
 /**
  * Marker interface for [PsiElement]s that represent tag directives.
  */
-interface PebbleTag : PsiElement {
-}
+interface PebbleTag : PsiElement

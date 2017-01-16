@@ -4,6 +4,5 @@ import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.intellij.psi.tree.IElementType
 import org.jetbrains.annotations.NonNls
 
-class PebbleTokenType(@NonNls debugName: String) : IElementType(debugName, PebbleLanguage.INSTANCE) {
-
-}
+class PebbleTokenType(@NonNls debugName: String)
+    : IElementType(debugName, PebbleLanguage.INSTANCE)
