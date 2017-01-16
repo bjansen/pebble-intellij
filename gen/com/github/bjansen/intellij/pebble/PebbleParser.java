@@ -71,6 +71,9 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     else if (t == ENDPARALLEL_TAG) {
       r = endparallel_tag(b, 0);
     }
+    else if (t == ENDVERBATIM_TAG) {
+      r = endverbatim_tag(b, 0);
+    }
     else if (t == EXPRESSION) {
       r = expression(b, 0, -1);
     }
@@ -139,6 +142,9 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     }
     else if (t == TEST) {
       r = test(b, 0);
+    }
+    else if (t == VERBATIM_TAG) {
+      r = verbatim_tag(b, 0);
     }
     else {
       r = parse_root_(t, b, 0);
@@ -533,6 +539,20 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "endparallel");
     r = r && consumeToken(b, TAG_CLOSE);
     exit_section_(b, m, ENDPARALLEL_TAG, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // TAG_OPEN "endverbatim" TAG_CLOSE
+  public static boolean endverbatim_tag(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "endverbatim_tag")) return false;
+    if (!nextTokenIs(b, TAG_OPEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, TAG_OPEN);
+    r = r && consumeToken(b, "endverbatim");
+    r = r && consumeToken(b, TAG_CLOSE);
+    exit_section_(b, m, ENDVERBATIM_TAG, r);
     return r;
   }
 
@@ -1118,7 +1138,8 @@ public class PebbleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // autoescape_tag
+  // verbatim_tag
+  //     | autoescape_tag
   //     | block_tag
   //     | cache_tag
   //     | extends_tag
@@ -1136,7 +1157,8 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, TAG_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = autoescape_tag(b, l + 1);
+    r = verbatim_tag(b, l + 1);
+    if (!r) r = autoescape_tag(b, l + 1);
     if (!r) r = block_tag(b, l + 1);
     if (!r) r = cache_tag(b, l + 1);
     if (!r) r = extends_tag(b, l + 1);
@@ -1208,6 +1230,47 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, OP_PLUS);
     if (!r) r = consumeToken(b, OP_MINUS);
     if (!r) r = consumeToken(b, NOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // TAG_OPEN "verbatim" TAG_CLOSE
+  //     (CRLF|CONTENT)*
+  //     endverbatim_tag
+  public static boolean verbatim_tag(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "verbatim_tag")) return false;
+    if (!nextTokenIs(b, TAG_OPEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, TAG_OPEN);
+    r = r && consumeToken(b, "verbatim");
+    r = r && consumeToken(b, TAG_CLOSE);
+    r = r && verbatim_tag_3(b, l + 1);
+    r = r && endverbatim_tag(b, l + 1);
+    exit_section_(b, m, VERBATIM_TAG, r);
+    return r;
+  }
+
+  // (CRLF|CONTENT)*
+  private static boolean verbatim_tag_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "verbatim_tag_3")) return false;
+    int c = current_position_(b);
+    while (true) {
+      if (!verbatim_tag_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "verbatim_tag_3", c)) break;
+      c = current_position_(b);
+    }
+    return true;
+  }
+
+  // CRLF|CONTENT
+  private static boolean verbatim_tag_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "verbatim_tag_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CRLF);
+    if (!r) r = consumeToken(b, CONTENT);
     exit_section_(b, m, null, r);
     return r;
   }

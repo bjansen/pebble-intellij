@@ -95,6 +95,10 @@ public class PebbleVisitor extends PsiElementVisitor {
     visitTag(o);
   }
 
+  public void visitEndverbatimTag(@NotNull PebbleEndverbatimTag o) {
+    visitTag(o);
+  }
+
   public void visitExpression(@NotNull PebbleExpression o) {
     visitPsiElement(o);
   }
@@ -225,6 +229,10 @@ public class PebbleVisitor extends PsiElementVisitor {
 
   public void visitTestExpression(@NotNull PebbleTestExpression o) {
     visitExpression(o);
+  }
+
+  public void visitVerbatimTag(@NotNull PebbleVerbatimTag o) {
+    visitTag(o);
   }
 
   public void visitTag(@NotNull PebbleTag o) {

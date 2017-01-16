@@ -75,7 +75,8 @@ comment_directive ::= COMMENT
 /*
  *   Tags
  */
-tag_directive ::=  autoescape_tag
+tag_directive ::= verbatim_tag
+    | autoescape_tag
     | block_tag
     | cache_tag
     | extends_tag
@@ -88,7 +89,6 @@ tag_directive ::=  autoescape_tag
     | macro_tag
     | parallel_tag
     | set_tag
-    // TODO verbatim
 //    | custom_tag TODO
 
 autoescape_tag ::=
@@ -169,6 +169,13 @@ endparallel_tag ::= TAG_OPEN "endparallel" TAG_CLOSE
 
 set_tag ::=
     TAG_OPEN "set" identifier OP_ASSIGN expression TAG_CLOSE
+
+verbatim_tag ::=
+    TAG_OPEN "verbatim" TAG_CLOSE
+    (CRLF|CONTENT)*
+    endverbatim_tag
+
+endverbatim_tag ::= TAG_OPEN "endverbatim" TAG_CLOSE
 
 // TODO conflicts with "endXXX" when using `item_*`
 // use regexp \b(?!(?:endblock|endfor)\b)[a-zA-Z_][a-zA-Z0-9_]*

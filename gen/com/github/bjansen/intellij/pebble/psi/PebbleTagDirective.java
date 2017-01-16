@@ -46,4 +46,7 @@ public interface PebbleTagDirective extends PsiElement {
   @Nullable
   PebbleSetTag getSetTag();
 
+  @Nullable
+  PebbleVerbatimTag getVerbatimTag();
+
 }

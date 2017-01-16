@@ -104,4 +104,10 @@ public class PebbleTagDirectiveImpl extends ASTWrapperPsiElement implements Pebb
     return findChildByClass(PebbleSetTag.class);
   }
 
+  @Override
+  @Nullable
+  public PebbleVerbatimTag getVerbatimTag() {
+    return findChildByClass(PebbleVerbatimTag.class);
+  }
+
 }

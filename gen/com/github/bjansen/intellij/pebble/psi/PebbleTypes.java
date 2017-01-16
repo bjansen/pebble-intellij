@@ -30,6 +30,7 @@ public interface PebbleTypes {
   IElementType ENDIF_TAG = new PebbleElementType("ENDIF_TAG");
   IElementType ENDMACRO_TAG = new PebbleElementType("ENDMACRO_TAG");
   IElementType ENDPARALLEL_TAG = new PebbleElementType("ENDPARALLEL_TAG");
+  IElementType ENDVERBATIM_TAG = new PebbleElementType("ENDVERBATIM_TAG");
   IElementType EXPRESSION = new PebbleElementType("EXPRESSION");
   IElementType EXTENDS_TAG = new PebbleElementType("EXTENDS_TAG");
   IElementType FILTERS = new PebbleElementType("FILTERS");
@@ -63,6 +64,7 @@ public interface PebbleTypes {
   IElementType TERNARY_EXPRESSION = new PebbleElementType("TERNARY_EXPRESSION");
   IElementType TEST = new PebbleElementType("TEST");
   IElementType TEST_EXPRESSION = new PebbleElementType("TEST_EXPRESSION");
+  IElementType VERBATIM_TAG = new PebbleElementType("VERBATIM_TAG");
 
   IElementType AND = new PebbleTokenType("AND");
   IElementType COMMA = new PebbleTokenType(",");
@@ -175,6 +177,9 @@ public interface PebbleTypes {
       else if (type == ENDPARALLEL_TAG) {
         return new PebbleEndparallelTagImpl(node);
       }
+      else if (type == ENDVERBATIM_TAG) {
+        return new PebbleEndverbatimTagImpl(node);
+      }
       else if (type == EXTENDS_TAG) {
         return new PebbleExtendsTagImpl(node);
       }
@@ -270,6 +275,9 @@ public interface PebbleTypes {
       }
       else if (type == TEST_EXPRESSION) {
         return new PebbleTestExpressionImpl(node);
+      }
+      else if (type == VERBATIM_TAG) {
+        return new PebbleVerbatimTagImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

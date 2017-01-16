@@ -25,6 +25,7 @@ public class _PebbleLexer implements FlexLexer {
   public static final int YYINITIAL = 0;
   public static final int IN_TAG = 2;
   public static final int IN_EXPR = 4;
+  public static final int IN_VERBATIM = 6;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -33,32 +34,33 @@ public class _PebbleLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2, 2
+     0,  0,  1,  1,  2,  2,  3, 3
   };
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [8, 6, 7]
-   * Total runtime size is 1040 bytes
+   * Chosen bits are [7, 7, 7]
+   * Total runtime size is 1928 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>13]|((ch>>7)&0x3f)]|(ch&0x7f)];
+    return ZZ_CMAP_A[(ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>14]|((ch>>7)&0x7f)]<<7)|(ch&0x7f)];
   }
 
-  /* The ZZ_CMAP_Z table has 136 entries */
+  /* The ZZ_CMAP_Z table has 68 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\207\100");
+    "\1\0\103\200");
 
-  /* The ZZ_CMAP_Y table has 128 entries */
+  /* The ZZ_CMAP_Y table has 256 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\177\200");
+    "\1\0\1\1\53\2\1\3\22\2\1\4\37\2\1\3\237\2");
 
-  /* The ZZ_CMAP_A table has 256 entries */
+  /* The ZZ_CMAP_A table has 640 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\2\1\1\0\2\1\22\0\1\1\1\35\1\4\1\10\1\0\1\12\1\0\1\5\1\42\1\43\1\41\1"+
-    "\36\1\46\1\37\1\6\1\40\12\3\2\0\1\33\1\32\1\34\2\0\32\2\1\44\1\0\1\45\1\0"+
-    "\1\2\1\0\1\20\1\2\1\25\1\30\1\16\1\17\2\2\1\27\2\2\1\21\1\2\1\23\1\26\1\2"+
-    "\1\24\1\14\1\22\1\13\1\15\5\2\1\7\1\31\1\11\202\0");
+    "\11\0\2\1\1\23\2\1\22\0\1\1\1\41\1\4\1\10\1\0\1\12\1\0\1\5\1\46\1\47\1\45"+
+    "\1\42\1\52\1\43\1\6\1\44\12\3\2\0\1\37\1\36\1\40\2\0\32\2\1\50\1\0\1\51\1"+
+    "\0\1\2\1\0\1\17\1\16\1\33\1\25\1\14\1\27\2\2\1\21\2\2\1\30\1\22\1\24\1\34"+
+    "\1\2\1\32\1\15\1\31\1\20\1\26\1\13\4\2\1\7\1\35\1\11\7\0\1\23\32\0\1\23\337"+
+    "\0\1\23\177\0\13\23\35\0\2\23\5\0\1\23\57\0\1\23\40\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -66,17 +68,19 @@ public class _PebbleLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\3\0\2\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\10\4\1\13\1\14\1\15\1\16"+
+    "\4\0\2\1\1\2\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\11\4\1\13\1\14\1\15\1\16"+
     "\1\2\1\17\1\20\1\21\1\22\1\23\1\24\1\25"+
-    "\1\26\1\27\1\11\1\12\1\30\1\31\1\32\1\0"+
-    "\1\6\1\7\1\33\7\4\1\34\1\35\1\36\1\37"+
-    "\1\40\1\41\1\42\1\31\1\5\3\4\1\43\1\4"+
-    "\1\44\1\4\1\31\1\45\2\4\1\46\1\4\1\0"+
-    "\1\31\1\4\1\47\1\4\1\50\2\4\1\51";
+    "\1\26\1\27\1\11\1\12\1\1\1\30\1\31\1\32"+
+    "\1\0\1\6\1\7\1\33\4\4\1\34\4\4\1\35"+
+    "\1\36\1\37\1\40\1\41\1\42\1\0\1\31\1\5"+
+    "\2\4\1\43\2\4\1\44\2\4\1\0\1\31\2\4"+
+    "\1\45\1\46\2\4\2\0\1\31\2\4\1\47\1\4"+
+    "\1\0\1\4\1\50\1\4\1\0\2\4\1\0\1\51"+
+    "\1\52\7\0\1\53";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[83];
+    int [] result = new int[107];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -101,20 +105,23 @@ public class _PebbleLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\47\0\116\0\165\0\234\0\165\0\303\0\352"+
-    "\0\u0111\0\u0138\0\u015f\0\165\0\165\0\u0186\0\u01ad\0\u01d4"+
-    "\0\u01fb\0\u0222\0\u0249\0\u0270\0\u0297\0\u02be\0\165\0\u02e5"+
-    "\0\u030c\0\u0333\0\u035a\0\165\0\165\0\165\0\165\0\165"+
-    "\0\165\0\165\0\165\0\165\0\u0381\0\165\0\165\0\u03a8"+
-    "\0\165\0\u03cf\0\165\0\165\0\165\0\u03f6\0\u041d\0\u0444"+
-    "\0\u046b\0\u0492\0\u04b9\0\u04e0\0\352\0\352\0\165\0\165"+
-    "\0\165\0\165\0\165\0\u0507\0\u03cf\0\u052e\0\u0555\0\u057c"+
-    "\0\352\0\u05a3\0\352\0\u05ca\0\u05f1\0\352\0\u0618\0\u063f"+
-    "\0\352\0\u0666\0\u05f1\0\165\0\u068d\0\352\0\u06b4\0\352"+
-    "\0\u06db\0\u0702\0\352";
+    "\0\0\0\53\0\126\0\201\0\254\0\327\0\u0102\0\u012d"+
+    "\0\u0158\0\u0183\0\u01ae\0\u01d9\0\u0102\0\u0102\0\u0204\0\u022f"+
+    "\0\u025a\0\u0285\0\u02b0\0\u02db\0\u0306\0\u0331\0\u035c\0\u0387"+
+    "\0\u0102\0\u03b2\0\u03dd\0\u0408\0\u0433\0\u0102\0\u0102\0\u0102"+
+    "\0\u0102\0\u0102\0\u0102\0\u0102\0\u0102\0\u0102\0\u045e\0\u0102"+
+    "\0\u0489\0\u0102\0\u04b4\0\u0102\0\u04df\0\u0102\0\u0102\0\u0102"+
+    "\0\u050a\0\u0535\0\u0560\0\u058b\0\u0158\0\u05b6\0\u05e1\0\u060c"+
+    "\0\u0637\0\u0158\0\u0102\0\u0102\0\u0102\0\u0102\0\u0102\0\u0662"+
+    "\0\u068d\0\u04df\0\u06b8\0\u06e3\0\u0158\0\u070e\0\u0739\0\u0158"+
+    "\0\u0764\0\u078f\0\u07ba\0\u07e5\0\u0810\0\u083b\0\u0158\0\u0158"+
+    "\0\u0866\0\u0891\0\u08bc\0\u07e5\0\u0102\0\u08e7\0\u0912\0\u0158"+
+    "\0\u093d\0\u0968\0\u0993\0\u0158\0\u09be\0\u09e9\0\u0a14\0\u0a3f"+
+    "\0\u0a6a\0\u0158\0\u0158\0\u0a95\0\u0ac0\0\u0aeb\0\u0b16\0\u0b41"+
+    "\0\u0b6c\0\u0b97\0\u0102";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[83];
+    int [] result = new int[107];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -137,45 +144,65 @@ public class _PebbleLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\7\4\1\5\37\4\1\6\1\7\1\10\1\11\1\12"+
-    "\1\13\1\6\1\14\1\6\1\15\1\16\1\17\2\10"+
-    "\1\20\1\21\1\22\2\10\1\23\1\10\1\24\1\25"+
-    "\1\26\1\10\1\27\1\30\1\31\1\32\1\33\1\34"+
+    "\7\5\1\6\43\5\1\7\1\10\1\11\1\12\1\13"+
+    "\1\14\1\7\1\15\1\7\1\16\1\17\1\20\1\21"+
+    "\2\11\1\22\1\23\1\24\1\11\1\7\1\25\2\11"+
+    "\1\26\3\11\1\27\1\30\1\31\1\32\1\33\1\34"+
     "\1\35\1\36\1\37\1\40\1\41\1\42\1\43\1\44"+
-    "\1\6\1\7\1\10\1\11\1\12\1\13\1\6\1\14"+
-    "\1\6\1\45\1\46\1\17\2\10\1\20\1\21\1\22"+
-    "\2\10\1\23\1\10\1\24\1\25\1\26\1\10\1\27"+
-    "\1\30\1\31\1\32\1\33\1\34\1\35\1\36\1\37"+
-    "\1\40\1\41\1\42\1\43\1\44\56\0\1\47\1\50"+
-    "\1\0\1\51\35\0\1\7\47\0\2\10\7\0\16\10"+
-    "\21\0\1\11\2\0\1\52\40\0\4\12\1\53\42\12"+
-    "\5\13\1\54\41\13\11\0\1\55\37\0\2\10\7\0"+
-    "\1\10\1\56\14\10\20\0\2\10\7\0\11\10\1\57"+
-    "\4\10\20\0\2\10\7\0\5\10\1\60\10\10\20\0"+
-    "\2\10\7\0\10\10\1\61\5\10\20\0\2\10\7\0"+
-    "\2\10\1\62\10\10\1\63\2\10\20\0\2\10\7\0"+
-    "\13\10\1\64\2\10\20\0\2\10\7\0\1\10\1\65"+
-    "\14\10\20\0\2\10\7\0\7\10\1\66\6\10\50\0"+
-    "\1\67\46\0\1\70\46\0\1\71\46\0\1\72\25\0"+
-    "\1\73\35\0\10\74\1\0\36\74\3\0\1\75\45\0"+
-    "\2\10\7\0\2\10\1\76\13\10\20\0\2\10\7\0"+
-    "\2\10\1\77\13\10\20\0\2\10\7\0\6\10\1\100"+
-    "\7\10\20\0\2\10\7\0\15\10\1\101\20\0\2\10"+
-    "\7\0\6\10\1\102\7\10\20\0\2\10\7\0\1\103"+
-    "\15\10\20\0\2\10\7\0\10\10\1\104\5\10\16\0"+
-    "\10\74\1\105\36\74\2\0\2\10\7\0\3\10\1\106"+
-    "\12\10\20\0\2\10\7\0\5\10\1\107\10\10\20\0"+
-    "\2\10\7\0\7\10\1\110\6\10\20\0\2\10\7\0"+
-    "\6\10\1\111\7\10\20\0\2\10\7\0\1\112\15\10"+
-    "\16\0\10\74\1\113\1\114\35\74\2\0\2\10\7\0"+
-    "\6\10\1\115\7\10\20\0\2\10\7\0\3\10\1\116"+
-    "\12\10\20\0\2\10\7\0\5\10\1\117\10\10\20\0"+
-    "\2\10\7\0\7\10\1\120\6\10\20\0\2\10\7\0"+
-    "\14\10\1\121\1\10\20\0\2\10\7\0\10\10\1\122"+
-    "\5\10\20\0\2\10\7\0\7\10\1\123\6\10\16\0";
+    "\1\45\1\46\1\7\1\10\1\11\1\12\1\13\1\14"+
+    "\1\7\1\15\1\7\1\47\1\50\1\11\1\21\2\11"+
+    "\1\22\1\23\1\24\1\11\1\7\1\25\2\11\1\26"+
+    "\3\11\1\27\1\30\1\31\1\32\1\33\1\34\1\35"+
+    "\1\36\1\37\1\40\1\41\1\42\1\43\1\44\1\45"+
+    "\1\46\7\5\1\51\52\5\1\0\43\5\7\0\1\52"+
+    "\1\53\1\0\1\54\114\0\1\10\53\0\2\11\7\0"+
+    "\10\11\1\0\11\11\21\0\1\12\2\0\1\55\44\0"+
+    "\4\13\1\56\46\13\5\14\1\57\45\14\11\0\1\60"+
+    "\43\0\2\11\7\0\1\11\1\61\6\11\1\0\11\11"+
+    "\20\0\2\11\7\0\10\11\1\0\6\11\1\62\2\11"+
+    "\20\0\2\11\7\0\10\11\1\0\1\63\10\11\20\0"+
+    "\2\11\7\0\2\11\1\64\5\11\1\0\11\11\20\0"+
+    "\2\11\7\0\10\11\1\0\5\11\1\65\3\11\20\0"+
+    "\2\11\7\0\10\11\1\0\2\11\1\66\5\11\1\67"+
+    "\20\0\2\11\7\0\4\11\1\70\3\11\1\0\11\11"+
+    "\20\0\2\11\7\0\10\11\1\0\10\11\1\71\20\0"+
+    "\2\11\7\0\2\11\1\72\5\11\1\0\11\11\54\0"+
+    "\1\73\52\0\1\74\52\0\1\75\52\0\1\76\25\0"+
+    "\1\77\53\0\1\100\40\0\10\101\1\0\42\101\3\0"+
+    "\1\102\51\0\2\11\7\0\2\11\1\103\5\11\1\0"+
+    "\11\11\20\0\2\11\7\0\10\11\1\0\2\11\1\104"+
+    "\6\11\20\0\2\11\7\0\10\11\1\0\1\11\1\105"+
+    "\7\11\20\0\2\11\7\0\10\11\1\0\2\11\1\106"+
+    "\6\11\20\0\2\11\7\0\10\11\1\0\4\11\1\107"+
+    "\4\11\20\0\2\11\7\0\5\11\1\110\2\11\1\0"+
+    "\11\11\20\0\2\11\7\0\10\11\1\0\4\11\1\111"+
+    "\4\11\20\0\2\11\7\0\10\11\1\0\1\112\10\11"+
+    "\17\0\1\100\12\0\1\113\6\0\1\100\27\0\10\101"+
+    "\1\114\42\101\2\0\2\11\7\0\3\11\1\115\4\11"+
+    "\1\0\11\11\20\0\2\11\7\0\4\11\1\116\3\11"+
+    "\1\0\11\11\20\0\2\11\7\0\1\11\1\117\6\11"+
+    "\1\0\11\11\20\0\2\11\7\0\10\11\1\0\4\11"+
+    "\1\120\4\11\20\0\2\11\7\0\10\11\1\0\5\11"+
+    "\1\121\3\11\20\0\2\11\7\0\5\11\1\122\2\11"+
+    "\1\0\11\11\42\0\1\123\26\0\10\101\1\124\1\125"+
+    "\41\101\2\0\2\11\7\0\4\11\1\126\3\11\1\0"+
+    "\11\11\20\0\2\11\7\0\10\11\1\0\4\11\1\127"+
+    "\4\11\20\0\2\11\7\0\1\11\1\130\6\11\1\0"+
+    "\11\11\20\0\2\11\7\0\4\11\1\131\3\11\1\0"+
+    "\11\11\43\0\1\132\27\0\2\11\7\0\5\11\1\133"+
+    "\2\11\1\0\11\11\20\0\2\11\7\0\10\11\1\0"+
+    "\5\11\1\134\3\11\20\0\2\11\7\0\6\11\1\135"+
+    "\1\11\1\0\11\11\31\0\1\136\41\0\2\11\7\0"+
+    "\6\11\1\137\1\11\1\0\11\11\20\0\2\11\7\0"+
+    "\10\11\1\0\1\140\10\11\32\0\1\141\40\0\2\11"+
+    "\7\0\7\11\1\142\1\0\11\11\20\0\2\11\7\0"+
+    "\10\11\1\0\5\11\1\143\3\11\33\0\1\144\53\0"+
+    "\1\145\53\0\1\146\53\0\1\147\53\0\1\150\53\0"+
+    "\1\151\31\0\1\151\10\0\1\152\10\0\1\151\40\0"+
+    "\1\153\41\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1833];
+    int [] result = new int[3010];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -213,12 +240,14 @@ public class _PebbleLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\3\0\1\11\1\1\1\11\5\1\2\11\11\1\1\11"+
-    "\4\1\11\11\1\1\2\11\1\1\1\11\1\0\3\11"+
-    "\11\1\5\11\17\1\1\0\1\11\7\1";
+    "\4\0\2\1\1\11\5\1\2\11\12\1\1\11\4\1"+
+    "\11\11\1\1\1\11\1\1\1\11\1\1\1\11\1\0"+
+    "\3\11\12\1\5\11\1\0\12\1\1\0\7\1\2\0"+
+    "\1\11\4\1\1\0\3\1\1\0\2\1\1\0\2\1"+
+    "\7\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[83];
+    int [] result = new int[107];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -274,38 +303,41 @@ public class _PebbleLexer implements FlexLexer {
   private boolean zzEOFDone;
 
   /* user code: */
-    public _PebbleLexer() {
+  public _PebbleLexer() {
     this((java.io.Reader)null);
   }
 
-    public IElementType checkContent() {
-        if (!yytext().toString().equals("")) {
-            if (yytext().toString().trim().length() == 0) {
-                return TokenType.WHITE_SPACE;
-            } else {
-                return CONTENT;
-            }
-        }
-        return null;
-    }
+  public IElementType checkContent() {
+      if (!yytext().toString().equals("")) {
+          if (yytext().toString().trim().length() == 0) {
+              return TokenType.WHITE_SPACE;
+          } else {
+              return CONTENT;
+          }
+      }
+      return null;
+  }
 
 
-    private Stack<Integer> stack = new Stack<>();
+  private Stack<Integer> stack = new Stack<>();
 
-    public void yypushstate(int newState) {
-        stack.push(yystate());
-        yybegin(newState);
-    }
+  public void yypushstate(int newState) {
+      stack.push(yystate());
+      yybegin(newState);
+  }
 
-    public void yypopstate() {
-        yybegin(stack.pop());
-    }
+  public void yypopstate() {
+      yybegin(stack.pop());
+  }
 
-    public void yycleanstates() {
-        while(!stack.isEmpty()) {
-            yybegin(stack.pop());
-        }
-    }
+  public void yycleanstates() {
+      while(!stack.isEmpty()) {
+          yybegin(stack.pop());
+      }
+  }
+
+  private boolean isVerbatim = false;
+  private boolean isFirstNameInTag = false;
 
 
   /**
@@ -555,167 +587,188 @@ public class _PebbleLexer implements FlexLexer {
           case 1: 
             { return CONTENT;
             }
-          case 42: break;
+          case 44: break;
           case 2: 
             { return TokenType.BAD_CHARACTER;
             }
-          case 43: break;
+          case 45: break;
           case 3: 
             { return com.intellij.psi.TokenType.WHITE_SPACE;
             }
-          case 44: break;
+          case 46: break;
           case 4: 
-            { return ID_NAME;
+            { isFirstNameInTag = false; return ID_NAME;
             }
-          case 45: break;
+          case 47: break;
           case 5: 
             { return NUMERIC;
             }
-          case 46: break;
+          case 48: break;
           case 6: 
             { return STRING;
             }
-          case 47: break;
+          case 49: break;
           case 7: 
             { return SINGLE_QUOTED_STRING;
             }
-          case 48: break;
+          case 50: break;
           case 8: 
             { return LBRACE;
             }
-          case 49: break;
+          case 51: break;
           case 9: 
             { return RBRACE;
             }
-          case 50: break;
+          case 52: break;
           case 10: 
             { return OP_MOD;
             }
-          case 51: break;
+          case 53: break;
           case 11: 
             { return OP_PIPE;
             }
-          case 52: break;
+          case 54: break;
           case 12: 
             { return OP_ASSIGN;
             }
-          case 53: break;
+          case 55: break;
           case 13: 
             { return OP_LT;
             }
-          case 54: break;
+          case 56: break;
           case 14: 
             { return OP_GT;
             }
-          case 55: break;
+          case 57: break;
           case 15: 
             { return OP_PLUS;
             }
-          case 56: break;
+          case 58: break;
           case 16: 
             { return OP_MINUS;
             }
-          case 57: break;
+          case 59: break;
           case 17: 
             { return OP_DIV;
             }
-          case 58: break;
+          case 60: break;
           case 18: 
             { return OP_MULT;
             }
-          case 59: break;
+          case 61: break;
           case 19: 
             { return LPAREN;
             }
-          case 60: break;
+          case 62: break;
           case 20: 
             { return RPAREN;
             }
-          case 61: break;
+          case 63: break;
           case 21: 
             { return LBRACKET;
             }
-          case 62: break;
+          case 64: break;
           case 22: 
             { return RBRACKET;
             }
-          case 63: break;
+          case 65: break;
           case 23: 
             { return COMMA;
             }
-          case 64: break;
+          case 66: break;
           case 24: 
             { yypushstate(IN_EXPR); return VAR_OPEN;
             }
-          case 65: break;
+          case 67: break;
           case 25: 
             { return COMMENT;
             }
-          case 66: break;
-          case 26: 
-            { yypushstate(IN_TAG); return TAG_OPEN;
-            }
-          case 67: break;
-          case 27: 
-            { yypopstate(); return TAG_CLOSE;
-            }
           case 68: break;
-          case 28: 
-            { return OR;
+          case 26: 
+            { yypushstate(IN_TAG); isFirstNameInTag = true; return TAG_OPEN;
             }
           case 69: break;
-          case 29: 
-            { return IS;
+          case 27: 
+            { yypopstate();
+                           if (isVerbatim) {
+                              yypushstate(IN_VERBATIM);
+                           }
+                           return TAG_CLOSE;
             }
           case 70: break;
+          case 28: 
+            { return IS;
+            }
+          case 71: break;
+          case 29: 
+            { return OR;
+            }
+          case 72: break;
           case 30: 
             { return OP_EQ;
             }
-          case 71: break;
+          case 73: break;
           case 31: 
             { return OP_LE;
             }
-          case 72: break;
+          case 74: break;
           case 32: 
             { return OP_GE;
             }
-          case 73: break;
+          case 75: break;
           case 33: 
             { return OP_NEQ;
             }
-          case 74: break;
+          case 76: break;
           case 34: 
             { yypopstate(); return VAR_CLOSE;
             }
-          case 75: break;
+          case 77: break;
           case 35: 
             { return AND;
             }
-          case 76: break;
+          case 78: break;
           case 36: 
             { return NOT;
             }
-          case 77: break;
+          case 79: break;
           case 37: 
             { return TRUE;
             }
-          case 78: break;
+          case 80: break;
           case 38: 
             { return NULL;
             }
-          case 79: break;
+          case 81: break;
           case 39: 
             { return FALSE;
             }
-          case 80: break;
+          case 82: break;
           case 40: 
             { return EQUALS;
             }
-          case 81: break;
+          case 83: break;
           case 41: 
+            { if (isFirstNameInTag) {
+                             isVerbatim = true;
+                           }
+                           return ID_NAME;
+            }
+          case 84: break;
+          case 42: 
             { return CONTAINS;
             }
-          case 82: break;
+          case 85: break;
+          case 43: 
+            // lookahead expression with fixed base length
+            zzMarkedPos = Character.offsetByCodePoints
+                (zzBufferL/*, zzStartRead, zzEndRead - zzStartRead*/, zzStartRead, 2);
+            { yypopstate();
+                           yypushstate(IN_TAG);
+                           isVerbatim = false;
+                           return TAG_OPEN;
+            }
+          case 86: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

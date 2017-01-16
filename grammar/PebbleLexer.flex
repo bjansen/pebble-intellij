@@ -8,38 +8,41 @@ import com.intellij.util.containers.Stack;
 %%
 
 %{
-    public _PebbleLexer() {
+  public _PebbleLexer() {
     this((java.io.Reader)null);
   }
 
-    public IElementType checkContent() {
-        if (!yytext().toString().equals("")) {
-            if (yytext().toString().trim().length() == 0) {
-                return TokenType.WHITE_SPACE;
-            } else {
-                return CONTENT;
-            }
-        }
-        return null;
-    }
+  public IElementType checkContent() {
+      if (!yytext().toString().equals("")) {
+          if (yytext().toString().trim().length() == 0) {
+              return TokenType.WHITE_SPACE;
+          } else {
+              return CONTENT;
+          }
+      }
+      return null;
+  }
 
 
-    private Stack<Integer> stack = new Stack<>();
+  private Stack<Integer> stack = new Stack<>();
 
-    public void yypushstate(int newState) {
-        stack.push(yystate());
-        yybegin(newState);
-    }
+  public void yypushstate(int newState) {
+      stack.push(yystate());
+      yybegin(newState);
+  }
 
-    public void yypopstate() {
-        yybegin(stack.pop());
-    }
+  public void yypopstate() {
+      yybegin(stack.pop());
+  }
 
-    public void yycleanstates() {
-        while(!stack.isEmpty()) {
-            yybegin(stack.pop());
-        }
-    }
+  public void yycleanstates() {
+      while(!stack.isEmpty()) {
+          yybegin(stack.pop());
+      }
+  }
+
+  private boolean isVerbatim = false;
+  private boolean isFirstNameInTag = false;
 %}
 
 %public
@@ -61,25 +64,44 @@ COMMENT_TAIL=([^#]* (#+ [^#}])?)* ("#" | "#"+"}")?
 
 %state IN_TAG
 %state IN_EXPR
+%state IN_VERBATIM
 
 %%
 <YYINITIAL> {
-//  {EOL}              { return CRLF; }
-  "{%"               { yypushstate(IN_TAG); return TAG_OPEN; }
-  "{{"               { yypushstate(IN_EXPR); return VAR_OPEN; }
-  {COMMENT}          { return COMMENT; }
+  "{%"                   { yypushstate(IN_TAG); isFirstNameInTag = true; return TAG_OPEN; }
+  "{{"                   { yypushstate(IN_EXPR); return VAR_OPEN; }
+  {COMMENT}              { return COMMENT; }
 
-
-  [^]                { return CONTENT; }
+  [^{]+                  { return CONTENT; }
+  [^]                    { return CONTENT; }
 }
 
 <IN_TAG> {
-  "%}"               { yypopstate(); return TAG_CLOSE; }
+  "verbatim"             { if (isFirstNameInTag) {
+                             isVerbatim = true;
+                           }
+                           return ID_NAME;
+                         }
+  "%}"                   { yypopstate();
+                           if (isVerbatim) {
+                              yypushstate(IN_VERBATIM);
+                           }
+                           return TAG_CLOSE;
+                         }
 }
 <IN_EXPR> {
-  "}}"               { yypopstate(); return VAR_CLOSE; }
+  "}}"                   { yypopstate(); return VAR_CLOSE; }
 }
-
+<IN_VERBATIM> {
+  "{%"/\s* "endverbatim" \s* "%}"
+                         { yypopstate();
+                           yypushstate(IN_TAG);
+                           isVerbatim = false;
+                           return TAG_OPEN;
+                         }
+  [^{]+                  { return CONTENT; }
+  [^]                    { return CONTENT; }
+}
 <IN_TAG,IN_EXPR> {
   {WHITE_SPACE}          { return com.intellij.psi.TokenType.WHITE_SPACE; }
   "true"                 { return TRUE; }
@@ -115,7 +137,7 @@ COMMENT_TAIL=([^#]* (#+ [^#}])?)* ("#" | "#"+"}")?
   ","                    { return COMMA; }
   {STRING}               { return STRING; }
   {SINGLE_QUOTED_STRING} { return SINGLE_QUOTED_STRING; }
-  {NAME}                 { return ID_NAME; }
+  {NAME}                 { isFirstNameInTag = false; return ID_NAME; }
   {NUMBER}               { return NUMERIC; }
   [^]                    { return TokenType.BAD_CHARACTER; }
 }
