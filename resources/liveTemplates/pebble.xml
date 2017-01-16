@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templateSet group="Pebble">
+    <template name="esc" value="{% autoescape $TYPE$ %}&#10;    $END$&#10;{% endautoescape %}&#10;"
+              description="autoescape...endautoescape" toReformat="true">
+        <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="blk" value="{% block $NAME$ %}&#10;    $END$&#10;{% endblock %}&#10;"
+              description="block...endblock" toReformat="true">
+        <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="ca" value="{% cache $EXPRESSION$ %}&#10;    $END$&#10;{% endcache %}&#10;"
+              description="cache...endcache" toReformat="true">
+        <variable name="EXPRESSION" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="ext" value="{% extends '$TEMPLATE$' %}&#10;"
+              description="extends 'template'" toReformat="true">
+        <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="fil" value="{% filter $EXPRESSION$ %}&#10;    $END$&#10;{% endfilter %}&#10;"
+              description="filter...endfilter" toReformat="true">
+        <variable name="EXPRESSION" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="fl" value="{% flush %}&#10;$END$"
+              description="flush" toReformat="true">
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="for" value="{% for $VAR$ in $SEQUENCE$ %}&#10;    $END$&#10;{% endfor %}"
+              description="for...in...endfor" toReformat="true">
+        <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="SEQUENCE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="if" value="{% if $CONDITION$ %}&#10;    $END$&#10;{% endif %}"
+              description="if...endif" toReformat="true">
+        <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="imp" value="{% import '$TEMPLATE$'$END$ %}"
+              description="import 'template'" toReformat="true">
+        <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="inc" value="{% include '$TEMPLATE$'$END$ %}"
+              description="include 'template'" toReformat="true">
+        <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="mcr" value="{% macro $NAME$($PARAMETERS$) %}&#10;    $END$&#10;{% endmacro %}&#10;"
+              description="macro...endmacro" toReformat="true">
+        <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="PARAMETERS" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="par" value="{% parallel %}&#10;    $END$&#10;{% endparallel %}"
+              description="parallel...endparallel">
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="set" value="{% set $NAME$=$VALUE$$END$ %}&#10;"
+              description="set name=val" toReformat="true">
+        <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+    <template name="verb" value="{% verbatim %}&#10;    $END$&#10;{% endverbatim %}"
+              description="verbatim...endverbatim">
+        <context>
+            <option name="Pebble" value="true"/>
+        </context>
+    </template>
+</templateSet>

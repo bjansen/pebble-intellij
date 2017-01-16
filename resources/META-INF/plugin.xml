@@ -47,17 +47,18 @@
         <typedHandler implementation="com.github.bjansen.intellij.pebble.editor.PebbleTypedHandler"/>
         <enterHandlerDelegate implementation="com.github.bjansen.intellij.pebble.editor.PebbleEnterBetweenTagsHandler"/>
         <colorSettingsPage implementation="com.github.bjansen.intellij.pebble.editor.PebbleColorsAndFontsPage"/>
+        <liveTemplateContext
+                implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleTemplateContextType"/>
+        <defaultLiveTemplatesProvider
+                implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleLiveTemplatesProvider"/>
 
         <!-- TODO -->
-        <!--<colorSettingsPage />-->
         <!--<lang.formatter language="Pebble" />-->
         <!--<completion.contributor language="Pebble"/> for tag and block names etc-->
         <!--<codeStyleSettingsProvider/>-->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
         <!--<multiHostInjector implementation="PebbleVerbatimInjector"/>-->
-        <!--<liveTemplateContext />-->
-        <!--<defaultLiveTemplatesProvider />-->
     </extensions>
 
     <actions>
