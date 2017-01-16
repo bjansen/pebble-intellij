@@ -17,33 +17,37 @@ class PebbleHighlighter : SyntaxHighlighterBase() {
     }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
+        val attributes: Array<TextAttributesKey>
+
         if (delimiters.contains(tokenType)) {
-            return DELIMITER
-        }
-        if (keywords.contains(tokenType)) {
-            return KEYWORDS
-        }
-        if (tokenType === PebbleTypes.STRING
+            attributes = DELIMITER
+        } else if (keywords.contains(tokenType)) {
+            attributes = KEYWORDS
+        } else if (tokenType === PebbleTypes.STRING
                 || tokenType == PebbleTypes.SINGLE_QUOTED_STRING) {
-            return STRINGS
+            attributes = STRINGS
+        } else if (tokenType == PebbleTypes.COMMENT) {
+            attributes = COMMENTS
+        } else {
+            attributes = emptyArray()
         }
-        if (tokenType == PebbleTypes.COMMENT) {
-            return COMMENTS
-        }
-        return emptyArray()
+        return pack(BACKGROUND, attributes)
     }
 
     companion object highlights {
+        val BACKGROUND = createTextAttributesKey("PEBBLE_BACKGROUND",
+                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR as TextAttributesKey)
+
         val DELIMITER = arrayOf(
-                createTextAttributesKey("PEBBLE_DELIM", DefaultLanguageHighlighterColors.INSTANCE_FIELD)
+                createTextAttributesKey("PEBBLE_DELIMITER", DefaultLanguageHighlighterColors.INSTANCE_FIELD)
         )
 
         val KEYWORDS = arrayOf(
-                createTextAttributesKey("PEBBLE_KW", DefaultLanguageHighlighterColors.KEYWORD)
+                createTextAttributesKey("PEBBLE_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
         )
 
         val STRINGS = arrayOf(
-                createTextAttributesKey("PEBBLE_STR", DefaultLanguageHighlighterColors.STRING)
+                createTextAttributesKey("PEBBLE_STRING", DefaultLanguageHighlighterColors.STRING)
         )
 
         val COMMENTS = arrayOf(
