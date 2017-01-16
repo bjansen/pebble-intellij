@@ -46,6 +46,7 @@
         <indexPatternBuilder implementation="com.github.bjansen.intellij.pebble.lang.PebbleIndexPatternBuilder"/>
         <typedHandler implementation="com.github.bjansen.intellij.pebble.editor.PebbleTypedHandler"/>
         <enterHandlerDelegate implementation="com.github.bjansen.intellij.pebble.editor.PebbleEnterBetweenTagsHandler"/>
+        <colorSettingsPage implementation="com.github.bjansen.intellij.pebble.editor.PebbleColorsAndFontsPage"/>
 
         <!-- TODO -->
         <!--<colorSettingsPage />-->
