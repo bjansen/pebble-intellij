@@ -89,7 +89,7 @@ tag_directive ::= verbatim_tag
     | macro_tag
     | parallel_tag
     | set_tag
-//    | custom_tag TODO
+    | custom_tag
 
 autoescape_tag ::=
     TAG_OPEN "autoescape" (boolean_literal|string_literal) TAG_CLOSE
@@ -177,9 +177,7 @@ verbatim_tag ::=
 
 endverbatim_tag ::= TAG_OPEN "endverbatim" TAG_CLOSE
 
-// TODO conflicts with "endXXX" when using `item_*`
-// use regexp \b(?!(?:endblock|endfor)\b)[a-zA-Z_][a-zA-Z0-9_]*
-custom_tag ::= TAG_OPEN "custom" expression? TAG_CLOSE
+custom_tag ::= TAG_OPEN CUSTOM_TAG_NAME expression? TAG_CLOSE
 
 
 /*

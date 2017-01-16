@@ -72,6 +72,7 @@ public interface PebbleTypes {
   IElementType CONTAINS = new PebbleTokenType("CONTAINS");
   IElementType CONTENT = new PebbleTokenType("CONTENT");
   IElementType CRLF = new PebbleTokenType("CRLF");
+  IElementType CUSTOM_TAG_NAME = new PebbleTokenType("CUSTOM_TAG_NAME");
   IElementType EQUALS = new PebbleTokenType("EQUALS");
   IElementType FALSE = new PebbleTokenType("false");
   IElementType ID_NAME = new PebbleTokenType("ID_NAME");

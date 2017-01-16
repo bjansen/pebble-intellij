@@ -17,6 +17,9 @@ public interface PebbleTagDirective extends PsiElement {
   PebbleCacheTag getCacheTag();
 
   @Nullable
+  PebbleCustomTag getCustomTag();
+
+  @Nullable
   PebbleExtendsTag getExtendsTag();
 
   @Nullable

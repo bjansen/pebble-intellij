@@ -335,14 +335,13 @@ public class PebbleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // TAG_OPEN "custom" expression? TAG_CLOSE
+  // TAG_OPEN CUSTOM_TAG_NAME expression? TAG_CLOSE
   public static boolean custom_tag(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "custom_tag")) return false;
     if (!nextTokenIs(b, TAG_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, TAG_OPEN);
-    r = r && consumeToken(b, "custom");
+    r = consumeTokens(b, 0, TAG_OPEN, CUSTOM_TAG_NAME);
     r = r && custom_tag_2(b, l + 1);
     r = r && consumeToken(b, TAG_CLOSE);
     exit_section_(b, m, CUSTOM_TAG, r);
@@ -1152,6 +1151,7 @@ public class PebbleParser implements PsiParser, LightPsiParser {
   //     | macro_tag
   //     | parallel_tag
   //     | set_tag
+  //     | custom_tag
   public static boolean tag_directive(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "tag_directive")) return false;
     if (!nextTokenIs(b, TAG_OPEN)) return false;
@@ -1171,6 +1171,7 @@ public class PebbleParser implements PsiParser, LightPsiParser {
     if (!r) r = macro_tag(b, l + 1);
     if (!r) r = parallel_tag(b, l + 1);
     if (!r) r = set_tag(b, l + 1);
+    if (!r) r = custom_tag(b, l + 1);
     exit_section_(b, m, TAG_DIRECTIVE, r);
     return r;
   }

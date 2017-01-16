@@ -30,7 +30,9 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PebbleVisit
 
     fun highlightTagName(tag: PsiElement) {
         val id = PsiTreeUtil.nextVisibleLeaf(tag.firstChild)
-        if (id != null && id.node.elementType == PebbleTypes.ID_NAME) {
+        if (id != null &&
+                (id.node.elementType == PebbleTypes.ID_NAME
+                        || id.node.elementType == PebbleTypes.CUSTOM_TAG_NAME)) {
             holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
         }
     }

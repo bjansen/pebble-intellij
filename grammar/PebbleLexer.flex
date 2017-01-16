@@ -61,6 +61,7 @@ SINGLE_QUOTED_STRING="'"[^']*"'"?
 NUMBER=[0-9]+(\.[0-9]+)?
 COMMENT=("{#" [^#] {COMMENT_TAIL} ) | "{#"
 COMMENT_TAIL=([^#]* (#+ [^#}])?)* ("#" | "#"+"}")?
+KNOWN_TAGS="autoescape"|"endautoescape"|"block"|"endblock"|"cache"|"endcache"|"extends"|"filter"|"endfilter"|"flush"|"for"|"endfor"|"else"|"if"|"endif"|"elseif"|"import"|"include"|"macro"|"endmacro"|"parallel"|"endparallel"|"set"|"verbatim"|"endverbatim"
 
 %state IN_TAG
 %state IN_EXPR
@@ -80,6 +81,7 @@ COMMENT_TAIL=([^#]* (#+ [^#}])?)* ("#" | "#"+"}")?
   "verbatim"             { if (isFirstNameInTag) {
                              isVerbatim = true;
                            }
+                           isFirstNameInTag = false;
                            return ID_NAME;
                          }
   "%}"                   { yypopstate();
@@ -137,7 +139,14 @@ COMMENT_TAIL=([^#]* (#+ [^#}])?)* ("#" | "#"+"}")?
   ","                    { return COMMA; }
   {STRING}               { return STRING; }
   {SINGLE_QUOTED_STRING} { return SINGLE_QUOTED_STRING; }
-  {NAME}                 { isFirstNameInTag = false; return ID_NAME; }
+  {KNOWN_TAGS}           { isFirstNameInTag = false; return ID_NAME; }
+  {NAME}                 { if (isFirstNameInTag) {
+                               isFirstNameInTag = false;
+                               return CUSTOM_TAG_NAME;
+                           }
+                           isFirstNameInTag = false;
+                           return ID_NAME;
+                         }
   {NUMBER}               { return NUMERIC; }
   [^]                    { return TokenType.BAD_CHARACTER; }
 }

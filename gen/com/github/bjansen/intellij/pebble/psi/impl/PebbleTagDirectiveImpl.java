@@ -46,6 +46,12 @@ public class PebbleTagDirectiveImpl extends ASTWrapperPsiElement implements Pebb
 
   @Override
   @Nullable
+  public PebbleCustomTag getCustomTag() {
+    return findChildByClass(PebbleCustomTag.class);
+  }
+
+  @Override
+  @Nullable
   public PebbleExtendsTag getExtendsTag() {
     return findChildByClass(PebbleExtendsTag.class);
   }
