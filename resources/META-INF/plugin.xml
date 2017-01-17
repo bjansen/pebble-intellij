@@ -12,6 +12,10 @@
     <b>v0.2</b>
     <ul>
         <li>auto-closing of tags</li>
+        <li>support for verbatim and custom tags<li>
+        <li>settings for colors and fonts</li>
+        <li>live templates</li>
+        <li>completion of tag names</li>
     </ul>
     <br/>
     <b>v0.1</b>
@@ -51,14 +55,14 @@
                 implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleTemplateContextType"/>
         <defaultLiveTemplatesProvider
                 implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleLiveTemplatesProvider"/>
+        <completion.contributor language="Pebble"
+                                implementationClass="com.github.bjansen.intellij.pebble.editor.completion.PebbleCompletionContributor"/>
 
         <!-- TODO -->
         <!--<lang.formatter language="Pebble" />-->
-        <!--<completion.contributor language="Pebble"/> for tag and block names etc-->
         <!--<codeStyleSettingsProvider/>-->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
-        <!--<multiHostInjector implementation="PebbleVerbatimInjector"/>-->
     </extensions>
 
     <actions>
