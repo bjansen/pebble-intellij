@@ -1,6 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.lang.BracePair
 import com.intellij.lang.PairedBraceMatcher
 import com.intellij.psi.PsiFile
@@ -14,9 +15,9 @@ class PebbleBraceMatcher : PairedBraceMatcher {
 
     override fun getPairs(): Array<out BracePair> {
         return arrayOf(
-                BracePair(PebbleTypes.LPAREN, PebbleTypes.RPAREN, false),
-                BracePair(PebbleTypes.LBRACE, PebbleTypes.RBRACE, false),
-                BracePair(PebbleTypes.LBRACKET, PebbleTypes.RBRACKET, false)
+                BracePair(tokens[PebbleLexer.LPAREN], tokens[PebbleLexer.RPAREN], false),
+                BracePair(tokens[PebbleLexer.LBRACE], tokens[PebbleLexer.RBRACE], false),
+                BracePair(tokens[PebbleLexer.LBRACKET], tokens[PebbleLexer.RBRACKET], false)
         )
     }
 

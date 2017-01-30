@@ -1,7 +1,8 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.lang.PebbleLexerAdapter
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.intellij.pebble.psi.createLexer
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors
@@ -15,7 +16,7 @@ import java.util.*
 class PebbleHighlighter : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer {
-        return PebbleLexerAdapter()
+        return createLexer(null)
     }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
@@ -35,11 +36,11 @@ class PebbleHighlighter : SyntaxHighlighterBase() {
             attributes = PARENTHESES
         } else if (strings.contains(tokenType)) {
             attributes = STRINGS
-        } else if (tokenType == PebbleTypes.COMMENT) {
+        } else if (tokenType == tokens[PebbleLexer.COMMENT]) {
             attributes = COMMENT
-        } else if (tokenType == PebbleTypes.ID_NAME) {
+        } else if (tokenType == tokens[PebbleLexer.ID_NAME]) {
             attributes = IDENTIFIER
-        } else if (tokenType == PebbleTypes.NUMERIC) {
+        } else if (tokenType == tokens[PebbleLexer.NUMERIC]) {
             attributes = NUMBER
         } else if (tokenType == TokenType.BAD_CHARACTER) {
             attributes = BAD_CHARACTER
@@ -88,35 +89,35 @@ class PebbleHighlighter : SyntaxHighlighterBase() {
     }
 
     private val keywords = Arrays.asList(
-            PebbleTypes.TRUE, PebbleTypes.FALSE, PebbleTypes.EQUALS,
-            PebbleTypes.CONTAINS, PebbleTypes.AND, PebbleTypes.OR, PebbleTypes.NOT,
-            PebbleTypes.IS, PebbleTypes.NULL
+            tokens[PebbleLexer.TRUE], tokens[PebbleLexer.FALSE], tokens[PebbleLexer.EQUALS],
+            tokens[PebbleLexer.CONTAINS], tokens[PebbleLexer.AND], tokens[PebbleLexer.OR], tokens[PebbleLexer.NOT],
+            tokens[PebbleLexer.IS], tokens[PebbleLexer.NULL]
     )
 
     private val delimiters = Arrays.asList(
-            PebbleTypes.TAG_OPEN, PebbleTypes.TAG_CLOSE,
-            PebbleTypes.VAR_OPEN, PebbleTypes.VAR_CLOSE
+            tokens[PebbleLexer.TAG_OPEN], tokens[PebbleLexer.TAG_CLOSE],
+            tokens[PebbleLexer.PRINT_OPEN], tokens[PebbleLexer.PRINT_CLOSE]
     )
 
     private val braces = Arrays.asList(
-            PebbleTypes.LBRACE, PebbleTypes.RBRACE
+            tokens[PebbleLexer.LBRACE], tokens[PebbleLexer.RBRACE]
     )
 
     private val brackets = Arrays.asList(
-            PebbleTypes.LBRACKET, PebbleTypes.RBRACKET
+            tokens[PebbleLexer.LBRACKET], tokens[PebbleLexer.RBRACKET]
     )
 
     private val parens = Arrays.asList(
-            PebbleTypes.LPAREN, PebbleTypes.RPAREN
+            tokens[PebbleLexer.LPAREN], tokens[PebbleLexer.RPAREN]
     )
 
     private val operators = Arrays.asList(
-            PebbleTypes.OP_PLUS, PebbleTypes.OP_MINUS,
-            PebbleTypes.OP_MULT, PebbleTypes.OP_DIV,
-            PebbleTypes.OP_MOD, PebbleTypes.OP_PIPE
+            tokens[PebbleLexer.OP_PLUS], tokens[PebbleLexer.OP_MINUS],
+            tokens[PebbleLexer.OP_MULT], tokens[PebbleLexer.OP_DIV],
+            tokens[PebbleLexer.OP_MOD], tokens[PebbleLexer.OP_PIPE]
     )
 
     private val strings = Arrays.asList(
-            PebbleTypes.STRING, PebbleTypes.SINGLE_QUOTED_STRING
+            tokens[PebbleLexer.STRING], tokens[PebbleLexer.SINGLE_QUOTED_STRING]
     )
 }

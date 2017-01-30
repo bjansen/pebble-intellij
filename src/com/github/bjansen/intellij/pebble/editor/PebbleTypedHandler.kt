@@ -1,7 +1,8 @@
 package com.github.bjansen.intellij.pebble.editor
 
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate
 import com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegate
 import com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegateAdapter
@@ -153,20 +154,20 @@ class PebbleEnterBetweenTagsHandler : EnterHandlerDelegateAdapter() {
 
         val highlighter = (editor as EditorEx).highlighter
         val iterator = highlighter.createIterator(offset - 1)
-        if (iterator.tokenType !== PebbleTypes.TAG_CLOSE) {
+        if (iterator.tokenType !== tokens[PebbleLexer.TAG_CLOSE]) {
             return false
         }
 
         iterator.advance()
 
-        if (!iterator.atEnd() && iterator.tokenType === PebbleTypes.TAG_OPEN) {
+        if (!iterator.atEnd() && iterator.tokenType === tokens[PebbleLexer.TAG_OPEN]) {
             // see if it's an "endXXX" tag
             do {
                 iterator.advance()
             } while (!iterator.atEnd() && iterator.tokenType === TokenType.WHITE_SPACE)
 
             return !iterator.atEnd()
-                    && iterator.tokenType === PebbleTypes.ID_NAME
+                    && iterator.tokenType === tokens[PebbleLexer.ID_NAME]
                     && chars.substring(iterator.start..iterator.end).startsWith("end")
         }
 

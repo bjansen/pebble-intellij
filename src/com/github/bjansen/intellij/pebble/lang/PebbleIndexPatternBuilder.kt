@@ -1,7 +1,9 @@
 package com.github.bjansen.intellij.pebble.lang
 
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.intellij.pebble.psi.createLexer
 import com.intellij.lexer.Lexer
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.search.IndexPatternBuilder
@@ -18,13 +20,13 @@ class PebbleIndexPatternBuilder : IndexPatternBuilder {
 
     override fun getIndexingLexer(file: PsiFile): Lexer? {
         if (file is PebbleFile) {
-            return PebbleLexerAdapter()
+            return createLexer(null)
         }
         return null
     }
 
     override fun getCommentTokenSet(file: PsiFile): TokenSet? {
-        return TokenSet.create(PebbleTypes.COMMENT)
+        return TokenSet.create(tokens[PebbleLexer.COMMENT])
     }
 
     override fun getCommentEndDelta(tokenType: IElementType?): Int {

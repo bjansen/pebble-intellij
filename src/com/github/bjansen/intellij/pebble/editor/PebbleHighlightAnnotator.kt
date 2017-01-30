@@ -1,15 +1,14 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.psi.PebbleTag
-import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
-import com.github.bjansen.intellij.pebble.psi.PebbleVisitor
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiRecursiveElementVisitor
 import com.intellij.psi.util.PsiTreeUtil
 
-class PebbleHighlightAnnotator : PebbleVisitor(), Annotator {
+class PebbleHighlightAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         element.accept(PebbleHighlightVisitor(holder))
@@ -17,22 +16,21 @@ class PebbleHighlightAnnotator : PebbleVisitor(), Annotator {
 
 }
 
-private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PebbleVisitor() {
-    override fun visitTagDirective(tag: PebbleTagDirective) {
-        tag.children.forEach { it.accept(this) }
-    }
+private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiveElementVisitor() {
 
-    override fun visitTag(tag: PebbleTag) {
-        super.visitTag(tag)
-        highlightTagName(tag)
-        tag.children.forEach { it.accept(this) }
+    override fun visitElement(element: PsiElement?) {
+        super.visitElement(element)
+
+        if (element != null
+                && element.node.elementType == tokens[PebbleLexer.TAG_OPEN]) {
+            highlightTagName(element)
+        }
     }
 
     fun highlightTagName(tag: PsiElement) {
-        val id = PsiTreeUtil.nextVisibleLeaf(tag.firstChild)
+        val id = PsiTreeUtil.nextVisibleLeaf(tag)
         if (id != null &&
-                (id.node.elementType == PebbleTypes.ID_NAME
-                        || id.node.elementType == PebbleTypes.CUSTOM_TAG_NAME)) {
+                id.node.elementType == tokens[PebbleLexer.ID_NAME]) {
             holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
         }
     }

@@ -1,7 +1,8 @@
 package com.github.bjansen.intellij.pebble.liveTemplates
 
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.codeInsight.template.TemplateContextType
 import com.intellij.codeInsight.template.impl.DefaultLiveTemplatesProvider
 import com.intellij.psi.PsiFile
@@ -14,7 +15,7 @@ class PebbleTemplateContextType : TemplateContextType("Pebble", "Pebble") {
         if (file is PebbleFile) {
             val currentElement = file.findElementAt(offset)
             if (currentElement != null) {
-                return currentElement.node.elementType == PebbleTypes.CONTENT
+                return currentElement.node.elementType == tokens[PebbleLexer.CONTENT]
             }
         }
 

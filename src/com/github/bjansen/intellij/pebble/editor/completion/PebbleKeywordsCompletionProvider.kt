@@ -1,6 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.codeInsight.template.TemplateManager
@@ -15,7 +16,7 @@ class PebbleCompletionContributor : CompletionContributor() {
     init {
         extend(CompletionType.BASIC,
                 PlatformPatterns.or(
-                        PlatformPatterns.psiElement(PebbleTypes.CUSTOM_TAG_NAME)
+                        PlatformPatterns.psiElement(tokens[PebbleLexer.ID_NAME])
                 ),
                 PebbleKeywordsCompletionProvider()
         )
@@ -38,7 +39,7 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
                     val identifier = ctx.file.findElementAt(ctx.startOffset)
                     if (tpl != null && identifier != null) {
                         val openingDelimiter = PsiTreeUtil.prevVisibleLeaf(identifier)
-                        if (openingDelimiter != null && openingDelimiter.node.elementType == PebbleTypes.TAG_OPEN) {
+                        if (openingDelimiter != null && openingDelimiter.node.elementType == tokens[PebbleLexer.TAG_OPEN]) {
                             ctx.editor.document.deleteString(openingDelimiter.textOffset, identifier.textOffset + identifier.textLength)
                             TemplateManager.getInstance(ctx.project)
                                     .startTemplate(ctx.editor, tpl)
@@ -50,7 +51,7 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
     override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext?,
                                 result: CompletionResultSet) {
         val el = parameters.position.originalElement
-        if (el.node.elementType == PebbleTypes.CUSTOM_TAG_NAME) {
+        if (el.node.elementType == tokens[PebbleLexer.ID_NAME]) {
             result.addAllElements(keywordLookupItems)
         }
     }

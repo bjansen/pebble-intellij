@@ -1,6 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.psi.PebbleTypes
+import com.github.bjansen.intellij.pebble.parser.PebbleLexer
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.intellij.openapi.editor.colors.EditorColorsScheme
 import com.intellij.openapi.editor.ex.util.LayerDescriptor
 import com.intellij.openapi.editor.ex.util.LayeredLexerEditorHighlighter
@@ -44,7 +45,7 @@ internal class PebbleTemplateHighlighter(project: Project?, virtualFile: Virtual
 
         if (type != null) {
             val outerHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(type, project, virtualFile)
-            registerLayer(PebbleTypes.CONTENT, LayerDescriptor(outerHighlighter, ""))
+            registerLayer(tokens[PebbleLexer.CONTENT], LayerDescriptor(outerHighlighter, ""))
         }
     }
 }
