@@ -97,11 +97,14 @@
     </path>
 
     <path id="pebble_for_intellij.module.production.classpath">
+        <pathelement location="${idea.home}/lib/jdom.jar"/>
         <pathelement location="${idea.home}/lib/openapi.jar"/>
         <pathelement location="${idea.home}/lib/idea.jar"/>
         <pathelement location="${idea.home}/lib/annotations.jar"/>
+        <pathelement location="${idea.home}/lib/jcip-annotations.jar"/>
         <pathelement location="${idea.home}/lib/util.jar"/>
         <pathelement location="${idea.home}/lib/extensions.jar"/>
+        <pathelement location="${basedir}/lib/antlr-runtime-4.6.jar"/>
     </path>
 
     <path id="pebble_for_intellij.runtime.production.module.classpath">
@@ -130,7 +133,9 @@
         <dirset dir="${module.pebble_for_intellij.basedir}">
             <include name="src"/>
             <include name="resources"/>
-            <include name="gen"/>
+            <include name="parser/gen"/>
+            <include name="parser/src"/>
+            <include name="antlr-adaptor/src"/>
         </dirset>
     </path>
 
@@ -161,7 +166,7 @@
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
-            <fileset dir="${module.pebble_for_intellij.basedir}/gen">
+            <fileset dir="${module.pebble_for_intellij.basedir}/parser/gen">
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
