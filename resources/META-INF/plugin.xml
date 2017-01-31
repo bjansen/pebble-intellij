@@ -57,7 +57,10 @@
                 implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleLiveTemplatesProvider"/>
         <completion.contributor language="Pebble"
                                 implementationClass="com.github.bjansen.intellij.pebble.editor.completion.PebbleCompletionContributor"/>
-
+        <codeStyleSettingsProvider
+                implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleLanguageCodeStyleSettingsProvider"/>
         <!-- TODO -->
         <!--<lang.formatter language="Pebble" />-->
         <!--<codeStyleSettingsProvider/>-->

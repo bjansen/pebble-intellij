@@ -1,5 +1,6 @@
 package com.github.bjansen.intellij.pebble.psi
 
+import com.github.bjansen.intellij.pebble.codeStyle.PebbleCodeStyleSettings
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.parser.PebbleParser
@@ -12,6 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
@@ -29,15 +31,26 @@ import org.antlr.v4.runtime.tree.ParseTree
 import java.util.*
 import org.antlr.v4.runtime.Lexer as AntlrLexer
 
-fun createLexer(input: CharStream?) : Lexer {
-    val antlrLexer = if (false) ConfigurableLexer(input) else PebbleLexer(input)
+fun createLexer(input: CharStream?, project: Project?) : Lexer {
+    val codeStyleManager =
+            if (project != null) CodeStyleSettingsManager.getInstance(project)
+            else CodeStyleSettingsManager.getInstance()
+    val ourSettings = codeStyleManager.currentSettings.getCustomSettings(PebbleCodeStyleSettings::class.java)
+    val antlrLexer =
+            if (ourSettings.useDefaultDelimiters()) PebbleLexer(input)
+            else ConfigurableLexer(input)
+                    .withTagOpenDelimiter(ourSettings.TAG_OPEN)
+                    .withTagCloseDelimiter(ourSettings.TAG_CLOSE)
+                    .withPrintOpenDelimiter(ourSettings.PRINT_OPEN)
+                    .withPrintCloseDelimiter(ourSettings.PRINT_CLOSE)
+
     return ANTLRLexerAdaptor(PebbleLanguage.INSTANCE, antlrLexer)
 }
 
 class PebbleParserDefinition : ParserDefinition {
 
     override fun createLexer(project: Project): Lexer {
-        return createLexer(null)
+        return createLexer(null, project)
     }
 
     override fun getWhitespaceTokens(): TokenSet {

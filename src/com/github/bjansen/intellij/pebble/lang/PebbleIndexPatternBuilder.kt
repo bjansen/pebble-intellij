@@ -20,7 +20,7 @@ class PebbleIndexPatternBuilder : IndexPatternBuilder {
 
     override fun getIndexingLexer(file: PsiFile): Lexer? {
         if (file is PebbleFile) {
-            return createLexer(null)
+            return createLexer(null, file.project)
         }
         return null
     }

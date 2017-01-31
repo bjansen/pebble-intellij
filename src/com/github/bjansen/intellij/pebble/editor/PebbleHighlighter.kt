@@ -9,14 +9,15 @@ import com.intellij.openapi.editor.HighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
+import com.intellij.openapi.project.Project
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 import java.util.*
 
-class PebbleHighlighter : SyntaxHighlighterBase() {
+class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer {
-        return createLexer(null)
+        return createLexer(null, project)
     }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {

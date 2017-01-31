@@ -25,7 +25,7 @@ class PebbleEditorHighlighterProvider : EditorHighlighterProvider {
 }
 
 internal class PebbleTemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: EditorColorsScheme)
-        : LayeredLexerEditorHighlighter(PebbleHighlighter(), colors) {
+        : LayeredLexerEditorHighlighter(PebbleHighlighter(project), colors) {
 
     init {
         // highlighter for outer lang
