@@ -6,6 +6,7 @@ import com.github.bjansen.intellij.pebble.parser.PebbleParser
 import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
+import com.intellij.lang.PsiBuilder
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
@@ -18,12 +19,15 @@ import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
+import org.antlr.jetbrains.adaptor.parser.ANTLRParseTreeToPSIConverter
 import org.antlr.jetbrains.adaptor.parser.ANTLRParserAdaptor
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.Parser
-import org.antlr.v4.runtime.Lexer as AntlrLexer
+import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
+import java.util.*
+import org.antlr.v4.runtime.Lexer as AntlrLexer
 
 fun createLexer(input: CharStream?) : Lexer {
     val antlrLexer = if (false) ConfigurableLexer(input) else PebbleLexer(input)
@@ -58,6 +62,44 @@ class PebbleParserDefinition : ParserDefinition {
 
                 throw UnsupportedOperationException("Can't parse ${root?.javaClass?.name}")
             }
+
+            val knownOpeningTags = arrayOf("autoescape", "block", "cache", "filter", "for", "if", "macro", "parallel")
+            val knownClosingTags = knownOpeningTags.map { "end$it" }
+            val markedTags = Stack<Pair<PsiBuilder.Marker, Int>>()
+
+            override fun createListener(parser: Parser?, root: IElementType?, builder: PsiBuilder?): ANTLRParseTreeToPSIConverter {
+                return object: ANTLRParseTreeToPSIConverter(PebbleLanguage.INSTANCE, parser, builder) {
+                    override fun exitEveryRule(ctx: ParserRuleContext) {
+                        if (ctx.ruleIndex == PebbleParser.RULE_tagDirective) {
+                            val firstChild = ctx.children[0]
+                            if (firstChild is PebbleParser.GenericTagContext) {
+                                if (firstChild.tagName().text in knownOpeningTags) {
+                                    markedTags.push(Pair(markers.pop(), ctx.ruleIndex))
+                                    return
+                                }
+                                if (firstChild.tagName().text in knownClosingTags
+                                        && markedTags.isNotEmpty()) {
+                                    super.exitEveryRule(ctx)
+
+                                    // call done on the opening tag
+                                    val marked = markedTags.pop()
+                                    marked.first.done(getRuleElementTypes()[marked.second])
+
+                                    return
+                                }
+                            }
+                        } else if (ctx.ruleIndex == PebbleParser.RULE_pebbleTemplate) {
+                            // call done on unclosed tags
+                            while (markedTags.isNotEmpty()) {
+                                val marked = markedTags.pop()
+                                marked.first.done(getRuleElementTypes()[marked.second])
+                            }
+                        }
+
+                        super.exitEveryRule(ctx)
+                    }
+                }
+            }
         }
     }
 
@@ -78,7 +120,7 @@ class PebbleParserDefinition : ParserDefinition {
 
         if (elType == rules[PebbleParser.RULE_pebbleTemplate]) {
             return PebbleTemplate(node)
-        } else if (elType == rules[PebbleParser.RULE_genericTag]
+        } else if (elType == rules[PebbleParser.RULE_tagDirective]
                 || elType == rules[PebbleParser.RULE_verbatimTag]) {
             return PebbleTagDirective(node)
         } else if (elType == rules[PebbleParser.RULE_printDirective]) {

@@ -2,13 +2,12 @@ package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
-import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 
-class PebbleTagDirective(node: ASTNode) : ASTWrapperPsiElement(node), PsiNamedElement {
+class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
 
     override fun setName(name: String): PsiElement {
         throw UnsupportedOperationException("not implemented")
@@ -27,18 +26,6 @@ class PebbleTagDirective(node: ASTNode) : ASTWrapperPsiElement(node), PsiNamedEl
     }
 }
 
-class PebblePrintDirective(node: ASTNode) : ASTWrapperPsiElement(node) {
+class PebblePrintDirective(node: ASTNode) : ANTLRPsiNode(node)
 
-}
-
-class PebbleTemplate(node: ASTNode) : ASTWrapperPsiElement(node) {
-    override fun add(element: PsiElement): PsiElement {
-        print("Add " + element.javaClass.name)
-        return super.add(element)
-    }
-    override fun addAfter(element: PsiElement, anchor: PsiElement?): PsiElement {
-        print("Add " + element.javaClass.name)
-        return super.addAfter(element, anchor)
-    }
-}
-
+class PebbleTemplate(node: ASTNode) : ANTLRPsiNode(node)
