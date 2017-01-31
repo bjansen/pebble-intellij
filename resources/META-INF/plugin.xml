@@ -13,6 +13,7 @@
     <ul>
         <li>auto-closing of tags</li>
         <li>support for verbatim and custom tags<li>
+        <li>support for custom tag delimiters</li>
         <li>settings for colors and fonts</li>
         <li>live templates</li>
         <li>completion of tag names</li>
