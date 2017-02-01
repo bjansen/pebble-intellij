@@ -2,6 +2,7 @@ package com.github.bjansen.intellij.pebble.psi;
 
 import com.github.bjansen.intellij.pebble.parser.PebbleLexer;
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
 
@@ -42,31 +43,57 @@ public class ConfigurableLexer extends PebbleLexer {
         return this;
     }
 
+    /**
+     * Try matching customized delimiters instead of the default ones, which
+     * will become {@link #CONTENT} instead.
+     */
     @Override
     public Token nextToken() {
-        Token token;
+        // TODO we could do better and merge consecutive CONTENT tokens
 
-        if (printOpenDelimiter != null
-                && (token = tryMatching(printOpenDelimiter, PRINT_OPEN, IN_TAG)) != null) {
-            return token;
+        if (printOpenDelimiter != null) {
+            if (tryMatching(printOpenDelimiter, PRINT_OPEN, IN_TAG)) {
+                return emit();
+            }
+            if (tryMatching("{{", CONTENT, null)) {
+                return nextContentToken("{{");
+            }
         }
-        if (printCloseDelimiter != null
-                && (token = tryMatching(printCloseDelimiter, PRINT_CLOSE, null)) != null) {
-            return token;
+        if (printCloseDelimiter != null) {
+            if (tryMatching(printCloseDelimiter, PRINT_CLOSE, -1)) {
+                return emit();
+            }
+            if (tryMatching("}}", CONTENT, null)) {
+                return nextContentToken("}}");
+            }
         }
-        if (tagOpenDelimiter != null
-            && (token = tryMatching(tagOpenDelimiter, TAG_OPEN, IN_TAG)) != null) {
-            return token;
+        if (tagOpenDelimiter != null) {
+            if (tryMatching(tagOpenDelimiter, TAG_OPEN, IN_TAG)) {
+                return emit();
+            }
+            if (tryMatching("{%", CONTENT, null)) {
+                return nextContentToken("{%");
+            }
         }
-        if (tagCloseDelimiter != null
-            && (token = tryMatching(tagCloseDelimiter, TAG_CLOSE, null)) != null) {
-            return token;
+        if (tagCloseDelimiter != null) {
+            if (tryMatching(tagCloseDelimiter, TAG_CLOSE, -1)) {
+                return emit();
+            }
+            if (tryMatching("%}", CONTENT, null)) {
+                return nextContentToken("%}");
+            }
         }
 
         return super.nextToken();
     }
 
-    private Token tryMatching(String delimiter, int type, Integer mode) {
+    private Token nextContentToken(String delimiter) {
+        CommonToken token = (CommonToken) super.nextToken();
+        token.setStartIndex(token.getStartIndex() - delimiter.length());
+        return token;
+    }
+
+    private boolean tryMatching(String delimiter, int type, Integer mode) {
         if (getCharIndex() >= 0 && getState() == -1) {
             String nextChars = _input.getText(Interval.of(getCharIndex(), getCharIndex() + delimiter.length() - 1));
 
@@ -84,14 +111,16 @@ public class ConfigurableLexer extends PebbleLexer {
                 }
 
                 if (mode != null) {
-                    pushMode(mode);
-                } else {
-                    popMode();
+                    if (mode == -1) {
+                        popMode();
+                    } else {
+                        pushMode(mode);
+                    }
                 }
-                return emit();
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 }
