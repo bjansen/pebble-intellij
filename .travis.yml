@@ -4,7 +4,7 @@ jdk:
   - oraclejdk8
 env:
   - IDEA_VERSION=15.0.6
-  - IDEA_VERSION=2016.3.2
+  - IDEA_VERSION=2016.3.4
 install:
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz
   - |
