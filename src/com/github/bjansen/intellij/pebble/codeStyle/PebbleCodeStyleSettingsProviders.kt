@@ -6,7 +6,10 @@ import com.intellij.application.options.CodeStyleAbstractPanel
 import com.intellij.application.options.TabbedLanguageCodeStylePanel
 import com.intellij.lang.Language
 import com.intellij.openapi.options.Configurable
-import com.intellij.psi.codeStyle.*
+import com.intellij.psi.codeStyle.CodeStyleSettings
+import com.intellij.psi.codeStyle.CodeStyleSettingsProvider
+import com.intellij.psi.codeStyle.CustomCodeStyleSettings
+import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
 import com.intellij.util.xmlb.XmlSerializer
 import org.jdom.Element
 

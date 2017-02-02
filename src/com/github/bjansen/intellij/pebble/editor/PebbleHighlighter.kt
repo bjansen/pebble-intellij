@@ -1,8 +1,8 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.intellij.pebble.psi.createLexer
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors

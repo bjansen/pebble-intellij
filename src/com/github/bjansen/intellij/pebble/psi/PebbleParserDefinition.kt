@@ -2,8 +2,9 @@ package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.codeStyle.PebbleCodeStyleSettings
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
-import com.github.bjansen.intellij.pebble.parser.PebbleParser
+import com.github.bjansen.pebble.parser.ConfigurableLexer
+import com.github.bjansen.pebble.parser.PebbleLexer
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition

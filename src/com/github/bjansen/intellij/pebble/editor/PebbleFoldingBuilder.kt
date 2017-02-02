@@ -1,8 +1,8 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.parser.PebbleParser
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.CustomFoldingBuilder
 import com.intellij.lang.folding.FoldingDescriptor

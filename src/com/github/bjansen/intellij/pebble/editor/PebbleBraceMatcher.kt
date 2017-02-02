@@ -1,7 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.lang.BracePair
 import com.intellij.lang.PairedBraceMatcher
 import com.intellij.psi.PsiFile

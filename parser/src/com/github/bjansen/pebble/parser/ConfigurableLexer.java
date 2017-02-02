@@ -1,6 +1,5 @@
-package com.github.bjansen.intellij.pebble.psi;
+package com.github.bjansen.pebble.parser;
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;

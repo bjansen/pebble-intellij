@@ -1,7 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.codeInsight.template.TemplateManager

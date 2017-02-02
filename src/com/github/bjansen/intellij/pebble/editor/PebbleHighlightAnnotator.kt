@@ -1,7 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.openapi.util.TextRange

@@ -1,9 +1,9 @@
 package com.github.bjansen.intellij.pebble.lang
 
-import com.github.bjansen.intellij.pebble.parser.PebbleLexer
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.intellij.pebble.psi.createLexer
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.lexer.Lexer
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.search.IndexPatternBuilder

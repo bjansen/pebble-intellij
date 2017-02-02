@@ -1,5 +1,5 @@
 // Generated from /Users/bastien/IdeaProjects/pebble-intellij/grammar/com/github/bjansen/intellij/pebble/parser/PebbleLexer.g4 by ANTLR 4.6
-package com.github.bjansen.intellij.pebble.parser;
+package com.github.bjansen.pebble.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
