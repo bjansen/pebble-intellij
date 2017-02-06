@@ -1,0 +1,6 @@
+(pebbleTemplate (printDirective <<- (expression (member_expression (term (identifier hello)))) filters >>)
+(printDirective << (expression (member_expression (term (identifier hello)))) filters ->>)
+(printDirective <<- (expression (member_expression (term (identifier hello)))) filters ->>)
+(tagDirective (genericTag {*- (tagName hello) *}))
+(tagDirective (genericTag {* (tagName hello) -*}))
+(tagDirective (genericTag {*- (tagName hello) -*})))

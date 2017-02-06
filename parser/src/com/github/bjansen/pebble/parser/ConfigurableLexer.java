@@ -47,19 +47,21 @@ public class ConfigurableLexer extends PebbleLexer {
      * will become {@link #CONTENT} instead.
      */
     @Override
-    public Token nextToken() {
+    protected Token customNextToken() {
         // TODO we could do better and merge consecutive CONTENT tokens
 
         if (printOpenDelimiter != null) {
-            if (tryMatching(printOpenDelimiter, PRINT_OPEN, IN_TAG)) {
+            if (tryMatching(printOpenDelimiter + "-", PRINT_OPEN, IN_TAG)
+                    || tryMatching(printOpenDelimiter, PRINT_OPEN, IN_TAG)) {
                 return emit();
             }
             if (tryMatching("{{", CONTENT, null)) {
                 return nextContentToken("{{");
             }
         }
-        if (printCloseDelimiter != null) {
-            if (tryMatching(printCloseDelimiter, PRINT_CLOSE, -1)) {
+        if (printCloseDelimiter != null && _mode == IN_TAG) {
+            if (tryMatching("-" + printCloseDelimiter, PRINT_CLOSE, -1)
+                    || tryMatching(printCloseDelimiter, PRINT_CLOSE, -1)) {
                 return emit();
             }
             if (tryMatching("}}", CONTENT, null)) {
@@ -67,15 +69,17 @@ public class ConfigurableLexer extends PebbleLexer {
             }
         }
         if (tagOpenDelimiter != null) {
-            if (tryMatching(tagOpenDelimiter, TAG_OPEN, IN_TAG)) {
+            if (tryMatching(tagOpenDelimiter + "-", TAG_OPEN, IN_TAG)
+                    || tryMatching(tagOpenDelimiter, TAG_OPEN, IN_TAG)) {
                 return emit();
             }
             if (tryMatching("{%", CONTENT, null)) {
                 return nextContentToken("{%");
             }
         }
-        if (tagCloseDelimiter != null) {
-            if (tryMatching(tagCloseDelimiter, TAG_CLOSE, -1)) {
+        if (tagCloseDelimiter != null && _mode == IN_TAG) {
+            if (tryMatching("-" + tagCloseDelimiter, TAG_CLOSE, -1)
+                    || tryMatching(tagCloseDelimiter, TAG_CLOSE, -1)) {
                 return emit();
             }
             if (tryMatching("%}", CONTENT, null)) {
@@ -83,11 +87,15 @@ public class ConfigurableLexer extends PebbleLexer {
             }
         }
 
-        return super.nextToken();
+        return super.customNextToken();
     }
 
     private Token nextContentToken(String delimiter) {
-        CommonToken token = (CommonToken) super.nextToken();
+        if (getCharIndex() == _input.size()) {
+            // end of file
+            return emit();
+        }
+        CommonToken token = (CommonToken) super.customNextToken();
         token.setStartIndex(token.getStartIndex() - delimiter.length());
         return token;
     }
@@ -111,7 +119,11 @@ public class ConfigurableLexer extends PebbleLexer {
 
                 if (mode != null) {
                     if (mode == -1) {
-                        popMode();
+                        if (_modeStack.size() > 0) {
+                            popMode();
+                        } else {
+                            System.out.println("WARN: can't pop mode (empty stack)");
+                        }
                     } else {
                         pushMode(mode);
                     }

@@ -1,7 +1,54 @@
 lexer grammar PebbleLexer;
 
+@members {
+
+private java.util.Queue<Token> queue = new java.util.LinkedList<Token>();
+
+protected Token customNextToken() {
+    return super.nextToken();
+}
+
+@Override
+public Token nextToken() {
+
+    if (!queue.isEmpty()) {
+        return queue.poll();
+    }
+
+    Token next = customNextToken();
+
+    if (next.getType() != CONTENT) {
+        return next;
+    }
+
+    StringBuilder builder = new StringBuilder();
+    Token startToken = next;
+
+    while (next.getType() == CONTENT) {
+        builder.append(next.getText());
+        next = customNextToken();
+    }
+
+    // The `next` will _not_ be a CONTENT-token, store it in
+    // the queue to return the next time!
+    queue.offer(next);
+
+    CommonToken token = new CommonToken(startToken);
+    token.setStopIndex(startToken.getStartIndex() + builder.length() - 1);
+
+    return token;
+}
+
+@Override
+public void setInputStream(IntStream input) {
+    queue.clear();
+    super.setInputStream(input);
+}
+
+}
+
 PRINT_OPEN
-    : '{{' -> pushMode(IN_TAG)
+    : ('{{-' | '{{') -> pushMode(IN_TAG)
     ;
 
 COMMENT
@@ -14,16 +61,12 @@ VERBATIM_TAG_OPEN
     ;
 
 TAG_OPEN
-    : '{%' -> pushMode(IN_TAG)
+    : ('{%-' |'{%') -> pushMode(IN_TAG)
     ;
 
 CONTENT
-    : ~'{'+
+    : .
     ;
-
-ERRCHAR
-	:	.	-> channel(HIDDEN)
-	;
 
 mode VERBATIM;
 
@@ -38,11 +81,11 @@ VERBATIM_TAG_END
 mode IN_TAG;
 
 TAG_CLOSE
-    : '%}' -> popMode
+    : ('-%}' | '%}') -> popMode
     ;
 
 PRINT_CLOSE
-    : '}}' -> popMode
+    : ('-}}' | '}}') -> popMode
     ;
 
 NOT

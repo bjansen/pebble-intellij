@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.junit.Test;
 
 public class ConfigurableLexerTest extends AbstractLexerTest {
+    private boolean overridePrintDelimiters = true;
+
     @Test
     public void testSimpleTag() {
         lexFile("test-resources/lexer/configurable/simpletag.peb");
@@ -14,10 +16,34 @@ public class ConfigurableLexerTest extends AbstractLexerTest {
         lexFile("test-resources/lexer/configurable/customized-default.peb");
     }
 
+    @Test
+    public void testWhitespaceControlModifiers() {
+        lexFile("test-resources/lexer/configurable/ws-ctrl-modifier.peb");
+    }
+
+    @Test
+    public void testContentOnly() {
+        lexFile("test-resources/lexer/configurable/content-only.peb");
+    }
+
+    @Test
+    public void testMixed() {
+        overridePrintDelimiters = false;
+        lexFile("test-resources/lexer/configurable/mixed.peb");
+        overridePrintDelimiters = true;
+    }
+
     @Override
     PebbleLexer createLexer(String text) {
-        return new ConfigurableLexer(new ANTLRInputStream(text))
+        ConfigurableLexer lexer = new ConfigurableLexer(new ANTLRInputStream(text))
                 .withTagOpenDelimiter("{*")
                 .withTagCloseDelimiter("*}");
+
+        if (overridePrintDelimiters) {
+            lexer = lexer
+                    .withPrintOpenDelimiter("<<")
+                    .withPrintCloseDelimiter(">>");
+        }
+        return lexer;
     }
 }

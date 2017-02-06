@@ -1,0 +1,11 @@
+{% for user in users %}
+    {% if %}
+    {% else %}
+    {% endif %}
+    {{ loop.index }} - {{ user.id }}
+{% else %}
+    There are no users to display.
+    {% i %}
+{% endfor %}
+
+{* if *}

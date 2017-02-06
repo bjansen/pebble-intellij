@@ -1,8 +1,8 @@
 package com.github.bjansen.pebble.parser;
 
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.runtime.tree.Trees;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ abstract class AbstractLexerTest {
 
     abstract PebbleLexer createLexer(String text);
 
-    protected void lexFile(String filePath) {
+    void lexFile(String filePath) {
         try {
             String input = new String(readAllBytes(get(filePath)));
             PebbleLexer lexer = createLexer(input);
@@ -28,6 +28,15 @@ abstract class AbstractLexerTest {
             String expectedOutputFile = filePath.replace(".peb", "-parsed.txt");
             String expectedOutput = new String(readAllBytes(get(expectedOutputFile)));
 
+            Token previousToken = null;
+            for (int i = 0; i < parser.getTokenStream().size(); i++) {
+                Token token = parser.getTokenStream().get(i);
+                if (previousToken != null && token.getType() != PebbleLexer.EOF) {
+                    Assert.assertEquals("Tokens should be consecutive",
+                            previousToken.getStopIndex() + 1, token.getStartIndex());
+                }
+                previousToken = token;
+            }
             Assert.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,4 +1,4 @@
-// Generated from /Users/bastien/IdeaProjects/pebble-intellij/grammar/com/github/bjansen/intellij/pebble/parser/PebbleParser.g4 by ANTLR 4.6
+// Generated from /Users/bastien/IdeaProjects/pebble-intellij/parser/grammar/com/github/bjansen/pebble/parser/PebbleParser.g4 by ANTLR 4.6
 package com.github.bjansen.pebble.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
