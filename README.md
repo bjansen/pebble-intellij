@@ -13,13 +13,13 @@ DataGrip 1.0, PhpStorm 10, PyCharm 5, RubyMine 8, WebStorm 11) and later.
 
 ## Features
 
-* parser/lexer<sup>1</sup> and syntax highlighter
+* parser/lexer<sup>1</sup> and syntax highlighter (supports custom delimiters)
+* live templates for built-in tags
 * braces matching, code folding and commenting
 * quote handler
 * [more to come](https://github.com/bjansen/pebble-intellij/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3At-feature)
 
-<sup>1</sup>: *Custom extensions (tags, operators...), `verbatim` tags
-and custom delimiters are currently not supported*.
+<sup>1</sup>: *Custom operators are currently not supported*.
 
 ## Installation
 
