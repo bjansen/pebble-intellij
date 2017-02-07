@@ -1,0 +1,61 @@
+buildscript {
+    ext.kotlinVersion = '1.0.6'
+    ext.javaVersion = '1.8'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.intellij' version "0.2.0"
+}
+
+
+project(':') {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile(project(':parser')) {
+            exclude module: 'antlr4'
+        }
+    }
+
+    apply plugin: 'org.jetbrains.intellij'
+    intellij {
+        version ideaVersion
+        downloadSources Boolean.valueOf(downloadIdeaSources)
+        updateSinceUntilBuild = false
+        instrumentCode = false
+
+        publish {
+            username publishUsername
+            password publishPassword
+            channel publishChannel
+        }
+    }
+
+    apply plugin: 'kotlin'
+
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+
+    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+    sourceSets {
+        main {
+            java.srcDirs += ['antlr-adaptor/src']
+            kotlin.srcDirs += ['src', 'antlr-adaptor/src']
+            resources.srcDirs = ['resources']
+        }
+    }
+}

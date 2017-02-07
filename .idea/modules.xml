@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Pebble for IntelliJ.iml" filepath="$PROJECT_DIR$/Pebble for IntelliJ.iml" />
-      <module fileurl="file://$PROJECT_DIR$/parser/parser.iml" filepath="$PROJECT_DIR$/parser/parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/parser.iml" filepath="$PROJECT_DIR$/.idea/modules/parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1288912939/pebble-intellij.iml" filepath="$PROJECT_DIR$/.idea/modules/1288912939/pebble-intellij.iml" />
     </modules>
   </component>
 </project>

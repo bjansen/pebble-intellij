@@ -1,0 +1,16 @@
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'antlr'
+
+dependencies {
+    antlr('org.antlr:antlr4:4.6')
+    compile 'org.antlr:antlr4-runtime:4.6'
+    testCompile 'junit:junit:4.+'
+}
+
+generateGrammarSource {
+    arguments += ["-visitor"]
+}

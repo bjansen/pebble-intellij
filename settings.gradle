@@ -1,0 +1,2 @@
+rootProject.name = 'pebble-intellij'
+include 'parser'
