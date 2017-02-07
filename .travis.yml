@@ -3,5 +3,6 @@ jdk:
   - openjdk7
   - oraclejdk8
 env:
-  - GRADLE_OPTS=-DideaVersion=15.0.6
-  - GRADLE_OPTS=-DideaVersion=2016.3.4
+  - IDEA_VERSION=15.0.6
+  - IDEA_VERSION=2016.3.4
+install: sed -i '/ideaVersion=/c\ideaVersion=$IDEA_VERSION' gradle.properties
