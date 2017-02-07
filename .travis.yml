@@ -3,6 +3,5 @@ jdk:
   - openjdk7
   - oraclejdk8
 env:
-  - IDEA_VERSION=15.0.6
-  - IDEA_VERSION=2016.3.4
-script: ./gradle -DideaVersion=$IDEA_VERSION check
+  - GRADLE_OPTS=-DideaVersion=15.0.6
+  - GRADLE_OPTS=-DideaVersion=2016.3.4
