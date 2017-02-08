@@ -33,7 +33,7 @@ tagDirective
     ;
 
 verbatimTag
-    : VERBATIM_TAG_OPEN VERBATIM_BODY
+    : VERBATIM_TAG_OPEN VERBATIM_BODY? VERBATIM_TAG_END
     ;
 
 genericTag

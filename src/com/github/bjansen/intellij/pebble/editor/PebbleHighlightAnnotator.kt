@@ -30,7 +30,7 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
                 val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
                 holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
                 highlightDelimiters(element)
-            } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_BODY]) {
+            } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_END]) {
                 val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
                 holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
                 highlightDelimiters(element)

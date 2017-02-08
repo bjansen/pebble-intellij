@@ -21,14 +21,14 @@ public Token nextToken() {
 
     Token next = customNextToken();
 
-    if (next.getType() != CONTENT) {
+    if (next.getType() != CONTENT && next.getType() != VERBATIM_BODY) {
         return next;
     }
 
     StringBuilder builder = new StringBuilder();
     Token startToken = next;
 
-    while (next.getType() == CONTENT) {
+    while (next.getType() == CONTENT || next.getType() == VERBATIM_BODY) {
         builder.append(next.getText());
         next = customNextToken();
     }
@@ -74,13 +74,14 @@ CONTENT
 
 mode VERBATIM;
 
-VERBATIM_BODY
-    : .*? VERBATIM_TAG_END -> popMode
+VERBATIM_TAG_END
+    : ('{%' [ \t]* 'endverbatim' [ \t]* '%}') -> popMode
     ;
 
-VERBATIM_TAG_END
-    : '{%' [ \t]* 'endverbatim' [ \t]* '%}'
+VERBATIM_BODY
+    : .
     ;
+
 
 mode IN_TAG;
 
