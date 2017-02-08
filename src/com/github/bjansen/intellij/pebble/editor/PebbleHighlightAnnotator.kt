@@ -1,6 +1,7 @@
 package com.github.bjansen.intellij.pebble.editor
 
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.intellij.pebble.psi.getPebbleCodeStyleSettings
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
@@ -28,11 +29,26 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
             } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_OPEN]) {
                 val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
                 holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
+                highlightDelimiters(element)
             } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_BODY]) {
                 val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
                 holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
+                highlightDelimiters(element)
             }
         }
+    }
+
+    fun highlightDelimiters(element: PsiElement) {
+        val codeStyle = getPebbleCodeStyleSettings(element.project)
+        val range = TextRange.from(
+                element.textOffset + element.text.lastIndexOf(codeStyle.TAG_OPEN),
+                codeStyle.TAG_OPEN.length)
+        holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.DELIMITER
+
+        val endRange = TextRange.from(
+                element.textOffset + element.text.lastIndexOf(codeStyle.TAG_CLOSE),
+                codeStyle.TAG_CLOSE.length)
+        holder.createInfoAnnotation(endRange, null).textAttributes = PebbleHighlighter.highlights.DELIMITER
     }
 
     fun highlightTagName(tag: PsiElement) {

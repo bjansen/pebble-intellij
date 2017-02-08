@@ -32,11 +32,15 @@ import org.antlr.v4.runtime.tree.ParseTree
 import java.util.*
 import org.antlr.v4.runtime.Lexer as AntlrLexer
 
-fun createLexer(input: CharStream?, project: Project?) : Lexer {
+fun getPebbleCodeStyleSettings(project: Project?) : PebbleCodeStyleSettings {
     val codeStyleManager =
             if (project != null) CodeStyleSettingsManager.getInstance(project)
             else CodeStyleSettingsManager.getInstance()
-    val ourSettings = codeStyleManager.currentSettings.getCustomSettings(PebbleCodeStyleSettings::class.java)
+    return codeStyleManager.currentSettings.getCustomSettings(PebbleCodeStyleSettings::class.java)
+}
+
+fun createLexer(input: CharStream?, project: Project?) : Lexer {
+    val ourSettings = getPebbleCodeStyleSettings(project)
     val antlrLexer =
             if (ourSettings.useDefaultDelimiters()) PebbleLexer(input)
             else ConfigurableLexer(input)

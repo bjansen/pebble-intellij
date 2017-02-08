@@ -54,7 +54,7 @@ project(':') {
     sourceSets {
         main {
             java.srcDirs += ['antlr-adaptor/src']
-            kotlin.srcDirs += ['src', 'antlr-adaptor/src']
+            kotlin.srcDirs += ['src']
             resources.srcDirs = ['resources']
         }
     }
