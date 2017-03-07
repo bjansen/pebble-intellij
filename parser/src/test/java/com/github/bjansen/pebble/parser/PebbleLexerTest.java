@@ -15,6 +15,11 @@ public class PebbleLexerTest extends AbstractLexerTest {
         lexFile("src/test/resources/lexer/pebble/unclosed-verbatim.peb");
     }
 
+    @Test
+    public void testIssue14() {
+        lexFile("src/test/resources/lexer/pebble/issue14.peb");
+    }
+
     @Override
     PebbleLexer createLexer(String text) {
         return new PebbleLexer(new ANTLRInputStream(text));

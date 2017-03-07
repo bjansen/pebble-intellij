@@ -48,8 +48,8 @@ expression
     : expression OP_ASSIGN expression
     | unary_op expression
     | parenthesized_expression
-    | array_expression
-    | map_expression
+    | expression array_expression
+    | expression map_expression
     | expression OR expression
     | expression AND expression
     | expression ((IS test)|(CONTAINS expression))

@@ -254,7 +254,7 @@ NUMERIC
     ;
 
 ID_NAME
-    : [a-zA-Z][0-9a-zA-Z]*
+    : [a-zA-Z_][_0-9a-zA-Z]*
     ;
 
 
