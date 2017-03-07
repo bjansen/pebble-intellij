@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -9,6 +9,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <b>v0.3</b>
+        <li>fixed bugs in the parser</li>
+    <ul>
+    </ul>
+    <br/>
     <b>v0.2</b>
     <ul>
         <li>auto-closing of tags</li>
