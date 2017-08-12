@@ -1,0 +1,3 @@
+world
+
+{% import "./subdir/file3.peb" %}
