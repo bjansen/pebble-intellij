@@ -14,8 +14,8 @@ class FileReferencesTest : LightCodeInsightFixtureTestCase() {
         return configuredFiles[0] as PebbleFile
     }
 
-    private fun moveCaret(columnShift: Int, lineShift: Int) {
-        myFixture.editor.caretModel.moveCaretRelatively(columnShift, lineShift, false, false, true)
+    private fun moveCaret(offset: Int) {
+        myFixture.editor.caretModel.moveToOffset(offset)
     }
 
     private fun findReferencedFile(file: PebbleFile): PsiFile? {
@@ -39,7 +39,7 @@ class FileReferencesTest : LightCodeInsightFixtureTestCase() {
     @Test fun testRefToFileInSameDir() {
         val file = initFile("file1.peb", "file2.peb")
 
-        moveCaret(12, 3)
+        moveCaret(20)
 
         val referenced = findReferencedFile(file)
 
@@ -53,7 +53,7 @@ class FileReferencesTest : LightCodeInsightFixtureTestCase() {
     @Test fun testRefToFileInSubDir() {
         val file = initFile("file2.peb", "subdir/file3.peb")
 
-        moveCaret(12, 3)
+        moveCaret(20)
 
         val referenced = findReferencedFile(file)
 
@@ -67,7 +67,7 @@ class FileReferencesTest : LightCodeInsightFixtureTestCase() {
     @Test fun testRefToFileInParentDir() {
         val file = initFile("subdir/file3.peb", "file1.peb")
 
-        moveCaret(12, 3)
+        moveCaret(20)
 
         val referenced = findReferencedFile(file)
 

@@ -10,6 +10,8 @@
 
     <change-notes><![CDATA[
     <b>v0.3</b>
+        <li>autocompletion of block names</li>
+        <li>navigation to files specified in extends/include/import directives</li>
         <li>fixed bugs in the parser</li>
     <ul>
     </ul>
