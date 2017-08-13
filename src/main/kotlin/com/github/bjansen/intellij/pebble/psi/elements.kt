@@ -12,6 +12,8 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 import java.util.*
 
+val directivesWithFileRefs = arrayOf("extends", "include", "import")
+
 class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node), PsiNameIdentifierOwner {
 
     override fun setName(name: String): PsiElement {
@@ -28,7 +30,7 @@ class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node), PsiNameIdentifierO
 
     override fun getReferences(): Array<PsiReference> {
 
-        if (name in arrayOf("extends", "include", "import")) {
+        if (name in directivesWithFileRefs) {
             val stringLiterals = ArrayList<PsiElement>()
             processChildren(this, {
                 if (it.node.elementType == rules[PebbleParser.RULE_string_literal]) {

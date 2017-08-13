@@ -15,10 +15,12 @@ class PebbleCompletionContributor : CompletionContributor() {
 
     init {
         extend(CompletionType.BASIC,
-                PlatformPatterns.or(
-                        PlatformPatterns.psiElement(tokens[PebbleLexer.ID_NAME])
-                ),
+                PlatformPatterns.psiElement(tokens[PebbleLexer.ID_NAME]),
                 PebbleKeywordsCompletionProvider()
+        )
+        extend(CompletionType.BASIC,
+                PlatformPatterns.psiElement(),
+                PebbleBlockNameCompletionProvider()
         )
     }
 
@@ -51,7 +53,9 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
     override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext?,
                                 result: CompletionResultSet) {
         val el = parameters.position.originalElement
-        if (el.node.elementType == tokens[PebbleLexer.ID_NAME]) {
+        val previousLeaf = PsiTreeUtil.prevVisibleLeaf(el)
+        if (el.node.elementType == tokens[PebbleLexer.ID_NAME]
+                && previousLeaf?.node?.elementType == tokens[PebbleLexer.TAG_OPEN]) {
             result.addAllElements(keywordLookupItems)
         }
     }

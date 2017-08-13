@@ -1,0 +1,12 @@
+{% block b1 %}
+{% endblock %}
+
+{% block b2 %}
+{% endblock %}
+
+{% block <caret> %}
+
+{% endblock %}
+
+{% block b3 %}
+{% endblock %}

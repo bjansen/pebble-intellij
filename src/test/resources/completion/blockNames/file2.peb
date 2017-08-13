@@ -1,0 +1,8 @@
+{% include "./file1.peb" %}
+
+{% block b4 %}
+{% endblock %}
+
+{% block <caret> %}
+
+{% endblock %}
