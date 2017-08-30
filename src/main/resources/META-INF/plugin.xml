@@ -43,6 +43,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.github.bjansen.intellij.pebble.lang.PebbleFileTypeFactory"/>
+        <lang.fileViewProviderFactory language="Pebble"
+                                      implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleFileViewProviderFactory"/>
         <lang.parserDefinition language="Pebble"
                                implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition"/>
         <editorHighlighterProvider filetype="Pebble"
@@ -70,8 +72,9 @@
                 implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider
                 implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleLanguageCodeStyleSettingsProvider"/>
+        <lang.formatter language="Pebble"
+                        implementationClass="com.github.bjansen.intellij.pebble.formatting.PebbleFormattingModelBuilder"/>
         <!-- TODO -->
-        <!--<lang.formatter language="Pebble" />-->
         <!--<codeStyleSettingsProvider/>-->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
