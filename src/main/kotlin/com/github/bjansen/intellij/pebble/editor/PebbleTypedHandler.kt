@@ -1,5 +1,6 @@
 package com.github.bjansen.intellij.pebble.editor
 
+import com.github.bjansen.intellij.pebble.lang.PebbleFileViewProvider
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.pebble.parser.PebbleLexer
@@ -23,6 +24,7 @@ import java.util.regex.Pattern
 /**
  * Automatically close delimiters.
  */
+// TODO This doesn't support custom delimiters
 class PebbleTypedHandler : TypedHandlerDelegate() {
 
     val tagNamePattern: Pattern = Pattern.compile("\\{%\\s+(\\w+).*")
@@ -37,8 +39,8 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
             "parallel" to "endparallel"
     )
 
-    override fun beforeCharTyped(c: Char, project: Project?, editor: Editor, file: PsiFile?, fileType: FileType?): Result {
-        if (file !is PebbleFile) {
+    override fun beforeCharTyped(c: Char, project: Project?, editor: Editor, file: PsiFile, fileType: FileType?): Result {
+        if (file.viewProvider !is PebbleFileViewProvider) {
             return TypedHandlerDelegate.Result.CONTINUE
         }
         if (c != '}' && c != '#' && c != '{') {
