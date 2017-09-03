@@ -1,0 +1,3 @@
+{# @pebvariable name="foo" type="pebble.tests.MyClass" #}
+
+{{ foo.child.<caret> }}

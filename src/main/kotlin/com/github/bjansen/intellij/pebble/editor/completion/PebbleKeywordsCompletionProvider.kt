@@ -7,24 +7,8 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.codeInsight.template.impl.TemplateSettings
-import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
-
-class PebbleCompletionContributor : CompletionContributor() {
-
-    init {
-        extend(CompletionType.BASIC,
-                PlatformPatterns.psiElement(tokens[PebbleLexer.ID_NAME]),
-                PebbleKeywordsCompletionProvider()
-        )
-        extend(CompletionType.BASIC,
-                PlatformPatterns.psiElement(),
-                PebbleBlockNameCompletionProvider()
-        )
-    }
-
-}
 
 class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters>() {
 
@@ -52,12 +36,7 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
 
     override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext?,
                                 result: CompletionResultSet) {
-        val el = parameters.position.originalElement
-        val previousLeaf = PsiTreeUtil.prevVisibleLeaf(el)
-        if (el.node.elementType == tokens[PebbleLexer.ID_NAME]
-                && previousLeaf?.node?.elementType == tokens[PebbleLexer.TAG_OPEN]) {
-            result.addAllElements(keywordLookupItems)
-        }
+        result.addAllElements(keywordLookupItems)
     }
 
     fun findMatchingLiveTemplate(keyword: String): TemplateImpl? {

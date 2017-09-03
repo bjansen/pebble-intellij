@@ -74,8 +74,9 @@
                 implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleLanguageCodeStyleSettingsProvider"/>
         <lang.formatter language="Pebble"
                         implementationClass="com.github.bjansen.intellij.pebble.formatting.PebbleFormattingModelBuilder"/>
+        <lang.ast.factory language="Pebble"
+                          implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleAstFactory"/>
         <!-- TODO -->
-        <!--<codeStyleSettingsProvider/>-->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
     </extensions>

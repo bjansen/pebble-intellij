@@ -1,0 +1,20 @@
+hello
+
+{# @pebvariable name="foo" type="pebble.tests.MyClass" #}
+
+{{ foo }}
+{{ foo.property }}
+{{ foo.child.child }}
+
+{# @pebvariable name="bar" type="pebble.tests.MyClass2" #}
+
+{{ bar.field1 }}
+{{ bar.FIELD2 }}
+{{ bar.field2 }}
+{{ bar.privateField }}
+
+{{ foo.otherProperty }}
+{{ foo.thirdProperty }}
+
+{{ bar.field1.method() }}
+{{ bar.field1.method().property }}

@@ -143,6 +143,8 @@ class PebbleParserDefinition : ParserDefinition {
             return PebbleTagDirective(node)
         } else if (elType == rules[PebbleParser.RULE_printDirective]) {
             return PebblePrintDirective(node)
+        } else if (elType == rules[PebbleParser.RULE_identifier]) {
+            return PebbleIdentifier(node)
         } else if (elType is TokenIElementType) {
             return ANTLRPsiNode(node)
         }

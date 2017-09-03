@@ -1,5 +1,6 @@
 package com.github.bjansen.intellij.pebble.liveTemplates
 
+import com.github.bjansen.intellij.pebble.lang.PebbleFileViewProvider
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.pebble.parser.PebbleLexer
@@ -16,6 +17,7 @@ class PebbleTemplateContextType : TemplateContextType("Pebble", "Pebble") {
             val currentElement = file.findElementAt(offset)
             if (currentElement != null) {
                 return currentElement.node.elementType == tokens[PebbleLexer.CONTENT]
+                    || (file.viewProvider as PebbleFileViewProvider).templateDataLanguage.isKindOf(currentElement.language)
             }
         }
 
@@ -31,5 +33,4 @@ class PebbleLiveTemplatesProvider: DefaultLiveTemplatesProvider {
     override fun getHiddenLiveTemplateFiles(): Array<out String>? {
         return null
     }
-
 }

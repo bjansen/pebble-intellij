@@ -7,6 +7,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
+import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
@@ -73,3 +74,17 @@ class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node), PsiNameIdentifierO
 class PebblePrintDirective(node: ASTNode) : ANTLRPsiNode(node)
 
 class PebbleTemplate(node: ASTNode) : ANTLRPsiNode(node)
+
+class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
+    override fun setName(name: String): PsiElement {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getName(): String? {
+        return node.text
+    }
+
+    override fun getReference(): PsiReference? {
+        return PebbleIdentifierReference(this, TextRange.from(0, node.textLength))
+    }
+}

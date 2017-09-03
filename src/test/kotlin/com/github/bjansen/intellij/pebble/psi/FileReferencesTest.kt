@@ -5,18 +5,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import org.junit.Test
 
-class FileReferencesTest : LightCodeInsightFixtureTestCase() {
+class FileReferencesTest : AbstractReferencesTest() {
 
     override fun getTestDataPath(): String = "src/test/resources/references"
-
-    private fun initFile(vararg files: String): PebbleFile {
-        val configuredFiles = myFixture.configureByFiles(*files)
-        return configuredFiles[0] as PebbleFile
-    }
-
-    private fun moveCaret(offset: Int) {
-        myFixture.editor.caretModel.moveToOffset(offset)
-    }
 
     private fun findReferencedFile(file: PebbleFile): PsiFile? {
         val elementAtCaret = file.findElementAt(myFixture.caretOffset)
