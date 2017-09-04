@@ -4,5 +4,5 @@ jdk:
 env:
   - IDEA_VERSION=15.0.6
   - IDEA_VERSION=2016.3.4
-  - IDEA_VERSION=2017.2.1
+  - IDEA_VERSION=2017.2.3
 install: sed -i '/ideaVersion=/c\ideaVersion='"$IDEA_VERSION"'' gradle.properties

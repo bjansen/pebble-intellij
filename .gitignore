@@ -6,4 +6,6 @@
 /out/
 src/rebel.xml
 *.tokens
-/test-project/
+/pebble-intellij-test/.idea/
+/pebble-intellij-test/*.iml
+/pebble-intellij-test/target/
