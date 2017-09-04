@@ -1,0 +1,17 @@
+<html>
+<body>
+<div>
+    {# @pebvariable name="someClass" type="foo.bar.SomeClass" #}
+    {# @pebvariable name="subClass" type="foo.bar.SubClass" #}
+
+    {{ subClass. }}
+    {{ someClass.integerMethod() }}
+    {{ someClass.intMethod() }}
+    {{ someClass.toString() }}
+    {{ someClass.property1 }}
+    {{ someClass.property2 }}
+    {{ someClass.property3 }}
+    {{ someClass.publicField }}
+</div>
+</body>
+</html>

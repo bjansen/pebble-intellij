@@ -1,0 +1,14 @@
+
+{{ getAllErrors() }}
+{{ getFieldErrors() }}
+{{ getGlobalErrors() }}
+{{ hasErrors() }}
+{{ hasFieldErrors() }}
+{{ hasGlobalErrors() }}
+{{ href() }}
+{{ message() }}
+{{ href() }}
+{{ beans }}
+{{ request.session.sessionContext.getSession("") }}
+{{ response.containsHeader("foo") }}
+{{ session.invalidate() }}
