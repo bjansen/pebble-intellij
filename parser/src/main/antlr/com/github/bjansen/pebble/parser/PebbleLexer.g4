@@ -263,5 +263,5 @@ WHITESPACE
     ;
 
 ERRCHAR2
-	:	.	-> channel(HIDDEN)
-	;
+    : . -> channel(HIDDEN)
+    ;

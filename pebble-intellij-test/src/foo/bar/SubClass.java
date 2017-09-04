@@ -2,11 +2,11 @@ package foo.bar;
 
 public class SubClass extends SomeClass {
 
-	public SubClass() {
-	}
+    public SubClass() {
+    }
 
-	@Override
-	public void voidMethod() {
-	}
+    @Override
+    public void voidMethod() {
+    }
 
 }
