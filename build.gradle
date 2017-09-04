@@ -40,6 +40,7 @@ project(':') {
         publishPlugin {
             username publishUsername
             password publishPassword
+            channels publishChannels
         }
     }
 

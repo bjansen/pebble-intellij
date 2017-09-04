@@ -9,3 +9,5 @@ src/rebel.xml
 /pebble-intellij-test/.idea/
 /pebble-intellij-test/*.iml
 /pebble-intellij-test/target/
+/build/
+/parser/build/
