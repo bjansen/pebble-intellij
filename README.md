@@ -17,6 +17,9 @@ DataGrip 1.0, PhpStorm 10, PyCharm 5, RubyMine 8, WebStorm 11) and later.
 * live templates for built-in tags
 * braces matching, code folding and commenting
 * quote handler
+* navigation (methods and fields, included files)
+* code completion
+* support for variables and functions introduced by [pebble-spring](http://www.mitchellbosecke.com/pebble/documentation/guide/spring-integration)
 * [more to come](https://github.com/bjansen/pebble-intellij/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3At-feature)
 
 <sup>1</sup>: *Custom operators are currently not supported*.
@@ -34,3 +37,16 @@ and select the `HTML` data language on the directory that contains your Pebble
 templates:
 
 ![Template data languages settings](images/settings.png)
+
+## Using code completion
+
+In order to use code completion, you will have to let the plugin know what the type
+of `foo` is. This can be done using `@pebvariable` hints, much like in the JSP, FreeMarker
+and Velocity plugins:
+
+![Code completion](images/completion.png)
+
+`@pebvariable` hints can be easily added to templates via the `var` live template. They must
+follow this syntax:
+
+    {# @pebvariable name="<name>" type="<type>" #}
