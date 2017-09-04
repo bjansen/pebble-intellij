@@ -18,9 +18,5 @@ class PebbleCompletionContributor : CompletionContributor() {
                 psiElement(),
                 PebbleBlockNameCompletionProvider()
         )
-        extend(CompletionType.BASIC,
-                psiElement(),
-                PebbleSpringCompletionProvider()
-        )
     }
 }

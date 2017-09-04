@@ -1,6 +1,6 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.editor.completion.PebbleImplicitVariable
+import com.github.bjansen.intellij.pebble.psi.PebbleImplicitVariable
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider
@@ -82,6 +82,4 @@ class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl
 }
 
 class PebbleCommentReference(comment: PebbleComment, range: TextRange)
-    : PsiReferenceBase.Immediate<PebbleComment>(comment, range, comment) {
-
-}
+    : PsiReferenceBase.Immediate<PebbleComment>(comment, range, comment)

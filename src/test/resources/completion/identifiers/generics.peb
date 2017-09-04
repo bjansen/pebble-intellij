@@ -1,0 +1,3 @@
+{# @pebvariable name="list" type="pebble.tests.List<pebble.tests.MyClass>" #}
+
+{{ list.<caret> }}

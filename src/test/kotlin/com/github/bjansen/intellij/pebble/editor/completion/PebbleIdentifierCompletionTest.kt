@@ -2,6 +2,7 @@ package com.github.bjansen.intellij.pebble.editor.completion
 
 import com.google.common.io.Files
 import com.intellij.codeInsight.completion.CompletionType
+import com.intellij.codeInsight.lookup.LookupElementPresentation
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import java.io.File
 
@@ -17,14 +18,17 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         myFixture.addClass("package javax.servlet.http; class HttpSession {}")
         myFixture.complete(CompletionType.BASIC)
 
-        assertLookupsContain(PebbleSpringCompletionProvider.implicitVariables.keys)
+        assertLookupsContain(listOf("beans", "request", "response", "session"))
     }
 
     fun testCompletionOfSpringImplicitFunctions() {
         myFixture.configureByFile("file1.peb")
         myFixture.complete(CompletionType.BASIC)
 
-        assertLookupsContain(PebbleSpringCompletionProvider.implicitFunctions.asList())
+        val implicitFunctions = listOf("href", "message", "hasErrors", "hasGlobalErrors",
+                "hasFieldErrors", "getAllErrors", "getGlobalErrors", "getFieldErrors")
+
+        assertLookupsContain(implicitFunctions)
     }
 
     fun testCompletionOfGettersAsProperties() {
@@ -69,7 +73,7 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         myFixture.configureByFile("file7.peb")
         myFixture.addClass(Files.toString(File("pebble-intellij-test/src/foo/bar/SomeClass.java"), Charsets.UTF_8))
         myFixture.addClass(Files.toString(File("pebble-intellij-test/src/foo/bar/SubClass.java"), Charsets.UTF_8))
-        myFixture.complete(CompletionType.BASIC)
+        val completions = myFixture.complete(CompletionType.BASIC)
 
         // public fields
         assertLookupsContain(listOf("publicField"))
@@ -80,8 +84,15 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         // public methods, don't duplicate overridden methods
         assertLookupsContain(listOf("voidMethod", "intMethod", "integerMethod"))
 
-        // overloads TODO check signature
-        assertLookupsContain(listOf("overloaded", "overloaded", "overloaded"))
+        val signatures = completions.map {
+            val presentation = LookupElementPresentation()
+            it.renderElement(presentation)
+
+            presentation.itemText +  presentation.tailText
+        }
+
+        assertContainsElements(signatures, "overloaded(String s)", "overloaded(Integer i)",
+                "overloaded(String s, String s2)")
 
         // no constructors
         assertLookupsDontContain(listOf("SomeClass", "SubClass"))
@@ -94,6 +105,30 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         assertLookupsDontContain(listOf("voidMethodProtected", "intMethodProtected", "integerMethodProtected"))
         assertLookupsDontContain(listOf("voidMethodPrivate", "intMethodPrivate", "integerMethodPrivate"))
         assertLookupsDontContain(listOf("voidMethodPackagePrivate", "intMethodPackagePrivate", "integerMethodPackagePrivate"))
+    }
+
+    /**
+     * Checks that type parameters are correctly substituted in lookups for methods
+     * declared in the class and its parent classes.
+     */
+    fun testCompletionWithGenerics() {
+        myFixture.configureByFile("generics.peb")
+        myFixture.addClass(Files.toString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(Files.toString(File("$testDataPath/List.java"), Charsets.UTF_8))
+
+        val completions = myFixture.complete(CompletionType.BASIC)
+
+        assertNotNull(completions)
+        assertEquals(2, completions.size)
+
+        val signatures = completions.map {
+            val presentation = LookupElementPresentation()
+            it.renderElement(presentation)
+
+            presentation.itemText +  presentation.tailText
+        }
+
+        assertContainsElements(signatures, "add(MyClass element)", "addAt(int offset, MyClass element)")
     }
 
     private fun assertLookupsContain(elements: Collection<String>) {

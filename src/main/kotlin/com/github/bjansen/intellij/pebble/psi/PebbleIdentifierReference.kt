@@ -1,11 +1,10 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.editor.completion.PebbleImplicitVariable
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder
-import com.intellij.codeInsight.completion.util.MethodParenthesesHandler
+import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons
@@ -35,8 +34,14 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             val file = psi.containingFile
             if (file is PebbleFile) {
                 for (iv in file.getImplicitVariables()) {
-                    if (iv.text == referenceText) {
+                    if (iv.name == referenceText) {
                         return if (iv is PebbleImplicitVariable) iv.declaration ?: iv else iv
+                    }
+                }
+                for (func in file.getImplicitFunctions()) {
+                    // TODO match signatures!
+                    if (func.name == referenceText) {
+                        return func
                     }
                 }
             }
@@ -64,10 +69,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         val qualifyingMember = findQualifyingMember()
 
         if (qualifyingMember is PsiField) {
-            val clazz = getPsiClassFromType(qualifyingMember.type)
-            if (clazz != null) {
-                return buildPsiClassLookups(clazz)
-            }
+            return buildPsiTypeLookups(qualifyingMember.type)
         } else if (qualifyingMember is PsiVariable) {
             if (qualifyingMember.text == "beans") {
                 TODO("need a dependency on the Spring plugin")
@@ -78,28 +80,32 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                     val implicitVar = file.getImplicitVariables().find { it.name == qualifyingMember.text }
 
                     if (implicitVar != null) {
-                        val clazz = getPsiClassFromType(implicitVar.type)
-
-                        if (clazz != null) {
-                            return buildPsiClassLookups(clazz)
-                        }
+                        return buildPsiTypeLookups(implicitVar.type)
                     }
                 }
             }
         } else if (qualifyingMember is PsiMethod) {
-            val clazz = getPsiClassFromType(qualifyingMember.returnType)
-            if (clazz != null) {
-                return buildPsiClassLookups(clazz)
+            return buildPsiTypeLookups(qualifyingMember.returnType)
+        } else if (qualifyingMember == null) {
+            val file = psi.containingFile
+            if (file is PebbleFile) {
+                val result = arrayListOf<LookupElement>()
+                result.addAll(
+                        file.getImplicitVariables().map {
+                            LookupElementBuilder.create(it)
+                                    .withTypeText(it.type.presentableText)
+                                    .withIcon(PlatformIcons.VARIABLE_ICON)
+                        }
+                )
+                result.addAll(
+                        file.getImplicitFunctions().map {
+                            val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
+                            JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
+                                    .withInsertHandler(handler)
+                        }
+                )
+                return result.toTypedArray()
             }
-        }
-
-        val file = psi.containingFile
-        if (file is PebbleFile) {
-            return file.getImplicitVariables().map {
-                LookupElementBuilder.create(it)
-                        .withTypeText(it.type.presentableText)
-                        .withIcon(PlatformIcons.VARIABLE_ICON)
-            }.toTypedArray()
         }
 
         return emptyArray()
@@ -115,36 +121,44 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
     private fun isOverride(method: PsiMethod)
             = SuperMethodsSearch.search(method, null, true, false).findFirst() != null
 
-    private fun buildPsiClassLookups(clazz: PsiClass): Array<Any> {
-        val lookups = arrayListOf<LookupElement>()
+    private fun buildPsiTypeLookups(type: PsiType?): Array<Any> {
+        if (type is PsiClassType) {
+            val clazz = type.resolve() ?: return emptyArray()
+            val resolveResult = type.resolveGenerics()
 
-        lookups.addAll(clazz.allMethods
-                .filter {
-                    it.hasModifierProperty(PsiModifier.PUBLIC)
-                            && !isOverride(it)
-                            && !it.isConstructor
-                }
-                .map {
-                    val prop = getPropertyNameAndType(it)
-                    if (prop != null) {
-                        LookupElementBuilder.create(prop.first)
-                                .withIcon(AllIcons.Nodes.Property)
-                                .withTypeText(prop.second.presentableText)
-                    } else {
-                        JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
-                                .withInsertHandler(MethodParenthesesHandler(it, false))
+            val lookups = arrayListOf<LookupElement>()
+
+            lookups.addAll(clazz.allMethods
+                    .filter {
+                        it.hasModifierProperty(PsiModifier.PUBLIC)
+                                && !isOverride(it)
+                                && !it.isConstructor
                     }
-                }
-        )
+                    .map {
+                        val prop = getPropertyNameAndType(it)
+                        if (prop != null) {
+                            LookupElementBuilder.create(prop.first)
+                                    .withIcon(AllIcons.Nodes.Property)
+                                    .withTypeText(prop.second.presentableText)
+                        } else {
+                            val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
+                            JavaLookupElementBuilder.forMethod(it, LambdaUtil.getSubstitutor(it, resolveResult))
+                                    .withInsertHandler(handler)
+                        }
+                    }
+            )
 
-        lookups.addAll(clazz.allFields
-                .filter {
-                    it.hasModifierProperty(PsiModifier.PUBLIC)
-                }
-                .map(JavaLookupElementBuilder::forField)
-        )
+            lookups.addAll(clazz.allFields
+                    .filter {
+                        it.hasModifierProperty(PsiModifier.PUBLIC)
+                    }
+                    .map(JavaLookupElementBuilder::forField)
+            )
 
-        return lookups.toTypedArray()
+            return lookups.toTypedArray()
+        }
+
+        return emptyArray()
     }
 
     private fun getPropertyNameAndType(method: PsiMethod): Pair<String, PsiType>? {

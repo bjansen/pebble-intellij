@@ -1,14 +1,11 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.editor.completion.PebbleSpringCompletionProvider
+import com.github.bjansen.intellij.pebble.ext.springExtension
 import com.github.bjansen.intellij.pebble.lang.PebbleFileType
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
-import com.intellij.psi.FileViewProvider
-import com.intellij.psi.ImplicitVariable
-import com.intellij.psi.PsiComment
-import com.intellij.psi.PsiRecursiveElementWalkingVisitor
+import com.intellij.psi.*
 
 class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE) {
 
@@ -20,13 +17,17 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         return "Pebble file"
     }
 
-    fun getImplicitVariables(): List<ImplicitVariable> {
-        val list = arrayListOf<ImplicitVariable>()
+    fun getImplicitVariables(): List<PsiVariable> {
+        val list = arrayListOf<PsiVariable>()
 
         list.addAll(findLocalImplicitVariables())
-        list.addAll(PebbleSpringCompletionProvider.getImplicitVariables(this))
+        list.addAll(springExtension.getImplicitVariables(this))
 
         return list
+    }
+
+    fun getImplicitFunctions(): List<PsiMethod> {
+        return springExtension.getImplicitFunctions(this)
     }
 
     // TODO cache the result?
