@@ -65,6 +65,37 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         assertLookupsContain(listOf("property", "otherProperty", "thirdProperty", "method", "child"))
     }
 
+    fun testCompletionOfDifferentKindsOfMethods() {
+        myFixture.configureByFile("file7.peb")
+        myFixture.addClass(Files.toString(File("pebble-intellij-test/src/foo/bar/SomeClass.java"), Charsets.UTF_8))
+        myFixture.addClass(Files.toString(File("pebble-intellij-test/src/foo/bar/SubClass.java"), Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        // public fields
+        assertLookupsContain(listOf("publicField"))
+
+        // getters exposed as properties
+        assertLookupsContain(listOf("property1", "property2", "property3"))
+
+        // public methods, don't duplicate overridden methods
+        assertLookupsContain(listOf("voidMethod", "intMethod", "integerMethod"))
+
+        // overloads TODO check signature
+        assertLookupsContain(listOf("overloaded", "overloaded", "overloaded"))
+
+        // no constructors
+        assertLookupsDontContain(listOf("SomeClass", "SubClass"))
+
+        // no private, protected or package-private stuff
+        assertLookupsDontContain(listOf("privateField", "protectedField", "packagePrivateField"))
+        assertLookupsDontContain(listOf("property1Private", "property2Private", "property3Private"))
+        assertLookupsDontContain(listOf("property1PackagePrivate", "property2PackagePrivate", "property3PackagePrivate"))
+        assertLookupsDontContain(listOf("property1Protected", "property2Protected", "property3Protected"))
+        assertLookupsDontContain(listOf("voidMethodProtected", "intMethodProtected", "integerMethodProtected"))
+        assertLookupsDontContain(listOf("voidMethodPrivate", "intMethodPrivate", "integerMethodPrivate"))
+        assertLookupsDontContain(listOf("voidMethodPackagePrivate", "intMethodPackagePrivate", "integerMethodPackagePrivate"))
+    }
+
     private fun assertLookupsContain(elements: Collection<String>) {
         val lookups = myFixture.lookupElementStrings
 

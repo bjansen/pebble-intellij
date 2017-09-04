@@ -1,0 +1,3 @@
+{# @pebvariable name="foo" type="foo.bar.SubClass" #}
+
+{{ foo.<caret> }}

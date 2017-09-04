@@ -12,6 +12,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.*
+import com.intellij.psi.search.searches.SuperMethodsSearch
 import com.intellij.psi.util.PropertyUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PlatformIcons
@@ -111,11 +112,18 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         return null
     }
 
+    private fun isOverride(method: PsiMethod)
+            = SuperMethodsSearch.search(method, null, true, false).findFirst() != null
+
     private fun buildPsiClassLookups(clazz: PsiClass): Array<Any> {
         val lookups = arrayListOf<LookupElement>()
 
         lookups.addAll(clazz.allMethods
-                .filter { it.hasModifierProperty(PsiModifier.PUBLIC) }
+                .filter {
+                    it.hasModifierProperty(PsiModifier.PUBLIC)
+                            && !isOverride(it)
+                            && !it.isConstructor
+                }
                 .map {
                     val prop = getPropertyNameAndType(it)
                     if (prop != null) {
