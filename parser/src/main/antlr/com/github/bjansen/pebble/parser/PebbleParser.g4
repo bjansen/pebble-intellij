@@ -89,7 +89,7 @@ member_expression
 
 
 qualified_expression
-    : identifier (OP_MEMBER (function_call_expression | identifier))+
+    : (function_call_expression | identifier) (OP_MEMBER (function_call_expression | identifier))+
     ;
 
 function_call_expression
