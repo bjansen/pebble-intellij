@@ -7,7 +7,6 @@ import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMemberB
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
 import com.google.common.io.CharStreams
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
-import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.ide.highlighter.JavaFileType
 import com.intellij.openapi.application.ApplicationManager
@@ -19,10 +18,15 @@ import com.intellij.patterns.PlatformPatterns
 import com.intellij.pom.PomTargetPsiElement
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.util.PsiTypesUtil
 import com.intellij.spring.SpringManager
 import com.intellij.spring.contexts.model.SpringModel
+import com.intellij.spring.model.CommonSpringBean
+import com.intellij.spring.model.jam.JamPsiClassSpringBean
+import com.intellij.spring.model.jam.JamPsiMethodSpringBean
 import com.intellij.spring.model.pom.SpringBeanPomTargetUtils
 import com.intellij.spring.model.utils.SpringModelSearchers
+import com.intellij.spring.model.xml.AbstractDomSpringBean
 import com.intellij.util.ProcessingContext
 import icons.SpringApiIcons
 import java.io.InputStreamReader
@@ -147,7 +151,7 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
                 }
             }
         } else if (qualifyingMember is PomTargetPsiElement) {
-            val springBeanType = SpringBeanPomTargetUtils.getSpringBean(qualifyingMember)?.beanType
+            val springBeanType = getBeanType(SpringBeanPomTargetUtils.getSpringBean(qualifyingMember))
             if (springBeanType is PsiClassType) {
                 return findMemberByName(springBeanType.resolve(), referenceText)
             }
@@ -162,30 +166,38 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
         if (qualifyingMember is PsiField && isBeansField(qualifyingMember)) {
             val model = getSpringModel(psi)
             if (model != null) {
-                val beans = arrayListOf<LookupElement>()
-
-                model.processModels({
-                    beans.addAll(
-                            it.allCommonBeans
-                                    .filter { it.springBean.beanType != null }
-                                    .mapNotNull {
-                                        val lookup = LookupElementBuilder.create(it.name ?: "?")
-                                                .withTypeText(it.beanClass?.name)
-                                                .withIcon(SpringApiIcons.SpringBean)
-                                        PrioritizedLookupElement.withPriority(lookup, 1.0)
-                                    }
-                    )
-                    true
-                })
-                return beans.toTypedArray()
+                return model.allCommonBeans
+                        .filter { getBeanType(it.springBean) != null }
+                        .mapNotNull {
+                            val lookup = LookupElementBuilder.create(it.name ?: "?")
+                                    .withTypeText(it.beanClass?.name)
+                                    .withIcon(SpringApiIcons.SpringBean)
+                            PrioritizedLookupElement.withPriority(lookup, 1.0)
+                        }
+                        .toTypedArray()
             }
         } else if (qualifyingMember is PomTargetPsiElement) {
-            val springBeanType = SpringBeanPomTargetUtils.getSpringBean(qualifyingMember)?.beanType
+            val springBeanType = getBeanType(SpringBeanPomTargetUtils.getSpringBean(qualifyingMember))
             if (springBeanType is PsiClassType) {
                 return buildPsiTypeLookups(springBeanType)
             }
         }
 
         return emptyArray()
+    }
+
+    /**
+     * Workaround for com.intellij.spring.model.CommonSpringBean.getBeanType() which is not in IDEA 15
+     */
+    private fun getBeanType(springBean: CommonSpringBean?): PsiType? {
+        return when (springBean) {
+            is AbstractDomSpringBean -> {
+                val clazz = springBean.getBeanClass(null, true)
+                return if (clazz == null) null else PsiTypesUtil.getClassType(clazz)
+            }
+            is JamPsiClassSpringBean -> PsiTypesUtil.getClassType(springBean.psiElement)
+            is JamPsiMethodSpringBean -> springBean.psiElement.returnType
+            else -> null
+        }
     }
 }
