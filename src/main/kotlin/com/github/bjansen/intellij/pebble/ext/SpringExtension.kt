@@ -75,42 +75,6 @@ object springExtension {
         return emptyList()
     }
 
-    fun getVariants(field: PsiField, context: PsiElement): Array<Any>? {
-        if (isBeansField(field)) {
-            val model = getSpringModel(context)
-            if (model != null) {
-                val beans = arrayListOf<LookupElement>()
-
-                model.processModels({
-                    beans.addAll(
-                            it.allCommonBeans
-                                    .filter { it.springBean.beanType != null }
-                                    .mapNotNull {
-                                        LookupElementBuilder.create(it.name ?: "?")
-                                                .withTypeText(it.beanClass?.name)
-                                                .withIcon(SpringApiIcons.SpringBean)
-                                    }
-                    )
-                    true
-                })
-                return beans.toTypedArray()
-            }
-        }
-
-        return null
-    }
-
-    internal fun isBeansField(field: PsiField) =
-            field.name == "beans" && field.containingClass?.qualifiedName == "PebbleSpring"
-
-    internal fun getSpringModel(context: PsiElement): SpringModel? {
-        val module = ModuleUtil.findModuleForPsiElement(context)
-        if (module != null) {
-            return SpringManager.getInstance(context.project).getCombinedModel(module)
-        }
-        return null
-    }
-
     private fun getSearchScope(file: PsiFile): GlobalSearchScope? {
         val module = ModuleUtil.findModuleForPsiElement(file)
 
@@ -133,9 +97,6 @@ object springExtension {
     }
 }
 
-/**
- * Provides references to Spring beans in expressions like `beans.myBean`.
- */
 class PebbleSpringReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
@@ -145,6 +106,9 @@ class PebbleSpringReferenceContributor : PsiReferenceContributor() {
     }
 }
 
+/**
+ * Provides references to Spring beans in expressions like `beans.myBean`.
+ */
 class PebbleSpringReferenceProvider : PsiReferenceProvider() {
     override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
         return if (springExtension.isPebbleSpringAvailable(element.containingFile)) {
@@ -158,12 +122,23 @@ class PebbleSpringReferenceProvider : PsiReferenceProvider() {
 class PebbleSpringReference(private val psi: PsiElement, private val range: TextRange)
     : PsiReferenceBase<PsiElement>(psi, range) {
 
+    private fun isBeansField(field: PsiField) =
+            field.name == "beans" && field.containingClass?.qualifiedName == "PebbleSpring"
+
+    private fun getSpringModel(context: PsiElement): SpringModel? {
+        val module = ModuleUtil.findModuleForPsiElement(context)
+        if (module != null) {
+            return SpringManager.getInstance(context.project).getCombinedModel(module)
+        }
+        return null
+    }
+
     override fun resolve(): PsiElement? {
         val qualifyingMember = findQualifyingMember(psi)
         val referenceText = range.substring(psi.text)
 
-        if (qualifyingMember is PsiField && springExtension.isBeansField(qualifyingMember)) {
-            val model = springExtension.getSpringModel(psi)
+        if (qualifyingMember is PsiField && isBeansField(qualifyingMember)) {
+            val model = getSpringModel(psi)
             if (model != null) {
                 val bean = SpringModelSearchers.findBean(model, referenceText)
                 if (bean != null) {
@@ -183,8 +158,25 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
     override fun getVariants(): Array<Any> {
         val qualifyingMember = findQualifyingMember(psi)
 
-        if (qualifyingMember is PsiField) {
-            return springExtension.getVariants(qualifyingMember, psi) ?: emptyArray()
+        if (qualifyingMember is PsiField && isBeansField(qualifyingMember)) {
+            val model = getSpringModel(psi)
+            if (model != null) {
+                val beans = arrayListOf<LookupElement>()
+
+                model.processModels({
+                    beans.addAll(
+                            it.allCommonBeans
+                                    .filter { it.springBean.beanType != null }
+                                    .mapNotNull {
+                                        LookupElementBuilder.create(it.name ?: "?")
+                                                .withTypeText(it.beanClass?.name)
+                                                .withIcon(SpringApiIcons.SpringBean)
+                                    }
+                    )
+                    true
+                })
+                return beans.toTypedArray()
+            }
         } else if (qualifyingMember is PomTargetPsiElement) {
             val springBeanType = SpringBeanPomTargetUtils.getSpringBean(qualifyingMember)?.beanType
             if (springBeanType is PsiClassType) {
