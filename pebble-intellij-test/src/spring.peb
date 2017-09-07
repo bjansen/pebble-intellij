@@ -8,7 +8,8 @@
 {{ href() }}
 {{ message() }}
 {{ href() }}
-{{ beans }}
+{{ beans.world.overloaded() }}
+{{ beans.hello.integerMethod() }}
 {{ request.session.sessionContext.getSession("") }}
 {{ response.containsHeader("foo") }}
 {{ session.invalidate() }}

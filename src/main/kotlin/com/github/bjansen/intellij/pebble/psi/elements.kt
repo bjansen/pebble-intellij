@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 import java.util.*
@@ -84,6 +85,13 @@ class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
         return node.text
     }
 
+    override fun getReferences(): Array<PsiReference> {
+        // Allows our PsiReferenceContributor to contribute their references
+        return arrayOf(
+                reference,
+                *ReferenceProvidersRegistry.getReferencesFromProviders(this)
+        ).requireNoNulls()
+    }
     override fun getReference(): PsiReference? {
         return PebbleIdentifierReference(this, TextRange.from(0, node.textLength))
     }

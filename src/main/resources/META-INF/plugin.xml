@@ -40,6 +40,7 @@
     <idea-version since-build="143.0"/>
 
     <depends>com.intellij.modules.lang</depends>
+    <depends optional="true" config-file="plugin-spring.xml">com.intellij.spring</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.github.bjansen.intellij.pebble.lang.PebbleFileTypeFactory"/>
@@ -76,6 +77,8 @@
                         implementationClass="com.github.bjansen.intellij.pebble.formatting.PebbleFormattingModelBuilder"/>
         <lang.ast.factory language="Pebble"
                           implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleAstFactory"/>
+        <lang.elementManipulator forClass="com.github.bjansen.intellij.pebble.psi.PebbleIdentifier"
+                                 implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleIdentifierManipulator"/>
         <!-- TODO -->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->

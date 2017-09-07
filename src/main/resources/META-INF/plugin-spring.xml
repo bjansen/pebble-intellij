@@ -1,0 +1,6 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <psi.referenceContributor language="Pebble"
+                                  implementation="com.github.bjansen.intellij.pebble.ext.PebbleSpringReferenceContributor"/>
+    </extensions>
+</idea-plugin>

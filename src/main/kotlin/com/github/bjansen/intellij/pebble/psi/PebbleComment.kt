@@ -1,6 +1,5 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.psi.PebbleImplicitVariable
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider
@@ -10,7 +9,12 @@ import com.intellij.psi.tree.IElementType
 class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl(type, text), PsiNamedElement {
 
     override fun setName(name: String): PsiElement {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val nameRange = getValueRange(text, "name")
+        if (nameRange != null) {
+            val newText = nameRange.replace(text, name)
+            return replace(psiElementFactory.createComment(newText, project))
+        }
+        return this
     }
 
     override fun getName(): String? {
