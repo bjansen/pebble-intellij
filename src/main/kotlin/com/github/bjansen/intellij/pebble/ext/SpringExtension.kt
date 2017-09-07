@@ -6,6 +6,7 @@ import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTyp
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMemberByName
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
 import com.google.common.io.CharStreams
+import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.ide.highlighter.JavaFileType
@@ -168,9 +169,10 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
                             it.allCommonBeans
                                     .filter { it.springBean.beanType != null }
                                     .mapNotNull {
-                                        LookupElementBuilder.create(it.name ?: "?")
+                                        val lookup = LookupElementBuilder.create(it.name ?: "?")
                                                 .withTypeText(it.beanClass?.name)
                                                 .withIcon(SpringApiIcons.SpringBean)
+                                        PrioritizedLookupElement.withPriority(lookup, 1.0)
                                     }
                     )
                     true
