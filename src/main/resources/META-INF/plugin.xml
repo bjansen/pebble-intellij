@@ -84,6 +84,11 @@
         <!-- TODO -->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->
+
+        <localInspection language="Pebble" shortName="PebbleUnknownVariable" bundle="messages.PebbleBundle"
+                         key="inspection.unknown.variable"
+                         groupKey="group.name" enabledByDefault="true" level="WARNING" runForWholeFile="true"
+                         implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownVariableInspection"/>
     </extensions>
 
     <actions>

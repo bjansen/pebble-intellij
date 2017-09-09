@@ -1,0 +1,2 @@
+{# @pebvariable name="hello" type="String" #}
+{{ hello }}

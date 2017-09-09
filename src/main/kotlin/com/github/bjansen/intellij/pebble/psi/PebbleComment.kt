@@ -28,7 +28,7 @@ class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl
                 val name = extractValue(comment.text, "name")
                 val type = extractValue(comment.text, "type")
 
-                if (name != null && type != null) {
+                if (name != null && type != null && type.isNotEmpty()) {
                     val fragment = JavaCodeFragmentFactory.getInstance(comment.project)
                             .createTypeCodeFragment(type, null, false)
                     fragment.forceResolveScope(comment.resolveScope)

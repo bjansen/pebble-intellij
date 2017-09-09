@@ -98,7 +98,7 @@
             <option name="Pebble" value="true"/>
         </context>
     </template>
-    <template name="var" value="{# @pebvariable name=&quot;$NAME$&quot; type=&quot;$TYPE$&quot; #}"
+    <template name="var" value="{# @pebvariable name=&quot;$NAME$&quot; type=&quot;$TYPE$&quot; #}$END$"
               description="Declare a new variable hint">
         <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true"/>
         <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true"/>
