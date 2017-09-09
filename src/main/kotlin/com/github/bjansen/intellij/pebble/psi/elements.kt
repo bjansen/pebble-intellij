@@ -96,3 +96,5 @@ class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
         return PebbleIdentifierReference(this, TextRange.from(0, node.textLength))
     }
 }
+
+class PebbleArgumentList(node: ASTNode) : ANTLRPsiNode(node)

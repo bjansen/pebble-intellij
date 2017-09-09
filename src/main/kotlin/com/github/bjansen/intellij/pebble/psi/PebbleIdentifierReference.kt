@@ -1,7 +1,7 @@
 package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTypeLookups
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMemberByName
+import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMembersByName
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder
 import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler
@@ -9,40 +9,41 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
+import com.intellij.psi.PsiElementResolveResult.createResults
 import com.intellij.util.PlatformIcons
 
 class PebbleIdentifierReference(private val psi: PsiElement, private val range: TextRange)
-    : PsiReferenceBase<PsiElement>(psi, range) {
+    : PsiPolyVariantReferenceBase<PsiElement>(psi, range) {
 
-    override fun resolve(): PsiElement? {
+    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val qualifyingMember = findQualifyingMember(psi)
         val referenceText = range.substring(psi.text)
 
         if (qualifyingMember is PsiVariable) {
             val type = qualifyingMember.type
             if (type is PsiClassType) {
-                return findMemberByName(type.resolve(), referenceText)
+                return createResults(findMembersByName(type.resolve(), referenceText))
             }
         } else if (qualifyingMember is PsiMethod) {
-            return findMemberByName(getPsiClassFromType(qualifyingMember.returnType), referenceText)
+            return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.returnType), referenceText))
         } else {
             val file = psi.containingFile
             if (file is PebbleFile) {
                 for (iv in file.getImplicitVariables()) {
                     if (iv.name == referenceText) {
-                        return if (iv is PebbleImplicitVariable) iv.declaration ?: iv else iv
+                        return createResults(if (iv is PebbleImplicitVariable) iv.declaration ?: iv else iv)
                     }
                 }
                 for (func in file.getImplicitFunctions()) {
                     // TODO match signatures!
                     if (func.name == referenceText) {
-                        return func
+                        return createResults(func)
                     }
                 }
             }
         }
 
-        return null
+        return emptyArray()
     }
 
     override fun getVariants(): Array<Any> {

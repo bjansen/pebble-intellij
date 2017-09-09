@@ -1,0 +1,3 @@
+{# @pebvariable name="var" type="pebble.tests.MyClass" #}
+
+{{ var.method(<caret>) }}

@@ -4,6 +4,15 @@ parser grammar PebbleParser;
 package com.github.bjansen.pebble.parser;
 }
 
+@members {
+
+private void ideRecover(int ttype, String message) {
+    CommonToken t = new CommonToken(ttype, message);
+    _ctx.addErrorNode(t);
+}
+
+}
+
 // Use this when working with the IntelliJ plugin
 //options { tokenVocab=PebbleLexer; }
 
@@ -62,7 +71,9 @@ expression
     | expression OP_RANGE expression
     | expression IN expression
     | expression WITH expression
-    | member_expression
+    | function_call_expression
+    | qualified_expression
+    | term
     ;
 
 parenthesized_expression
@@ -81,23 +92,21 @@ map_element
     : string_literal OP_COLON expression
     ;
 
-member_expression
-    : function_call_expression
-    | qualified_expression
-    | term
-    ;
-
-
 qualified_expression
     : (function_call_expression | identifier) (OP_MEMBER (function_call_expression | identifier))+
     ;
 
 function_call_expression
-    : identifier function_parameters
+    : identifier argument_list
     ;
 
-function_parameters
-    : LPAREN (expression (COMMA expression)*)? RPAREN
+argument_list
+    : LPAREN
+        (
+            expression (COMMA expression)*
+            (COMMA { ideRecover(ID_NAME, "expected expression"); })?
+        )?
+      RPAREN
     ;
 
 term

@@ -1,2 +1,2 @@
-(pebbleTemplate (printDirective {{ (expression (expression (member_expression (term (identifier map)))) (array_expression [ (expression (member_expression (term (string_literal 'key')))) ])) filters }})
-(printDirective {{ (expression (member_expression (term (identifier underscore_test)))) filters }}))
+(pebbleTemplate (printDirective {{ (expression (expression (term (identifier map))) (array_expression [ (expression (term (string_literal 'key'))) ])) filters }})
+(printDirective {{ (expression (term (identifier underscore_test))) filters }}))

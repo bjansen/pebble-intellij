@@ -58,19 +58,26 @@ object pebbleReferencesHelper {
     }
 
     fun findMemberByName(clazz: PsiClass?, name: String): PsiElement? {
+        return findMembersByName(clazz, name).firstOrNull()
+    }
+
+    fun findMembersByName(clazz: PsiClass?, name: String, methodsOnly: Boolean = false): List<PsiElement> {
         if (clazz != null) {
             // TODO check signatures
-            val method = clazz.allMethods
-                    .find { getPropertyNameAndType(it)?.first == name || it.name == name }
+            val methods = clazz.allMethods.filter {
+                getPropertyNameAndType(it)?.first == name || it.name == name
+            }
 
-            val field = clazz.fields
-                    .filter { it.hasModifierProperty(PsiModifier.PUBLIC) }
-                    .find { it.name == name }
+            val fields =
+                    if (methodsOnly) emptyList<PsiField>()
+                    else clazz.fields.filter {
+                        it.hasModifierProperty(PsiModifier.PUBLIC) && it.name == name
+                    }
 
-            return method ?: field
+            return methods.plus(fields)
         }
 
-        return null
+        return emptyList()
     }
 
     private fun getPropertyNameAndType(method: PsiMethod): Pair<String, PsiType>? {
@@ -113,6 +120,7 @@ object pebbleReferencesHelper {
 
                     return null
                 }
+
                 val resolved = resolveReference()
                 if (resolved is PebbleComment) {
                     return PebbleComment.getImplicitVariable(resolved)

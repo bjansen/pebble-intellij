@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
     <version>0.3-SNAPSHOT</version>
@@ -79,6 +79,8 @@
                           implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleAstFactory"/>
         <lang.elementManipulator forClass="com.github.bjansen.intellij.pebble.psi.PebbleIdentifier"
                                  implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleIdentifierManipulator"/>
+        <codeInsight.parameterInfo language="Pebble"
+                                   implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleParameterInfoHandler"/>
         <!-- TODO -->
         <!--<lang.psiStructureViewFactory language="Pebble"/>-->
         <!--<lang.findUsagesProvider language="Pebble"/> for block names-->

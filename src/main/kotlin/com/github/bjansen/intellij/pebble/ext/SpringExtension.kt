@@ -3,7 +3,7 @@ package com.github.bjansen.intellij.pebble.ext
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTypeLookups
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMemberByName
+import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMembersByName
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
 import com.google.common.io.CharStreams
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
@@ -17,6 +17,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.pom.PomTargetPsiElement
 import com.intellij.psi.*
+import com.intellij.psi.PsiElementResolveResult.createResults
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTypesUtil
 import com.intellij.spring.SpringManager
@@ -125,7 +126,7 @@ class PebbleSpringReferenceProvider : PsiReferenceProvider() {
 }
 
 class PebbleSpringReference(private val psi: PsiElement, private val range: TextRange)
-    : PsiReferenceBase<PsiElement>(psi, range) {
+    : PsiPolyVariantReferenceBase<PsiElement>(psi, range) {
 
     private fun isBeansField(field: PsiField) =
             field.name == "beans" && field.containingClass?.qualifiedName == "PebbleSpring"
@@ -138,7 +139,7 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
         return null
     }
 
-    override fun resolve(): PsiElement? {
+    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val qualifyingMember = findQualifyingMember(psi)
         val referenceText = range.substring(psi.text)
 
@@ -147,17 +148,17 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
             if (model != null) {
                 val bean = SpringModelSearchers.findBean(model, referenceText)
                 if (bean != null) {
-                    return bean.psiElement
+                    return createResults(bean.psiElement)
                 }
             }
         } else if (qualifyingMember is PomTargetPsiElement) {
             val springBeanType = getBeanType(SpringBeanPomTargetUtils.getSpringBean(qualifyingMember))
             if (springBeanType is PsiClassType) {
-                return findMemberByName(springBeanType.resolve(), referenceText)
+                return createResults(findMembersByName(springBeanType.resolve(), referenceText))
             }
         }
 
-        return null
+        return emptyArray()
     }
 
     override fun getVariants(): Array<Any> {
