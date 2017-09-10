@@ -58,6 +58,7 @@ expression
     | unary_op expression
     | parenthesized_expression
     | expression array_expression
+    | expression WITH map_expression
     | expression map_expression
     | expression OR expression
     | expression AND expression
@@ -70,7 +71,6 @@ expression
     | expression OP_CONCAT expression
     | expression OP_RANGE expression
     | expression IN expression
-    | expression WITH expression
     | function_call_expression
     | qualified_expression
     | term
