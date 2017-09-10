@@ -63,7 +63,7 @@ object springExtension {
         if (isPebbleSpringAvailable(file) || ApplicationManager.getApplication().isUnitTestMode) {
             val clazz = getPebbleSpringClass(file.project)
             if (clazz != null) {
-                return clazz.allFields.asList()
+                return clazz.fields.asList()
             }
         }
 
@@ -74,7 +74,7 @@ object springExtension {
         if (isPebbleSpringAvailable(file) || ApplicationManager.getApplication().isUnitTestMode) {
             val clazz = getPebbleSpringClass(file.project)
             if (clazz != null) {
-                return clazz.allMethods.asList()
+                return clazz.methods.asList()
             }
         }
 
