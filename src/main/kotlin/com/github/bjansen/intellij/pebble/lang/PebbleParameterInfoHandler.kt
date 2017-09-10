@@ -2,16 +2,43 @@ package com.github.bjansen.intellij.pebble.lang
 
 import com.github.bjansen.intellij.pebble.psi.PebbleArgumentList
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.pebble.parser.PebbleLexer
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.hint.api.impls.MethodParameterInfoHandler
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.lang.parameterInfo.*
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.getCurrentParameterIndex
 import com.intellij.psi.*
+import com.intellij.psi.tree.IElementType
+import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 
-class PebbleParameterInfoHandler : ParameterInfoHandler<PebbleArgumentList, PsiElement> {
+class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<PebbleArgumentList, PsiElement, PsiElement> {
+
+    override fun getArgListStopSearchClasses(): MutableSet<out Class<Any>>
+            = mutableSetOf()
+
+    override fun getArgumentListClass()
+            = PebbleArgumentList::class.java
+
+    override fun getArgumentListAllowedParentClasses()
+            = mutableSetOf(ANTLRPsiNode::class.java)
+
+    override fun getActualParametersRBraceType(): IElementType {
+        return tokens[PebbleLexer.RBRACE]
+    }
+
+    override fun getActualParameterDelimiterType(): IElementType {
+        return tokens[PebbleLexer.COMMA]
+    }
+
+    override fun getActualParameters(o: PebbleArgumentList): Array<PsiElement> {
+        return o.children.filter {
+            it.node.elementType == rules[PebbleParser.RULE_expression]
+        }.toTypedArray()
+    }
 
     override fun updateParameterInfo(args: PebbleArgumentList, context: UpdateParameterInfoContext) {
         val index = getCurrentParameterIndex(args.node, context.offset, tokens[PebbleLexer.COMMA])
