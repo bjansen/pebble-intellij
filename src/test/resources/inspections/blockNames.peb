@@ -1,0 +1,7 @@
+{% block bastien %}
+
+{% endblock %}
+
+{% block block %}
+
+{% endblock %}

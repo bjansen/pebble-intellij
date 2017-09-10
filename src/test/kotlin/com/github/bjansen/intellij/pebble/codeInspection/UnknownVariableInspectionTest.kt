@@ -1,5 +1,6 @@
 package com.github.bjansen.intellij.pebble.codeInspection
 
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 
 class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
@@ -13,6 +14,26 @@ class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
         myFixture.enableInspections(UnknownVariableInspection::class.java)
 
         val highlights = myFixture.doHighlighting()
+
+        assert(highlights.isEmpty())
+    }
+
+    fun testBlockNames() {
+        myFixture.configureByFile("blockNames.peb")
+        myFixture.enableInspections(UnknownVariableInspection::class.java)
+
+        val highlights = myFixture.doHighlighting()
+                .filter { it.severity != HighlightSeverity.INFORMATION }
+
+        assert(highlights.isEmpty())
+    }
+
+    fun testMacroNamesAndParams() {
+        myFixture.configureByFile("macroNamesAndParams.peb")
+        myFixture.enableInspections(UnknownVariableInspection::class.java)
+
+        val highlights = myFixture.doHighlighting()
+                .filter { it.severity != HighlightSeverity.INFORMATION }
 
         assert(highlights.isEmpty())
     }

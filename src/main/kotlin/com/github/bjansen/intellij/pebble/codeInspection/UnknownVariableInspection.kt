@@ -6,15 +6,22 @@ import com.github.bjansen.intellij.pebble.psi.*
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.codeInsight.template.impl.TemplateSettings
-import com.intellij.codeInspection.*
+import com.intellij.codeInspection.LocalInspectionTool
+import com.intellij.codeInspection.LocalQuickFixAndIntentionActionOnPsiElement
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.PsiTreeUtil.getParentOfType
+import com.intellij.psi.util.PsiTreeUtil.nextVisibleLeaf
 
 class UnknownVariableInspection : LocalInspectionTool() {
+
+    private val tagNamesToIgnore = arrayOf("block", "macro",
+            "filter" /* TODO remove me when implementing #17*/)
+    private val tagNamesDeclaringId = arrayOf("set", "for")
 
     override fun getDisplayName() = message("inspection.unknown.variable")
 
@@ -24,6 +31,17 @@ class UnknownVariableInspection : LocalInspectionTool() {
                 super.visitElement(element)
 
                 if (element is PebbleIdentifier && element.textRange.length > 0) {
+                    val parentTag = getParentOfType(element, PebbleTagDirective::class.java)
+                    if (parentTag != null) {
+                        if (parentTag.name in tagNamesToIgnore) {
+                            return
+                        }
+                        if (parentTag.name in tagNamesDeclaringId
+                                && element.textOffset == nextVisibleLeaf(parentTag.nameIdentifier!!)?.textOffset) {
+                            return
+                        }
+                    }
+
                     val ref = element.reference
                     if (ref is PebbleIdentifierReference) {
                         val qualifier = pebbleReferencesHelper.findQualifyingMember(element)
@@ -56,7 +74,7 @@ class AddImplicitVariableQuickFix(element: PsiElement) : LocalQuickFixAndIntenti
         val tpl = TemplateSettings.getInstance().getTemplate("var", "Pebble")
 
         if (tpl is TemplateImpl && editor != null) {
-            val directive = PsiTreeUtil.getParentOfType(startElement, PebbleTagDirective::class.java, PebblePrintDirective::class.java)
+            val directive = getParentOfType(startElement, PebbleTagDirective::class.java, PebblePrintDirective::class.java)
             if (directive != null) {
                 editor.caretModel.moveToOffset(directive.startOffsetInParent)
 
