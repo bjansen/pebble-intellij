@@ -16,6 +16,8 @@ import com.intellij.psi.util.PsiTreeUtil
 
 class UnknownVariableInspection : LocalInspectionTool() {
 
+    override fun getDisplayName() = message("inspection.unknown.variable")
+
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PsiElementVisitor() {
             override fun visitElement(element: PsiElement?) {
