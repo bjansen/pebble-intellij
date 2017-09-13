@@ -1,0 +1,38 @@
+{% autoescape false %}{% endautoescape %}
+
+{% block hello %}{% endblock %}
+
+{% cache 'cache' %}{% endcache %}
+{% cache cacheName %}{% endcache %}
+
+{% extends 'references.peb' %}
+{% extends extendsName %}
+
+{% filter upper | escape %}{% endfilter %}
+
+{% flush %}
+
+{% for i in list %}{% endfor %}
+
+{% if users is empty %}{% endif %}
+
+{% import 'foo' %}
+{% import condition ? 'foo' : 'bar' %}
+
+{% include "template" %}
+{% include "template" with {"foo":"bar"} %}
+
+{% macro input(type="text", name, value) %}{% endmacro %}
+
+{% parallel %}{% endparallel %}
+
+{% set header = "Test Page" %}
+
+{{ input() }}
+{{ input2() }}
+
+{% verbatim %}
+	{% for user in users %}
+		{{ user.name }}
+	{% endfor %}}
+{% endverbatim %}

@@ -13,7 +13,7 @@ class PebbleBlockNameCompletionProviderTest : LightCodeInsightFixtureTestCase() 
         val lookups = myFixture.lookupElementStrings
 
         if (lookups != null) {
-            assertTrue(lookups.containsAll(listOf("b1", "b2", "b3")))
+            assertContainsElements(lookups, listOf("b1", "b2", "b3"))
         } else {
             assertNotNull(lookups)
         }
@@ -25,7 +25,7 @@ class PebbleBlockNameCompletionProviderTest : LightCodeInsightFixtureTestCase() 
         val lookups = myFixture.lookupElementStrings
 
         if (lookups != null) {
-            assertTrue(lookups.containsAll(listOf("b1", "b2", "b3", "b4")))
+            assertContainsElements(lookups, listOf("b1", "b2", "b3", "b4"))
         } else {
             assertNotNull(lookups)
         }

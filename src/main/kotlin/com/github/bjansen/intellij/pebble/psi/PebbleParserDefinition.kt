@@ -24,7 +24,6 @@ import org.antlr.jetbrains.adaptor.lexer.RuleIElementType
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
 import org.antlr.jetbrains.adaptor.parser.ANTLRParseTreeToPSIConverter
 import org.antlr.jetbrains.adaptor.parser.ANTLRParserAdaptor
-import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.Parser
 import org.antlr.v4.runtime.ParserRuleContext
@@ -32,14 +31,14 @@ import org.antlr.v4.runtime.tree.ParseTree
 import java.util.*
 import org.antlr.v4.runtime.Lexer as AntlrLexer
 
-fun getPebbleCodeStyleSettings(project: Project?) : PebbleCodeStyleSettings {
+fun getPebbleCodeStyleSettings(project: Project?): PebbleCodeStyleSettings {
     val codeStyleManager =
             if (project != null) CodeStyleSettingsManager.getInstance(project)
             else CodeStyleSettingsManager.getInstance()
     return codeStyleManager.currentSettings.getCustomSettings(PebbleCodeStyleSettings::class.java)
 }
 
-fun createLexer(input: CharStream?, project: Project?) : Lexer {
+fun createLexer(input: CharStream?, project: Project?): Lexer {
     val ourSettings = getPebbleCodeStyleSettings(project)
     val antlrLexer =
             if (ourSettings.useDefaultDelimiters()) PebbleLexer(input)
@@ -71,7 +70,7 @@ class PebbleParserDefinition : ParserDefinition {
     }
 
     override fun createParser(project: Project): ANTLRParserAdaptor {
-        return object: ANTLRParserAdaptor(PebbleLanguage.INSTANCE, PebbleParser(null)){
+        return object : ANTLRParserAdaptor(PebbleLanguage.INSTANCE, PebbleParser(null)) {
             override fun parse(parser: Parser?, root: IElementType?): ParseTree {
 
                 if (root is IFileElementType) {
@@ -86,7 +85,7 @@ class PebbleParserDefinition : ParserDefinition {
             val markedTags = Stack<Pair<PsiBuilder.Marker, Int>>()
 
             override fun createListener(parser: Parser?, root: IElementType?, builder: PsiBuilder?): ANTLRParseTreeToPSIConverter {
-                return object: ANTLRParseTreeToPSIConverter(PebbleLanguage.INSTANCE, parser, builder) {
+                return object : ANTLRParseTreeToPSIConverter(PebbleLanguage.INSTANCE, parser, builder) {
                     override fun exitEveryRule(ctx: ParserRuleContext) {
                         if (ctx.ruleIndex == PebbleParser.RULE_tagDirective) {
                             val firstChild = ctx.children[0]
@@ -134,24 +133,7 @@ class PebbleParserDefinition : ParserDefinition {
     }
 
     override fun createElement(node: ASTNode): PsiElement {
-        val elType = node.elementType
-
-        if (elType == rules[PebbleParser.RULE_pebbleTemplate]) {
-            return PebbleTemplate(node)
-        } else if (elType == rules[PebbleParser.RULE_tagDirective]
-                || elType == rules[PebbleParser.RULE_verbatimTag]) {
-            return PebbleTagDirective(node)
-        } else if (elType == rules[PebbleParser.RULE_printDirective]) {
-            return PebblePrintDirective(node)
-        } else if (elType == rules[PebbleParser.RULE_identifier]) {
-            return PebbleIdentifier(node)
-        } else if (elType == rules[PebbleParser.RULE_argument_list]) {
-            return PebbleArgumentList(node)
-        } else if (elType is TokenIElementType) {
-            return ANTLRPsiNode(node)
-        }
-
-        return ANTLRPsiNode(node) // TODO
+        return psiElementFactory.createElement(node)
     }
 
     companion object {

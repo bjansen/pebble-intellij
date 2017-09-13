@@ -131,6 +131,23 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         assertContainsElements(signatures, "add(MyClass element)", "addAt(int offset, MyClass element)")
     }
 
+    fun testCompletionOfMacros() {
+        myFixture.configureByFile("macros.peb")
+
+        val completions = myFixture.complete(CompletionType.BASIC)
+
+        assertNotNull(completions)
+
+        val signatures = completions.map {
+            val presentation = LookupElementPresentation()
+            it.renderElement(presentation)
+
+            presentation.itemText +  presentation.tailText
+        }
+
+        assertContainsElements(signatures, "hello(param1, param2, param3)")
+    }
+
     private fun assertLookupsContain(elements: Collection<String>) {
         val lookups = myFixture.lookupElementStrings
 

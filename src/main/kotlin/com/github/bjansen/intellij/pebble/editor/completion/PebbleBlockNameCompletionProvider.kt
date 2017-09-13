@@ -22,7 +22,7 @@ class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameter
         val el = parameters.position.originalElement
         val tag = PsiTreeUtil.getParentOfType(el, PebbleTagDirective::class.java)
 
-        if (tag != null && tag.name in arrayOf("block", "endblock")) {
+        if (tag != null && tag.getTagName() in arrayOf("block", "endblock")) {
             val blockNames = HashSet<String>()
             val processedFiles = HashSet<PebbleFile>()
 
@@ -34,8 +34,8 @@ class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameter
                             result: CompletionResultSet, originatingTag: PsiElement?) {
         processChildren(file, {
             if (it is PebbleTagDirective) {
-                if (it.name == "block") {
-                    val blockName = PsiTreeUtil.nextVisibleLeaf(it.nameIdentifier!!)
+                if (it.getTagName() == "block") {
+                    val blockName = PsiTreeUtil.nextVisibleLeaf(it.getTagNameElement()!!)
                     if (blockName != null && blockName.node.elementType == tokens[PebbleLexer.ID_NAME]
                             && blockName != originatingTag
                             && blockNames.add(blockName.text)) {
@@ -45,7 +45,7 @@ class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameter
                                         .withTypeText("(${it.containingFile.name})", true)
                         )
                     }
-                } else if (it.name in directivesWithFileRefs) {
+                } else if (it.getTagName() in directivesWithFileRefs) {
                     it.references.forEach {
                         val resolved = it.resolve()
                         if (resolved is PebbleFile && processedFiles.add(resolved)) {

@@ -33,11 +33,11 @@ class UnknownVariableInspection : LocalInspectionTool() {
                 if (element is PebbleIdentifier && element.textRange.length > 0) {
                     val parentTag = getParentOfType(element, PebbleTagDirective::class.java)
                     if (parentTag != null) {
-                        if (parentTag.name in tagNamesToIgnore) {
+                        if (parentTag.getTagName() in tagNamesToIgnore) {
                             return
                         }
-                        if (parentTag.name in tagNamesDeclaringId
-                                && element.textOffset == nextVisibleLeaf(parentTag.nameIdentifier!!)?.textOffset) {
+                        if (parentTag.getTagName() in tagNamesDeclaringId
+                                && element.textOffset == nextVisibleLeaf(parentTag.getTagNameElement()!!)?.textOffset) {
                             return
                         }
                     }

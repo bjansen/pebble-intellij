@@ -1,0 +1,5 @@
+{% macro hello(param1, param2="foo", param3) %}
+
+{% endmacro %}
+
+{{ <caret> }}

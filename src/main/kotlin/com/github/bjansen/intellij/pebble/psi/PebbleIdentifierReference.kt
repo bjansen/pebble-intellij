@@ -75,10 +75,31 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                         }
                 )
                 result.addAll(
-                        file.getImplicitFunctions().map {
-                            val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
-                            JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
-                                    .withInsertHandler(handler)
+                        file.getImplicitFunctions().mapNotNull {
+                            when (it) {
+                                is PsiMethod -> {
+                                    val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
+                                    JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
+                                            .withInsertHandler(handler)
+                                }
+                                is PebbleMacroTag -> {
+                                    val name = it.name
+                                    val params = it.getParameterNames()
+                                    val handler = ParenthesesInsertHandler.getInstance(params.size > 0)
+
+                                    if (name == null)
+                                        null
+                                    else {
+                                        LookupElementBuilder.create(it, name)
+                                                .withPresentableText(name)
+                                                .withTailText(params.joinToString(", ", "(", ")"))
+                                                .withTypeText("void")
+                                                .withIcon(PlatformIcons.FUNCTION_ICON)
+                                                .withInsertHandler(handler)
+                                    }
+                                }
+                                else -> null
+                            }
                         }
                 )
                 return result.toTypedArray()

@@ -157,4 +157,18 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Expected 'privateField' to resolve to nothing")
         }
     }
+
+    fun testReferenceToMacro() {
+        initFile("macros.peb")
+
+        moveCaret(42)
+
+        val resolved = resolveRefAtCaret()
+        if (resolved != null) {
+            assert(resolved is PebbleMacroTag)
+            assert((resolved as PebbleMacroTag).name == "hello")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
 }

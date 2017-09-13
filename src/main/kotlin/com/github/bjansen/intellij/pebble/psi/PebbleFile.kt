@@ -26,8 +26,13 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         return list
     }
 
-    fun getImplicitFunctions(): List<PsiMethod> {
-        return springExtension.getImplicitFunctions(this)
+    fun getImplicitFunctions(): List<PsiNameIdentifierOwner> {
+        val list = arrayListOf<PsiNameIdentifierOwner>()
+
+        list.addAll(findLocalMacros())
+        list.addAll(springExtension.getImplicitFunctions(this))
+
+        return list
     }
 
     // TODO cache the result?
@@ -48,5 +53,21 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         })
 
         return vars
+    }
+
+    private fun findLocalMacros(): List<PebbleMacroTag> {
+        val macros = arrayListOf<PebbleMacroTag>()
+
+        acceptChildren(object: PsiRecursiveElementWalkingVisitor() {
+            override fun visitElement(element: PsiElement?) {
+                super.visitElement(element)
+
+                if (element is PebbleMacroTag) {
+                    macros.add(element)
+                }
+            }
+        })
+
+        return macros
     }
 }

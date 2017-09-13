@@ -6,7 +6,6 @@ import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNameIdentifierOwner
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
@@ -16,23 +15,17 @@ import java.util.*
 
 val directivesWithFileRefs = arrayOf("extends", "include", "import")
 
-class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node), PsiNameIdentifierOwner {
+open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
 
-    override fun setName(name: String): PsiElement {
-        throw UnsupportedOperationException("not implemented")
-    }
+    fun getTagName() = getTagNameElement()?.text
 
-    override fun getName(): String? {
-        return nameIdentifier?.text ?: super.getName()
-    }
-
-    override fun getNameIdentifier(): PsiElement? {
+    fun getTagNameElement(): PsiElement? {
         return node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.psi
     }
 
     override fun getReferences(): Array<PsiReference> {
 
-        if (name in directivesWithFileRefs) {
+        if (getTagName() in directivesWithFileRefs) {
             val stringLiterals = ArrayList<PsiElement>()
             processChildren(this, {
                 if (it.node.elementType == rules[PebbleParser.RULE_string_literal]) {
@@ -92,6 +85,7 @@ class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
                 *ReferenceProvidersRegistry.getReferencesFromProviders(this)
         ).requireNoNulls()
     }
+
     override fun getReference(): PsiReference? {
         return PebbleIdentifierReference(this, TextRange.from(0, node.textLength))
     }
