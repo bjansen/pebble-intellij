@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -10,7 +10,12 @@
 
     <change-notes><![CDATA[
     <b>v0.3</b>
-        <li>autocompletion of block names</li>
+        <li>auto completion (block names, functions etc)</li>
+        <li>navigation to properties and functions</li>
+        <li>code formatting of the templated language</li>
+        <li>support for declarations from pebble-spring (including auto completion)</li>
+        <li>Parameter Info tooltip on functions</li>
+        <li>new intention to detect unknown variables and add '@pebvariable' hints</li>
         <li>navigation to files specified in extends/include/import directives</li>
         <li>fixed bugs in the parser</li>
     <ul>
@@ -37,6 +42,7 @@
     </ul>
     ]]></change-notes>
 
+    <!-- IDEA 15 and later -->
     <idea-version since-build="143.0"/>
 
     <depends>com.intellij.modules.lang</depends>
