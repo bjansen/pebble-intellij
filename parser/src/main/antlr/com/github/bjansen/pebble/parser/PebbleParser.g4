@@ -164,7 +164,7 @@ numeric_literal
     ;
 
 identifier
-    : ID_NAME
+    : ID_NAME | WITH | IN | NONE
     ;
 
 filters

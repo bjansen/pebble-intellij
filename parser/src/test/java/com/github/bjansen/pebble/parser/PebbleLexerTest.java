@@ -20,6 +20,11 @@ public class PebbleLexerTest extends AbstractLexerTest {
         lexFile("src/test/resources/lexer/pebble/issue14.peb");
     }
 
+    @Test
+    public void testIssue22() {
+        lexFile("src/test/resources/lexer/pebble/issue22.peb");
+    }
+
     @Override
     PebbleLexer createLexer(String text) {
         return new PebbleLexer(new ANTLRInputStream(text));
