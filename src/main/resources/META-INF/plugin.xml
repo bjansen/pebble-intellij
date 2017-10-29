@@ -10,6 +10,7 @@
 
     <change-notes><![CDATA[
     <b>v0.3</b>
+    <ul>
         <li>auto completion (block names, functions etc)</li>
         <li>navigation to properties and functions</li>
         <li>code formatting of the templated language</li>
@@ -18,7 +19,6 @@
         <li>new intention to detect unknown variables and add '@pebvariable' hints</li>
         <li>navigation to files specified in extends/include/import directives</li>
         <li>fixed bugs in the parser</li>
-    <ul>
     </ul>
     <br/>
     <b>v0.2</b>
