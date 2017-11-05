@@ -1,0 +1,9 @@
+hello
+
+{# @pebvariable name="bar" type="pebble.tests.MyClass2" #}
+
+{{ bar.unknown }}
+{{ bar.unknownMethod() }}
+{{ bar.field1.unknown }}
+{{ bar.field1.method().unknown }}
+{{ bar.voidMethod().unknown }}

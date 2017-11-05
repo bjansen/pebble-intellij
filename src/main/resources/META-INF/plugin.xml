@@ -99,6 +99,10 @@
                          key="inspection.unknown.variable"
                          groupKey="group.name" enabledByDefault="true" level="WARNING" runForWholeFile="true"
                          implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownVariableInspection"/>
+        <localInspection language="Pebble" shortName="PebbleUnknownMember" bundle="messages.PebbleBundle"
+                         key="inspection.unknown.attribute"
+                         groupKey="group.name" enabledByDefault="true" level="ERROR" runForWholeFile="true"
+                         implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownMemberInspection"/>
     </extensions>
 
     <actions>

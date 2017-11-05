@@ -1,0 +1,5 @@
+{# @pebvariable name="someClass" type="foo.bar.SomeClass" #}
+
+{{ someClass.cantFindMe }}
+{{ someClass.cantFindMeEither().chained }}
+{{ someClass.voidMethod().chained }}
