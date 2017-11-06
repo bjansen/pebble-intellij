@@ -4,7 +4,7 @@ import com.google.common.io.Files
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import java.io.File
 
-class UnknownMemberInspectionTest : LightCodeInsightFixtureTestCase() {
+class UnknownAttributeInspectionTest : LightCodeInsightFixtureTestCase() {
 
     override fun getTestDataPath(): String {
         return "src/test/resources/inspections"
@@ -12,7 +12,7 @@ class UnknownMemberInspectionTest : LightCodeInsightFixtureTestCase() {
 
     fun testInspection() {
         myFixture.configureByFile("unknownRefs.peb")
-        myFixture.enableInspections(UnknownMemberInspection::class.java)
+        myFixture.enableInspections(UnknownAttributeInspection::class.java)
         myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
         myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
 
@@ -48,5 +48,15 @@ class UnknownMemberInspectionTest : LightCodeInsightFixtureTestCase() {
         assertEquals(190, fifth.actualStartOffset)
         assertEquals(197, fifth.actualEndOffset)
         assertEquals("Attempt to get attribute of null object", fifth.description)
+    }
+
+    fun testInspectionOnMap() {
+        myFixture.configureByFile("mapRefs.peb")
+        myFixture.enableInspections(UnknownAttributeInspection::class.java)
+        myFixture.addClass(Files.toString(File("src/test/resources/inspections/Map.java"), Charsets.UTF_8))
+
+        val highlights = myFixture.doHighlighting()
+
+        assertEquals(0, highlights.size)
     }
 }

@@ -11,7 +11,7 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import com.intellij.psi.util.PsiTreeUtil.nextVisibleLeaf
 
-class UnknownMemberInspection : LocalInspectionTool() {
+class UnknownAttributeInspection : LocalInspectionTool() {
 
     private val tagNamesToIgnore = arrayOf("block", "macro",
             "filter" /* TODO remove me when implementing #17*/)
@@ -36,39 +36,39 @@ class UnknownMemberInspection : LocalInspectionTool() {
                         }
                     }
 
-                    val ref = element.reference
-                    if (ref is PebbleIdentifierReference) {
-                        val qualifier = pebbleReferencesHelper.findQualifyingMember(element)
+                    inspectIdentifier(element)
+                }
+            }
 
-                        if (qualifier != null && ref.resolve() == null) {
-                            val typeName = findTypeName(qualifier)
+            private fun inspectIdentifier(element: PebbleIdentifier) {
+                val ref = element.reference
+                if (ref is PebbleIdentifierReference) {
+                    val qualifier = pebbleReferencesHelper.findQualifyingMember(element)
 
-                            if (typeName != null) {
-                                if (typeName == "void") {
-                                    holder.registerProblem(
-                                            element,
-                                            message("inspection.unknown.attribute.null.message")
-                                    )
-                                } else {
-                                    holder.registerProblem(
-                                            element,
-                                            message("inspection.unknown.attribute.message", element.name!!, typeName)
-                                    )
-                                }
+                    if (qualifier != null && ref.resolve() == null) {
+                        val type = when (qualifier) {
+                            is PsiField -> qualifier.type
+                            is PsiVariable -> qualifier.type
+                            is PsiMethod -> qualifier.returnType ?: PsiType.VOID
+                            else -> null
+                        } ?: return
+
+                        when {
+                            type == PsiType.VOID -> holder.registerProblem(
+                                    element,
+                                    message("inspection.unknown.attribute.null.message")
+                            )
+                            type.canonicalText.startsWith("java.util.Map") -> {
+                                // ignore it, we can't be sure if the element exists
                             }
+                            else -> holder.registerProblem(
+                                    element,
+                                    message("inspection.unknown.attribute.message", element.name!!, type.canonicalText)
+                            )
                         }
                     }
                 }
             }
-        }
-    }
-
-    private fun findTypeName(element: PsiElement): String? {
-        return when (element) {
-            is PsiField -> element.type.canonicalText
-            is PsiVariable -> element.type.canonicalText
-            is PsiMethod -> element.returnType?.canonicalText ?: "void"
-            else -> null
         }
     }
 }

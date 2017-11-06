@@ -12,6 +12,7 @@
     <b>v0.4</b>
     <ul>
         <li>`with` is now correctly recognized as a valid identifier</li>
+        <li>calls to unknown qualified methods/fields are reported as errors</li>
     </ul>
     <b>v0.3</b>
     <ul>
@@ -99,10 +100,10 @@
                          key="inspection.unknown.variable"
                          groupKey="group.name" enabledByDefault="true" level="WARNING" runForWholeFile="true"
                          implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownVariableInspection"/>
-        <localInspection language="Pebble" shortName="PebbleUnknownMember" bundle="messages.PebbleBundle"
+        <localInspection language="Pebble" shortName="PebbleUnknownAttribute" bundle="messages.PebbleBundle"
                          key="inspection.unknown.attribute"
                          groupKey="group.name" enabledByDefault="true" level="ERROR" runForWholeFile="true"
-                         implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownMemberInspection"/>
+                         implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownAttributeInspection"/>
     </extensions>
 
     <actions>
