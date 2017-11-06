@@ -89,7 +89,7 @@ map_expression
     ;
 
 map_element
-    : string_literal OP_COLON expression
+    : string_literal OP_COLON (map_expression | expression)
     ;
 
 qualified_expression

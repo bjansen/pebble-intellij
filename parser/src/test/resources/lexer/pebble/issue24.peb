@@ -1,0 +1,11 @@
+{% include './template.includeWithParameter2.peb'
+    with {
+        'simple': 'simple-value',
+        'contextVariable': contextVariable,
+        'level': level + 1,
+        'map': {
+            'position': 'left',
+            'contextVariable': contextVariable
+        }
+    }
+%}
