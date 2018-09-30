@@ -46,10 +46,10 @@ class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
 
         assertEquals(1, highlights.size)
 
-        val intention = highlights[0].quickFixActionRanges[0].first.action
+        val intention = highlights[0].quickFixActionRanges?.get(0)?.first?.action
 
         assertNotNull(intention)
-        myFixture.launchAction(intention)
+        myFixture.launchAction(intention!!)
         myFixture.checkResultByFile("addImplicitVariable.after.peb");
     }
 }
