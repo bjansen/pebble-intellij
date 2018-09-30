@@ -10,6 +10,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.PsiElementResolveResult.createResults
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PlatformIcons
 
 class PebbleIdentifierReference(private val psi: PsiElement, private val range: TextRange)
@@ -27,6 +28,12 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         } else if (qualifyingMember is PsiMethod) {
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.returnType), referenceText))
         } else {
+            val parentTag = PsiTreeUtil.getParentOfType(psi, PebbleTagDirective::class.java)
+
+            if (parentTag != null && parentTag.getTagName() == "endblock") {
+                return resolveOpeningBlockTag(parentTag, referenceText)
+            }
+
             val file = psi.containingFile
             if (file is PebbleFile) {
                 for (iv in file.getImplicitVariables()) {
@@ -41,6 +48,20 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                     }
                 }
             }
+        }
+
+        return emptyArray()
+    }
+
+    private fun resolveOpeningBlockTag(closingBlockTag: PebbleTagDirective, blockName: String): Array<ResolveResult> {
+        var child: PsiElement? = closingBlockTag.prevSibling
+
+        while (child != null) {
+            val parent = child.parent
+            if (parent is PebbleBlockTag && parent.name == blockName) {
+                return createResults(parent)
+            }
+            child = child.prevSibling
         }
 
         return emptyArray()

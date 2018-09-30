@@ -1,6 +1,6 @@
 {% autoescape false %}{% endautoescape %}
 
-{% block hello %}{% endblock %}
+{% block hello %}{% endblock hello %}
 
 {% cache 'cache' %}{% endcache %}
 {% cache cacheName %}{% endcache %}

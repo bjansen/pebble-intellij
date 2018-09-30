@@ -40,6 +40,7 @@ object psiElementFactory {
 
             return when (node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.text) {
                 "macro" -> PebbleMacroTag(node)
+                "block" -> PebbleBlockTag(node)
                 else -> PebbleTagDirective(node)
             }
         } else if (elType == rules[PebbleParser.RULE_printDirective]) {

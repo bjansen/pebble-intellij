@@ -19,7 +19,7 @@ import com.intellij.psi.util.PsiTreeUtil.nextVisibleLeaf
 
 class UnknownVariableInspection : LocalInspectionTool() {
 
-    private val tagNamesToIgnore = arrayOf("block", "macro",
+    private val tagNamesToIgnore = arrayOf("block", "endblock", "macro",
             "filter" /* TODO remove me when implementing #17*/)
     private val tagNamesDeclaringId = arrayOf("set", "for")
 

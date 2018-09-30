@@ -171,4 +171,18 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Reference resolved to nothing")
         }
     }
+
+    fun testReferenceToBlock() {
+        initFile("block.peb")
+
+        moveCaret(75)
+
+        val resolved = resolveRefAtCaret()
+        if (resolved != null) {
+            assert(resolved is PebbleBlockTag)
+            assert((resolved as PebbleBlockTag).name == "hello")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
 }

@@ -1,6 +1,6 @@
 {% block bastien %}
 
-{% endblock %}
+{% endblock bastien %}
 
 {% block block %}
 
