@@ -5,4 +5,5 @@ env:
   - IDEA_VERSION=IU-15.0.6
   - IDEA_VERSION=IU-2016.3.4
   - IDEA_VERSION=IU-2017.2.3
+  - IDEA_VERSION=IU-2018.2.4
 install: sed -i '/ideaVersion=/c\ideaVersion='"$IDEA_VERSION"'' gradle.properties

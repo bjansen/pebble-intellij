@@ -19,7 +19,7 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
     val keywordLookupItems = keywords.map {
         LookupElementBuilder.create(it)
                 .bold()
-                .withInsertHandler { ctx, element ->
+                .withInsertHandler { ctx, _ ->
                     // try to invoke the matching live template if it exists
                     val tpl = findMatchingLiveTemplate(it)
                     val identifier = ctx.file.findElementAt(ctx.startOffset)

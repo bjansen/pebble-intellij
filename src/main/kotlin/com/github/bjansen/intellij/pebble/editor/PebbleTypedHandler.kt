@@ -39,7 +39,7 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
             "parallel" to "endparallel"
     )
 
-    override fun beforeCharTyped(c: Char, project: Project?, editor: Editor, file: PsiFile, fileType: FileType?): Result {
+    override fun beforeCharTyped(c: Char, project: Project, editor: Editor, file: PsiFile, fileType: FileType): Result {
         if (file.viewProvider !is PebbleFileViewProvider) {
             return TypedHandlerDelegate.Result.CONTINUE
         }
@@ -79,7 +79,7 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
 
         insertStringAtCaret(editor, buf.toString(), true, caretShift)
 
-        val documentManager = PsiDocumentManager.getInstance(project as Project)
+        val documentManager = PsiDocumentManager.getInstance(project)
         documentManager.commitDocument(editor.document)
         return TypedHandlerDelegate.Result.STOP
     }
