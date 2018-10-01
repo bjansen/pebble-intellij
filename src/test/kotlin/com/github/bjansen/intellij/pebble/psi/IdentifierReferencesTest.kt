@@ -185,4 +185,35 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Reference resolved to nothing")
         }
     }
+
+    fun testReferenceToLoop() {
+        initFile("loop.peb")
+
+        moveCaret(30)
+
+        val resolved = resolveRefAtCaret()
+        if (resolved != null) {
+            assert(resolved is PebbleImplicitVariable)
+            assert((resolved as PebbleImplicitVariable).type.presentableText == "Loop")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+        moveCaret(35)
+
+        val resolved2 = resolveRefAtCaret()
+        if (resolved2 != null) {
+            assert(resolved2 is PsiField)
+            assert((resolved2 as PsiField).name == "index")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+        moveCaret(60)
+
+        val resolved3 = resolveRefAtCaret()
+        if (resolved3 != null) {
+            fail("Expected 'loop' to resolve to nothing outside of 'for' loop")
+        }
+    }
 }

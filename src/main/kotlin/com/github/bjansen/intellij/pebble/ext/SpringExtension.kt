@@ -5,10 +5,9 @@ import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTypeLookups
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMembersByName
 import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
-import com.google.common.io.CharStreams
+import com.github.bjansen.intellij.pebble.utils.resourceUtil
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.ide.highlighter.JavaFileType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.Project
@@ -30,33 +29,12 @@ import com.intellij.spring.model.utils.SpringModelSearchers
 import com.intellij.spring.model.xml.AbstractDomSpringBean
 import com.intellij.util.ProcessingContext
 import icons.SpringApiIcons
-import java.io.InputStreamReader
 
 object springExtension {
     private val key = Key.create<PsiClass>("PEBBLE_SPRING_CLASS")
 
     private fun getPebbleSpringClass(project: Project): PsiClass? {
-        val cached = project.getUserData(key)
-
-        if (cached != null) {
-            return cached
-        }
-
-        val resource = springExtension::class.java
-                .getResourceAsStream("/implicitCode/PebbleSpring.java")
-
-        if (resource != null) {
-            val text = CharStreams.toString(InputStreamReader(resource, Charsets.UTF_8))
-            val javaFile = PsiFileFactory.getInstance(project)
-                    .createFileFromText("a.java", JavaFileType.INSTANCE, text) as PsiJavaFile
-            val clazz = javaFile.classes[0]
-            project.putUserData(key, clazz)
-            return clazz
-        }
-
-        project.putUserData(key, null)
-
-        return null
+        return resourceUtil.loadPsiClassFromFile("/implicitCode/PebbleSpring.java", key, project)
     }
 
     fun getImplicitVariables(file: PebbleFile): List<PsiVariable> {

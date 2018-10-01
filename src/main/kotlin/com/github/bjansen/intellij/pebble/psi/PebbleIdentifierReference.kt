@@ -36,7 +36,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
 
             val file = psi.containingFile
             if (file is PebbleFile) {
-                for (iv in file.getImplicitVariables()) {
+                for (iv in file.getImplicitVariables(psi)) {
                     if (iv.name == referenceText) {
                         return createResults(if (iv is PebbleImplicitVariable) iv.declaration ?: iv else iv)
                     }
@@ -76,7 +76,9 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             val file = element.containingFile
 
             if (file is PebbleFile) {
-                val implicitVar = file.getImplicitVariables().find { it.name == qualifyingMember.text }
+                val implicitVar = file.getImplicitVariables(psi).find {
+                    it.name == qualifyingMember.text
+                }
 
                 if (implicitVar != null) {
                     return buildPsiTypeLookups(implicitVar.type)
@@ -89,7 +91,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             if (file is PebbleFile) {
                 val result = arrayListOf<LookupElement>()
                 result.addAll(
-                        file.getImplicitVariables().map {
+                        file.getImplicitVariables(psi).map {
                             LookupElementBuilder.create(it)
                                     .withTypeText(it.type.presentableText)
                                     .withIcon(PlatformIcons.VARIABLE_ICON)

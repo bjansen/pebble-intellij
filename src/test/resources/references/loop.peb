@@ -1,0 +1,5 @@
+{% for foo in bar %}
+    {{ loop.index }}
+{% endfor %}
+
+{{ loop.index }}

@@ -3,11 +3,21 @@ package com.github.bjansen.intellij.pebble.psi
 import com.github.bjansen.intellij.pebble.ext.springExtension
 import com.github.bjansen.intellij.pebble.lang.PebbleFileType
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
+import com.github.bjansen.intellij.pebble.utils.resourceUtil
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.util.Key
 import com.intellij.psi.*
+import com.intellij.psi.util.PsiTreeUtil
 
 class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE) {
+    private val key = Key.create<PsiClass>("PEBBLE_LOOP_CLASS")
+
+    private val loopImplicitVariable: ImplicitVariable by lazy {
+        val loopClass = resourceUtil.loadPsiClassFromFile("/implicitCode/Loop.java", key, project)
+        val loopType = JavaPsiFacade.getInstance(project).elementFactory.createType(loopClass!!)
+        PebbleImplicitVariable("loop", loopType, this, null)
+    }
 
     override fun getFileType(): FileType {
         return PebbleFileType.INSTANCE
@@ -17,13 +27,37 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         return "Pebble file"
     }
 
-    fun getImplicitVariables(): List<PsiVariable> {
+    fun getImplicitVariables(location: PsiElement): List<PsiVariable> {
         val list = arrayListOf<PsiVariable>()
 
+        if (inForTag(location)) {
+            list.add(loopImplicitVariable)
+        }
         list.addAll(findLocalImplicitVariables())
         list.addAll(springExtension.getImplicitVariables(this))
 
         return list
+    }
+
+    private fun inForTag(location: PsiElement): Boolean {
+        var openedForLoops = 0
+
+        object : PsiRecursiveElementVisitor() {
+            override fun visitElement(element: PsiElement?) {
+                if (element != null && element.textOffset < location.textOffset) {
+                    if (element is PebbleTagDirective) {
+                        if (element.getTagName() == "for") {
+                            openedForLoops++
+                        } else if (element.getTagName() == "endfor") {
+                            openedForLoops--
+                        }
+                    }
+                    super.visitElement(element)
+                }
+            }
+        }.visitFile(this)
+
+        return openedForLoops > 0
     }
 
     fun getImplicitFunctions(): List<PsiNameIdentifierOwner> {

@@ -12,7 +12,10 @@
 
 {% flush %}
 
-{% for i in list %}{% endfor %}
+{% for i in list %}
+    {{ loop.index }}
+{% endfor %}
+{{ loop.index }}
 
 {% if users is empty %}{% endif %}
 
