@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -11,8 +11,10 @@
     <change-notes><![CDATA[
     <b>v0.4</b>
     <ul>
+        <li>support for the implicit `loop` variable in `for` blocks</li>
         <li>`with` is now correctly recognized as a valid identifier</li>
         <li>calls to unknown qualified methods/fields are reported as errors</li>
+        <li>bug fixes</li>
     </ul>
     <b>v0.3</b>
     <ul>
