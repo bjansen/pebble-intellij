@@ -28,11 +28,11 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
                 highlightTagName(element)
             } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_OPEN]) {
                 val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
-                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
+                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
                 highlightDelimiters(element)
             } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_END]) {
                 val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
-                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
+                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
                 highlightDelimiters(element)
             }
         }
@@ -41,21 +41,21 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
     fun highlightDelimiters(element: PsiElement) {
         val codeStyle = getPebbleCodeStyleSettings(element.project)
         val range = TextRange.from(
-                element.textOffset + element.text.lastIndexOf(codeStyle.TAG_OPEN),
-                codeStyle.TAG_OPEN.length)
-        holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.highlights.DELIMITER
+                element.textOffset + element.text.lastIndexOf(codeStyle.tagOpen),
+                codeStyle.tagOpen.length)
+        holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.DELIMITER
 
         val endRange = TextRange.from(
-                element.textOffset + element.text.lastIndexOf(codeStyle.TAG_CLOSE),
-                codeStyle.TAG_CLOSE.length)
-        holder.createInfoAnnotation(endRange, null).textAttributes = PebbleHighlighter.highlights.DELIMITER
+                element.textOffset + element.text.lastIndexOf(codeStyle.tagClose),
+                codeStyle.tagClose.length)
+        holder.createInfoAnnotation(endRange, null).textAttributes = PebbleHighlighter.DELIMITER
     }
 
     fun highlightTagName(tag: PsiElement) {
         val id = PsiTreeUtil.nextVisibleLeaf(tag)
         if (id != null &&
                 id.node.elementType == tokens[PebbleLexer.ID_NAME]) {
-            holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.highlights.KEYWORDS
+            holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.KEYWORDS
         }
     }
 }

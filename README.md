@@ -20,7 +20,7 @@ DataGrip 1.0, PhpStorm 10, PyCharm 5, RubyMine 8, WebStorm 11) and later.
 * navigation (methods and fields, included files)
 * code completion
 * highlight unknown references
-* support for variables and functions introduced by [pebble-spring](http://www.mitchellbosecke.com/pebble/documentation/guide/spring-integration)
+* support for variables and functions introduced by [pebble-spring](https://github.com/PebbleTemplates/pebble/wiki/spring-integration)
 * [more to come](https://github.com/bjansen/pebble-intellij/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20label%3At-feature)
 
 <sup>1</sup>: *Custom operators are currently not supported*.

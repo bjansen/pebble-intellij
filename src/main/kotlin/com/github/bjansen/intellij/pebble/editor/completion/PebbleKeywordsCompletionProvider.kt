@@ -12,11 +12,11 @@ import com.intellij.util.ProcessingContext
 
 class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters>() {
 
-    val keywords = arrayOf("autoescape", "endautoescape", "block", "endblock", "cache", "endcache",
+    private val keywords = arrayOf("autoescape", "endautoescape", "block", "endblock", "cache", "endcache",
             "extends", "filter", "endfilter", "flush", "for", "endfor", "else", "if", "endif", "elseif",
             "import", "include", "macro", "endmacro", "parallel", "endparallel", "set", "verbatim", "endverbatim")
 
-    val keywordLookupItems = keywords.map {
+    private val keywordLookupItems = keywords.map {
         LookupElementBuilder.create(it)
                 .bold()
                 .withInsertHandler { ctx, _ ->
@@ -39,7 +39,7 @@ class PebbleKeywordsCompletionProvider : CompletionProvider<CompletionParameters
         result.addAllElements(keywordLookupItems)
     }
 
-    fun findMatchingLiveTemplate(keyword: String): TemplateImpl? {
+    private fun findMatchingLiveTemplate(keyword: String): TemplateImpl? {
         val pebbleLiveTemplates = TemplateSettings.getInstance().templates.filter {
             it.groupName == "Pebble"
         }

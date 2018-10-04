@@ -12,7 +12,7 @@ class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl
         val nameRange = getValueRange(text, "name")
         if (nameRange != null) {
             val newText = nameRange.replace(text, name)
-            return replace(psiElementFactory.createComment(newText, project))
+            return replace(PsiElementFactory.createComment(newText, project))
         }
         return this
     }

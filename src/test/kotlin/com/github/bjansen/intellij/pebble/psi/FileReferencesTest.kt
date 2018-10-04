@@ -2,7 +2,6 @@ package com.github.bjansen.intellij.pebble.psi
 
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import org.junit.Test
 
 class FileReferencesTest : AbstractReferencesTest() {

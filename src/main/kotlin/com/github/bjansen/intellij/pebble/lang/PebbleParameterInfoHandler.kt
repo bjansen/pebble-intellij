@@ -90,7 +90,7 @@ class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<Pebb
     }
 
     override fun getParametersForDocumentation(p: PsiElement?, context: ParameterInfoContext?): Array<Any>? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun tracksParameterIndex() = true
@@ -99,7 +99,7 @@ class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<Pebb
         context.showHint(element, element.textRange.startOffset, this)
     }
 
-    override fun getParametersForLookup(item: LookupElement?, context: ParameterInfoContext?) = null
+    override fun getParametersForLookup(item: LookupElement?, context: ParameterInfoContext?): Array<out Any>? = null
 
     override fun couldShowInLookup() = true
 }

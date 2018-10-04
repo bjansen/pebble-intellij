@@ -27,11 +27,11 @@ open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
 
         if (getTagName() in directivesWithFileRefs) {
             val stringLiterals = ArrayList<PsiElement>()
-            processChildren(this, {
+            processChildren(this) {
                 if (it.node.elementType == rules[PebbleParser.RULE_string_literal]) {
                     stringLiterals.add(it)
                 }
-            })
+            }
 
             val refs = ArrayList<PsiReference>()
 
@@ -58,10 +58,6 @@ open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
             processor(it)
             processChildren(it, processor)
         }
-    }
-
-    fun isVerbatim(): Boolean {
-        return name?.equals("verbatim") ?: false
     }
 }
 

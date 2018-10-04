@@ -27,8 +27,8 @@ import java.util.regex.Pattern
 // TODO This doesn't support custom delimiters
 class PebbleTypedHandler : TypedHandlerDelegate() {
 
-    val tagNamePattern: Pattern = Pattern.compile("\\{%\\s+(\\w+).*")
-    val tagsThatCanBeClosed = mapOf(
+    private val tagNamePattern: Pattern = Pattern.compile("\\{%\\s+(\\w+).*")
+    private val tagsThatCanBeClosed = mapOf(
             "autoescape" to "endautoescape",
             "block" to "endblock",
             "cache" to "endcache",
@@ -89,7 +89,7 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
 
         while (offset > 0) {
             if (getCharAt(editor.document, offset) == '%' && getCharAt(editor.document, offset - 1) == '{') {
-                val tag = editor.document.text.substring(offset-1..editor.caretModel.offset - 1)
+                val tag = editor.document.text.substring(offset-1 until editor.caretModel.offset)
                 val matcher = tagNamePattern.matcher(tag)
 
                 if (matcher.matches()) {
@@ -106,7 +106,7 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
         val closingChar = if (openingChar == '{') '}' else openingChar
         val docCharSequence = editor.document.charsSequence
 
-        for (offset in afterOffset..docCharSequence.length - 1) {
+        for (offset in afterOffset until docCharSequence.length) {
             val nextChar = if (offset + 1 < docCharSequence.length)
                 docCharSequence[offset + 1]
                 else '\u0000'
@@ -145,7 +145,7 @@ class PebbleEnterBetweenTagsHandler : EnterHandlerDelegateAdapter() {
         return EnterHandlerDelegate.Result.Continue
     }
 
-    fun betweenMatchingTags(editor: Editor, offset: Int): Boolean {
+    private fun betweenMatchingTags(editor: Editor, offset: Int): Boolean {
         if (offset < 2) {
             return false
         }

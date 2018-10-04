@@ -1,20 +1,19 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.ext.springExtension
+import com.github.bjansen.intellij.pebble.ext.SpringExtension
 import com.github.bjansen.intellij.pebble.lang.PebbleFileType
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
-import com.github.bjansen.intellij.pebble.utils.resourceUtil
+import com.github.bjansen.intellij.pebble.utils.ResourceUtil
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.util.Key
 import com.intellij.psi.*
-import com.intellij.psi.util.PsiTreeUtil
 
 class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE) {
     private val key = Key.create<PsiClass>("PEBBLE_LOOP_CLASS")
 
     private val loopImplicitVariable: ImplicitVariable by lazy {
-        val loopClass = resourceUtil.loadPsiClassFromFile("/implicitCode/Loop.java", key, project)
+        val loopClass = ResourceUtil.loadPsiClassFromFile("/implicitCode/Loop.java", key, project)
         val loopType = JavaPsiFacade.getInstance(project).elementFactory.createType(loopClass!!)
         PebbleImplicitVariable("loop", loopType, this, null)
     }
@@ -34,7 +33,7 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
             list.add(loopImplicitVariable)
         }
         list.addAll(findLocalImplicitVariables())
-        list.addAll(springExtension.getImplicitVariables(this))
+        list.addAll(SpringExtension.getImplicitVariables(this))
 
         return list
     }
@@ -64,7 +63,7 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         val list = arrayListOf<PsiNameIdentifierOwner>()
 
         list.addAll(findLocalMacros())
-        list.addAll(springExtension.getImplicitFunctions(this))
+        list.addAll(SpringExtension.getImplicitFunctions(this))
 
         return list
     }

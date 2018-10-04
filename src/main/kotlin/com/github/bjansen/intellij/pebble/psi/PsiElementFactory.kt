@@ -12,7 +12,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 
-object psiElementFactory {
+object PsiElementFactory {
 
     fun createIdentifier(name: String, project: Project): PebbleIdentifier {
         val file = createFile("{{$name}}", project)
@@ -24,7 +24,7 @@ object psiElementFactory {
         return file.firstChild as PebbleComment
     }
 
-    fun createFile(content: String, project: Project): PsiFile {
+    private fun createFile(content: String, project: Project): PsiFile {
         return PsiFileFactory.getInstance(project)
                 .createFileFromText("a.peb", PebbleLanguage.INSTANCE, content)
     }

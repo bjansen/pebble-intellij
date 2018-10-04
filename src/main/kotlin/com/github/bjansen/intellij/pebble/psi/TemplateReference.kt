@@ -1,7 +1,6 @@
 package com.github.bjansen.intellij.pebble.psi
 
 import com.intellij.openapi.util.TextRange
-import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
@@ -20,7 +19,7 @@ class TemplateReference(element: PsiElement, rangeInElement: TextRange) : PsiRef
         return null
     }
 
-    fun findReferencedFile(): VirtualFile? {
+    private fun findReferencedFile(): VirtualFile? {
         val fileName = rangeInElement.substring(element.text)
 
         // TODO resolve non-relative paths (but we need to know how the loader is configured in the current project 😟)

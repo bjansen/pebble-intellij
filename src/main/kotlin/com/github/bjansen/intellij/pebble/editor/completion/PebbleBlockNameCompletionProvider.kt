@@ -32,17 +32,17 @@ class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameter
 
     private fun processFile(file: PsiFile, blockNames: MutableSet<String>, processedFiles: MutableSet<PebbleFile>,
                             result: CompletionResultSet, originatingTag: PsiElement?) {
-        processChildren(file, {
+        processChildren(file) {
             if (it is PebbleTagDirective) {
                 if (it.getTagName() == "block") {
                     val blockName = PsiTreeUtil.nextVisibleLeaf(it.getTagNameElement()!!)
                     if (blockName != null && blockName.node.elementType == tokens[PebbleLexer.ID_NAME]
-                            && blockName != originatingTag
-                            && blockNames.add(blockName.text)) {
+                        && blockName != originatingTag
+                        && blockNames.add(blockName.text)) {
                         result.addElement(
-                                LookupElementBuilder.create(blockName.text)
-                                        .withIcon(PebbleFileType.INSTANCE.icon)
-                                        .withTypeText("(${it.containingFile.name})", true)
+                            LookupElementBuilder.create(blockName.text)
+                                .withIcon(PebbleFileType.INSTANCE.icon)
+                                .withTypeText("(${it.containingFile.name})", true)
                         )
                     }
                 } else if (it.getTagName() in directivesWithFileRefs) {
@@ -54,7 +54,7 @@ class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameter
                     }
                 }
             }
-        })
+        }
     }
 
     private fun processChildren(element: PsiElement, processor: (PsiElement) -> Unit) {

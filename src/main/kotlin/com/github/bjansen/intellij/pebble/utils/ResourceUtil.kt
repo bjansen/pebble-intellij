@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiJavaFile
 import java.io.InputStreamReader
 
-object resourceUtil {
+object ResourceUtil {
 
     fun loadPsiClassFromFile(fileName: String, key: Key<PsiClass>, project: Project): PsiClass? {
         val cached = project.getUserData(key)
@@ -18,7 +18,7 @@ object resourceUtil {
             return cached
         }
 
-        val resource = resourceUtil::class.java
+        val resource = ResourceUtil::class.java
                 .getResourceAsStream(fileName)
 
         if (resource != null) {

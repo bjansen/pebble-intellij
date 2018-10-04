@@ -13,7 +13,7 @@ import com.intellij.psi.search.searches.SuperMethodsSearch
 import com.intellij.psi.util.PropertyUtil
 import com.intellij.psi.util.PsiTreeUtil
 
-object pebbleReferencesHelper {
+object PebbleReferencesHelper {
     private fun isOverride(method: PsiMethod)
             = SuperMethodsSearch.search(method, null, true, false).findFirst() != null
 

@@ -10,7 +10,7 @@ class PebbleIdentifierManipulator : ElementManipulator<PebbleIdentifier> {
 
     override fun handleContentChange(element: PebbleIdentifier, range: TextRange, newContent: String?): PebbleIdentifier {
         if (newContent != null) {
-            return element.replace(psiElementFactory.createIdentifier(newContent, element.project)) as PebbleIdentifier
+            return element.replace(PsiElementFactory.createIdentifier(newContent, element.project)) as PebbleIdentifier
         }
         return element
     }

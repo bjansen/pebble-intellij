@@ -9,8 +9,8 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 
 dependencies {
-    antlr('org.antlr:antlr4:4.6')
-    compile 'org.antlr:antlr4-runtime:4.6'
+    antlr('org.antlr:antlr4:4.7.1')
+    compile 'org.antlr:antlr4-runtime:4.7.1'
     testCompile 'junit:junit:4.+'
 }
 

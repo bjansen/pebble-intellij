@@ -47,28 +47,28 @@ class DelimitersConfigurationPanel(settings: CodeStyleSettings) : CustomizableLa
     override fun resetImpl(settings: CodeStyleSettings) {
         val pebbleSettings = settings.getCustomSettings(PebbleCodeStyleSettings::class.java)
 
-        tagOpen.text = pebbleSettings.TAG_OPEN
-        tagClose.text = pebbleSettings.TAG_CLOSE
-        printOpen.text = pebbleSettings.PRINT_OPEN
-        printClose.text = pebbleSettings.PRINT_CLOSE
+        tagOpen.text = pebbleSettings.tagOpen
+        tagClose.text = pebbleSettings.tagClose
+        printOpen.text = pebbleSettings.printOpen
+        printClose.text = pebbleSettings.printClose
     }
 
     override fun isModified(settings: CodeStyleSettings): Boolean {
         val pebbleSettings = settings.getCustomSettings(PebbleCodeStyleSettings::class.java)
 
-        return tagOpen.text != pebbleSettings.TAG_OPEN
-            || tagClose.text != pebbleSettings.TAG_CLOSE
-            || printOpen.text != pebbleSettings.PRINT_OPEN
-            || printClose.text != pebbleSettings.PRINT_CLOSE
+        return tagOpen.text != pebbleSettings.tagOpen
+            || tagClose.text != pebbleSettings.tagClose
+            || printOpen.text != pebbleSettings.printOpen
+            || printClose.text != pebbleSettings.printClose
     }
 
     override fun apply(settings: CodeStyleSettings) {
         val pebbleSettings = settings.getCustomSettings(PebbleCodeStyleSettings::class.java)
 
-        pebbleSettings.TAG_OPEN = tagOpen.text
-        pebbleSettings.TAG_CLOSE = tagClose.text
-        pebbleSettings.PRINT_OPEN = printOpen.text
-        pebbleSettings.PRINT_CLOSE = printClose.text
+        pebbleSettings.tagOpen = tagOpen.text
+        pebbleSettings.tagClose = tagClose.text
+        pebbleSettings.printOpen = printOpen.text
+        pebbleSettings.printClose = printClose.text
     }
 
     override fun getSettingsType(): LanguageCodeStyleSettingsProvider.SettingsType {

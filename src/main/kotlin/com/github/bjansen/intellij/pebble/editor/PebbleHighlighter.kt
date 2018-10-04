@@ -51,7 +51,7 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
         return pack(BACKGROUND, attributes)
     }
 
-    companion object highlights {
+    companion object Highlights {
         val BACKGROUND = createTextAttributesKey("PEBBLE_BACKGROUND",
                 DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR)
 

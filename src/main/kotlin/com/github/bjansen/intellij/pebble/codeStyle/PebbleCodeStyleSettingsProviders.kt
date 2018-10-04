@@ -17,16 +17,16 @@ import org.jdom.Element
 class PebbleCodeStyleSettings(container: CodeStyleSettings)
     : CustomCodeStyleSettings("PebbleCodeStyleSettings", container) {
 
-    var TAG_OPEN = "{%"
-    var TAG_CLOSE = "%}"
-    var PRINT_OPEN = "{{"
-    var PRINT_CLOSE = "}}"
+    var tagOpen = "{%"
+    var tagClose = "%}"
+    var printOpen = "{{"
+    var printClose = "}}"
 
     fun useDefaultDelimiters(): Boolean {
-        return TAG_OPEN == "{%"
-            && TAG_CLOSE == "%}"
-            && PRINT_OPEN == "{{"
-            && PRINT_CLOSE == "}}"
+        return tagOpen == "{%"
+            && tagClose == "%}"
+            && printOpen == "{{"
+            && printClose == "}}"
     }
 
     // We have to override those because Kotlin fields are compiled to getters/setters and
@@ -38,8 +38,8 @@ class PebbleCodeStyleSettings(container: CodeStyleSettings)
     override fun writeExternal(parentElement: Element, parentSettings: CustomCodeStyleSettings) {
         val defaults = PebbleCodeStyleSettings(container)
 
-        XmlSerializer.serializeInto(this, parentElement,
-                { accessor, bean -> accessor.read(bean) != accessor.read(defaults) })
+        XmlSerializer.serializeInto(this, parentElement
+        ) { accessor, bean -> accessor.read(bean) != accessor.read(defaults) }
     }
 }
 
@@ -53,7 +53,7 @@ class PebbleCodeStyleSettingsProvider : CodeStyleSettingsProvider() {
                 return MyCodeStyleMainPanel(currentSettings, settings)
             }
 
-            override fun getHelpTopic() = null
+            override fun getHelpTopic(): String? = null
         }
     }
 

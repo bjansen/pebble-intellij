@@ -4,7 +4,7 @@ import com.github.bjansen.intellij.pebble.PebbleBundle.message
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifierReference
 import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.*
@@ -43,7 +43,7 @@ class UnknownAttributeInspection : LocalInspectionTool() {
             private fun inspectIdentifier(element: PebbleIdentifier) {
                 val ref = element.reference
                 if (ref is PebbleIdentifierReference) {
-                    val qualifier = pebbleReferencesHelper.findQualifyingMember(element)
+                    val qualifier = PebbleReferencesHelper.findQualifyingMember(element)
 
                     if (qualifier != null && ref.resolve() == null) {
                         val type = when (qualifier) {

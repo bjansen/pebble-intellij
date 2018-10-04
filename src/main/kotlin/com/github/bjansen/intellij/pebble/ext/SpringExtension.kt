@@ -2,10 +2,10 @@ package com.github.bjansen.intellij.pebble.ext
 
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTypeLookups
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMembersByName
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
-import com.github.bjansen.intellij.pebble.utils.resourceUtil
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.buildPsiTypeLookups
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findMembersByName
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findQualifyingMember
+import com.github.bjansen.intellij.pebble.utils.ResourceUtil
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.application.ApplicationManager
@@ -30,11 +30,11 @@ import com.intellij.spring.model.xml.AbstractDomSpringBean
 import com.intellij.util.ProcessingContext
 import icons.SpringApiIcons
 
-object springExtension {
+object SpringExtension {
     private val key = Key.create<PsiClass>("PEBBLE_SPRING_CLASS")
 
     private fun getPebbleSpringClass(project: Project): PsiClass? {
-        return resourceUtil.loadPsiClassFromFile("/implicitCode/PebbleSpring.java", key, project)
+        return ResourceUtil.loadPsiClassFromFile("/implicitCode/PebbleSpring.java", key, project)
     }
 
     fun getImplicitVariables(file: PebbleFile): List<PsiVariable> {
@@ -95,7 +95,7 @@ class PebbleSpringReferenceContributor : PsiReferenceContributor() {
  */
 class PebbleSpringReferenceProvider : PsiReferenceProvider() {
     override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
-        return if (springExtension.isPebbleSpringAvailable(element.containingFile)) {
+        return if (SpringExtension.isPebbleSpringAvailable(element.containingFile)) {
             arrayOf(PebbleSpringReference(element, TextRange.from(0, element.node.textLength)))
         } else {
             emptyArray()

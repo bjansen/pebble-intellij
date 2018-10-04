@@ -31,10 +31,6 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
 
     override fun getTemplateDataLanguage() = myTemplateLanguage
 
-    override fun supportsIncrementalReparse(rootLanguage: Language): Boolean {
-        return super.supportsIncrementalReparse(rootLanguage)
-    }
-
     override fun getLanguages() = setOf(PebbleLanguage.INSTANCE, templateDataLanguage)
 
     override fun createFile(lang: Language): PsiFile? {

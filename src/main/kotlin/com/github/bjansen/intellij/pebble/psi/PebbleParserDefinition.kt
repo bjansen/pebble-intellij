@@ -43,10 +43,10 @@ fun createLexer(input: CharStream?, project: Project?): Lexer {
     val antlrLexer =
             if (ourSettings.useDefaultDelimiters()) PebbleLexer(input)
             else ConfigurableLexer(input)
-                    .withTagOpenDelimiter(ourSettings.TAG_OPEN)
-                    .withTagCloseDelimiter(ourSettings.TAG_CLOSE)
-                    .withPrintOpenDelimiter(ourSettings.PRINT_OPEN)
-                    .withPrintCloseDelimiter(ourSettings.PRINT_CLOSE)
+                    .withTagOpenDelimiter(ourSettings.tagOpen)
+                    .withTagCloseDelimiter(ourSettings.tagClose)
+                    .withPrintOpenDelimiter(ourSettings.printOpen)
+                    .withPrintCloseDelimiter(ourSettings.printClose)
 
     return ANTLRLexerAdaptor(PebbleLanguage.INSTANCE, antlrLexer)
 }
@@ -133,7 +133,7 @@ class PebbleParserDefinition : ParserDefinition {
     }
 
     override fun createElement(node: ASTNode): PsiElement {
-        return psiElementFactory.createElement(node)
+        return PsiElementFactory.createElement(node)
     }
 
     companion object {

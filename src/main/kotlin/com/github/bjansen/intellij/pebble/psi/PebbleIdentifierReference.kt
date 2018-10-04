@@ -1,8 +1,8 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.buildPsiTypeLookups
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findMembersByName
-import com.github.bjansen.intellij.pebble.psi.pebbleReferencesHelper.findQualifyingMember
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.buildPsiTypeLookups
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findMembersByName
+import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findQualifyingMember
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder
 import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
@@ -108,7 +108,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                                 is PebbleMacroTag -> {
                                     val name = it.name
                                     val params = it.getParameterNames()
-                                    val handler = ParenthesesInsertHandler.getInstance(params.size > 0)
+                                    val handler = ParenthesesInsertHandler.getInstance(params.isNotEmpty())
 
                                     if (name == null)
                                         null

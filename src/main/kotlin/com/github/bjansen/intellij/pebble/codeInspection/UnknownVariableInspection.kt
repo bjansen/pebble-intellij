@@ -44,7 +44,7 @@ class UnknownVariableInspection : LocalInspectionTool() {
 
                     val ref = element.reference
                     if (ref is PebbleIdentifierReference) {
-                        val qualifier = pebbleReferencesHelper.findQualifyingMember(element)
+                        val qualifier = PebbleReferencesHelper.findQualifyingMember(element)
 
                         if (qualifier == null && ref.resolve() == null) {
                             holder.registerProblem(

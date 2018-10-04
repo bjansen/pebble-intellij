@@ -50,6 +50,6 @@ class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
 
         assertNotNull(intention)
         myFixture.launchAction(intention!!)
-        myFixture.checkResultByFile("addImplicitVariable.after.peb");
+        myFixture.checkResultByFile("addImplicitVariable.after.peb")
     }
 }
