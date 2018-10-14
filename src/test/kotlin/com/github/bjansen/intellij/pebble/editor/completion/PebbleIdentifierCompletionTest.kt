@@ -148,6 +148,23 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         assertContainsElements(signatures, "hello(param1, param2, param3)")
     }
 
+    fun testCompletionOfLoopInForTag() {
+        myFixture.configureByFile("for.peb")
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("loop", "foo", "beforeLoop", "myVar", "myVar2"))
+        assertLookupsDontContain(listOf("afterLoop"))
+    }
+
+
+    fun testScopes1() {
+        myFixture.configureByFile("scopes1.peb")
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("loop", "foo", "foo2", "beforeLoop", "myVar", "myVar2"))
+        assertLookupsDontContain(listOf("afterLoop"))
+    }
+
     private fun assertLookupsContain(elements: Collection<String>) {
         val lookups = myFixture.lookupElementStrings
 

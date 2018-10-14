@@ -10,11 +10,13 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.PsiElementResolveResult.createResults
+import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.psi.scope.util.PsiScopesUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PlatformIcons
 
-class PebbleIdentifierReference(private val psi: PsiElement, private val range: TextRange)
-    : PsiPolyVariantReferenceBase<PsiElement>(psi, range) {
+class PebbleIdentifierReference(private val psi: PsiElement, private val range: TextRange) :
+    PsiPolyVariantReferenceBase<PsiElement>(psi, range) {
 
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val qualifyingMember = findQualifyingMember(psi)
@@ -36,11 +38,12 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
 
             val file = psi.containingFile
             if (file is PebbleFile) {
-                for (iv in file.getImplicitVariables(psi)) {
-                    if (iv.name == referenceText) {
-                        return createResults(if (iv is PebbleImplicitVariable) iv.declaration ?: iv else iv)
-                    }
+                val variable = findVariableMatching(referenceText)
+
+                if (variable != null) {
+                    return createResults(if (variable is PebbleImplicitVariable) variable.declaration ?: variable else variable)
                 }
+
                 for (func in file.getImplicitFunctions()) {
                     // TODO match signatures!
                     if (func.name == referenceText) {
@@ -51,6 +54,21 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         }
 
         return emptyArray()
+    }
+
+    private fun findVariableMatching(referenceText: String): PsiNamedElement? {
+        var iv: PsiNamedElement? = null
+
+        val processor = PsiScopeProcessor { element, _ ->
+            if (element is PsiNamedElement && element.name == referenceText) {
+                iv = element
+                return@PsiScopeProcessor false
+            }
+            true
+        }
+        PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
+
+        return iv
     }
 
     private fun resolveOpeningBlockTag(closingBlockTag: PebbleTagDirective, blockName: String): Array<ResolveResult> {
@@ -76,12 +94,19 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             val file = element.containingFile
 
             if (file is PebbleFile) {
-                val implicitVar = file.getImplicitVariables(psi).find {
-                    it.name == qualifyingMember.text
-                }
+                var type: PsiType? = null
 
-                if (implicitVar != null) {
-                    return buildPsiTypeLookups(implicitVar.type)
+                val processor = PsiScopeProcessor { element, _ ->
+                    if (element is PsiVariable && element.name == qualifyingMember.text) {
+                        type = element.type
+                        return@PsiScopeProcessor false
+                    }
+                    true
+                }
+                PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
+
+                if (type != null) {
+                    return buildPsiTypeLookups(type)
                 }
             }
         } else if (qualifyingMember is PsiMethod) {
@@ -90,40 +115,50 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             val file = psi.containingFile
             if (file is PebbleFile) {
                 val result = arrayListOf<LookupElement>()
-                result.addAll(
-                        file.getImplicitVariables(psi).map {
-                            LookupElementBuilder.create(it)
-                                    .withTypeText(it.type.presentableText)
-                                    .withIcon(PlatformIcons.VARIABLE_ICON)
-                        }
-                )
-                result.addAll(
-                        file.getImplicitFunctions().mapNotNull {
-                            when (it) {
-                                is PsiMethod -> {
-                                    val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
-                                    JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
-                                            .withInsertHandler(handler)
-                                }
-                                is PebbleMacroTag -> {
-                                    val name = it.name
-                                    val params = it.getParameterNames()
-                                    val handler = ParenthesesInsertHandler.getInstance(params.isNotEmpty())
+                val processor = PsiScopeProcessor { element, _ ->
+                    if (element is PsiVariable) {
+                        result.add(
+                            LookupElementBuilder.create(element)
+                                .withTypeText(element.type.presentableText)
+                                .withIcon(PlatformIcons.VARIABLE_ICON)
+                        )
+                    } else if (element is PebbleSetTag) {
+                        result.add(
+                            LookupElementBuilder.create(element)
+                                .withIcon(PlatformIcons.VARIABLE_ICON)
+                        )
+                    }
+                    true
+                }
+                PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
 
-                                    if (name == null)
-                                        null
-                                    else {
-                                        LookupElementBuilder.create(it, name)
-                                                .withPresentableText(name)
-                                                .withTailText(params.joinToString(", ", "(", ")"))
-                                                .withTypeText("void")
-                                                .withIcon(PlatformIcons.FUNCTION_ICON)
-                                                .withInsertHandler(handler)
-                                    }
-                                }
-                                else -> null
+                result.addAll(
+                    file.getImplicitFunctions().mapNotNull {
+                        when (it) {
+                            is PsiMethod -> {
+                                val handler = ParenthesesInsertHandler.getInstance(it.parameterList.parametersCount > 0)
+                                JavaLookupElementBuilder.forMethod(it, PsiSubstitutor.EMPTY)
+                                    .withInsertHandler(handler)
                             }
+                            is PebbleMacroTag -> {
+                                val name = it.name
+                                val params = it.getParameterNames()
+                                val handler = ParenthesesInsertHandler.getInstance(params.isNotEmpty())
+
+                                if (name == null)
+                                    null
+                                else {
+                                    LookupElementBuilder.create(it, name)
+                                        .withPresentableText(name)
+                                        .withTailText(params.joinToString(", ", "(", ")"))
+                                        .withTypeText("void")
+                                        .withIcon(PlatformIcons.FUNCTION_ICON)
+                                        .withInsertHandler(handler)
+                                }
+                            }
+                            else -> null
                         }
+                    }
                 )
                 return result.toTypedArray()
             }

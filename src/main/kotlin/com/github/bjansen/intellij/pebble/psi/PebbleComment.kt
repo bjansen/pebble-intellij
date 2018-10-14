@@ -4,6 +4,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider
 import com.intellij.psi.impl.source.tree.PsiCoreCommentImpl
+import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.tree.IElementType
 
 class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl(type, text), PsiNamedElement {
@@ -83,6 +84,21 @@ class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl
         }
 
         return refs.toTypedArray()
+    }
+
+    override fun processDeclarations(
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement
+    ): Boolean {
+        val implicitVariable = getImplicitVariable(this)
+
+        if (implicitVariable != null) {
+            return processor.execute(implicitVariable, state)
+        }
+
+        return true
     }
 }
 

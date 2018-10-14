@@ -10,7 +10,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiTreeUtil
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
-import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
 
 object PsiElementFactory {
 
@@ -41,6 +40,8 @@ object PsiElementFactory {
             return when (node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.text) {
                 "macro" -> PebbleMacroTag(node)
                 "block" -> PebbleBlockTag(node)
+                "for" -> PebbleForTag(node)
+                "set" -> PebbleSetTag(node)
                 else -> PebbleTagDirective(node)
             }
         } else if (elType == rules[PebbleParser.RULE_printDirective]) {
@@ -50,10 +51,10 @@ object PsiElementFactory {
         } else if (elType == rules[PebbleParser.RULE_argument_list]) {
             return PebbleArgumentList(node)
         } else if (elType is TokenIElementType) {
-            return ANTLRPsiNode(node)
+            return PebblePsiElement(node)
         }
 
-        return ANTLRPsiNode(node) // TODO
+        return PebblePsiElement(node) // TODO
     }
 }
 

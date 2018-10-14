@@ -13,6 +13,6 @@
       <entry name="!?*.aj" />
       <entry name="!?*.ceylon" />
     </wildcardResourcePatterns>
-    <bytecodeTargetLevel target="7" />
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>

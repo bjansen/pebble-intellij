@@ -1,0 +1,3 @@
+{% set myVar="myVar" %}
+
+{{ myVar }}

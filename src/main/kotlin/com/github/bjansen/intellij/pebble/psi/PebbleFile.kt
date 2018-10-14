@@ -8,11 +8,13 @@ import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.util.Key
 import com.intellij.psi.*
+import com.intellij.psi.scope.PsiScopeProcessor
+import org.antlr.jetbrains.adaptor.psi.ScopeNode
 
-class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE) {
+class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE), ScopeNode {
     private val key = Key.create<PsiClass>("PEBBLE_LOOP_CLASS")
 
-    private val loopImplicitVariable: ImplicitVariable by lazy {
+    val loopImplicitVariable: ImplicitVariable by lazy {
         val loopClass = ResourceUtil.loadPsiClassFromFile("/implicitCode/Loop.java", key, project)
         val loopType = JavaPsiFacade.getInstance(project).elementFactory.createType(loopClass!!)
         PebbleImplicitVariable("loop", loopType, this, null)
@@ -26,37 +28,27 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         return "Pebble file"
     }
 
-    fun getImplicitVariables(location: PsiElement): List<PsiVariable> {
-        val list = arrayListOf<PsiVariable>()
+    override fun processDeclarations(
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement
+    ): Boolean {
 
-        if (inForTag(location)) {
-            list.add(loopImplicitVariable)
-        }
-        list.addAll(findLocalImplicitVariables())
-        list.addAll(SpringExtension.getImplicitVariables(this))
-
-        return list
-    }
-
-    private fun inForTag(location: PsiElement): Boolean {
-        var openedForLoops = 0
-
-        object : PsiRecursiveElementVisitor() {
-            override fun visitElement(element: PsiElement?) {
-                if (element != null && element.textOffset < location.textOffset) {
-                    if (element is PebbleTagDirective) {
-                        if (element.getTagName() == "for") {
-                            openedForLoops++
-                        } else if (element.getTagName() == "endfor") {
-                            openedForLoops--
-                        }
-                    }
-                    super.visitElement(element)
-                }
+        SpringExtension.getImplicitVariables(this).forEach {
+            if (!processor.execute(it, state)) {
+                return false
             }
-        }.visitFile(this)
+        }
 
-        return openedForLoops > 0
+        children.forEach {
+            // For some reason, if a file starts with a comment it is not nested
+            // in the PebbleTemplate
+            if (it is PebbleComment) {
+                it.processDeclarations(processor, state, lastParent, place)
+            }
+        }
+        return true
     }
 
     fun getImplicitFunctions(): List<PsiNameIdentifierOwner> {
@@ -66,6 +58,14 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         list.addAll(SpringExtension.getImplicitFunctions(this))
 
         return list
+    }
+
+    override fun resolve(element: PsiNamedElement?): PsiElement? {
+        return null
+    }
+
+    override fun getContext(): ScopeNode? {
+        return null
     }
 
     // TODO cache the result?

@@ -8,14 +8,16 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.PsiReference
+import com.intellij.psi.ResolveState
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
-import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
+import com.intellij.psi.scope.PsiScopeProcessor
+import org.antlr.jetbrains.adaptor.psi.ScopeNode
 import java.util.*
 
 val directivesWithFileRefs = arrayOf("extends", "include", "import")
 
-open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
+open class PebbleTagDirective(node: ASTNode) : PebblePsiElement(node) {
 
     fun getTagName() = getTagNameElement()?.text
 
@@ -40,8 +42,12 @@ open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
                 val templateName = range.substring(text)
 
                 // Resolves relative paths
-                refs.addAll(FileReferenceSet(FileUtil.toSystemIndependentName(templateName),
-                        this, range.startOffset, null, true).allReferences)
+                refs.addAll(
+                    FileReferenceSet(
+                        FileUtil.toSystemIndependentName(templateName),
+                        this, range.startOffset, null, true
+                    ).allReferences
+                )
 
                 // Resolves partial template names (prefix/suffix are automatically added)
                 refs.add(TemplateReference(this, range))
@@ -61,11 +67,36 @@ open class PebbleTagDirective(node: ASTNode) : ANTLRPsiNode(node) {
     }
 }
 
-class PebblePrintDirective(node: ASTNode) : ANTLRPsiNode(node)
+class PebblePrintDirective(node: ASTNode) : PebblePsiElement(node)
 
-class PebbleTemplate(node: ASTNode) : ANTLRPsiNode(node)
+class PebbleTemplate(node: ASTNode) : PebblePsiElement(node), ScopeNode {
+    override fun resolve(element: PsiNamedElement?): PsiElement? {
+        return null
+    }
 
-class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
+    override fun processDeclarations(
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement
+    ): Boolean {
+        val stopElement = lastParent ?: place
+
+        children.forEach {
+            if (it.textOffset < stopElement.textOffset && (it is PebbleSetTag || it is PebbleComment)) {
+                if (!processor.execute(it, state)) {
+                    return false
+                } else {
+                    it.processDeclarations(processor, state, lastParent, place)
+                }
+            }
+        }
+
+        return true
+    }
+}
+
+class PebbleIdentifier(node: ASTNode) : PebblePsiElement(node), PsiNamedElement {
     override fun setName(name: String): PsiElement {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -77,8 +108,8 @@ class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
     override fun getReferences(): Array<PsiReference> {
         // Allows our PsiReferenceContributor to contribute their references
         return arrayOf(
-                reference,
-                *ReferenceProvidersRegistry.getReferencesFromProviders(this)
+            reference,
+            *ReferenceProvidersRegistry.getReferencesFromProviders(this)
         ).requireNoNulls()
     }
 
@@ -87,4 +118,4 @@ class PebbleIdentifier(node: ASTNode) : ANTLRPsiNode(node), PsiNamedElement {
     }
 }
 
-class PebbleArgumentList(node: ASTNode) : ANTLRPsiNode(node)
+class PebbleArgumentList(node: ASTNode) : PebblePsiElement(node)

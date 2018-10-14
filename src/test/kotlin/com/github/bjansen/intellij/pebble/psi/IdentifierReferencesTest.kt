@@ -216,4 +216,18 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Expected 'loop' to resolve to nothing outside of 'for' loop")
         }
     }
+
+    fun testReferenceToSet() {
+        initFile("set.peb")
+
+        moveCaret(30)
+
+        val resolved = resolveRefAtCaret()
+        if (resolved != null) {
+            assert(resolved is PebbleSetTag)
+            assert((resolved as PebbleSetTag).name == "myVar")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
 }

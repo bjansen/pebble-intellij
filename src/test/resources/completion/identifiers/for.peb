@@ -1,0 +1,11 @@
+{% set beforeLoop="var" %}
+
+{% for foo in bar %}
+    {% if true %}
+        {% set myVar="var" %}
+    {% endif %}
+    {% set myVar2="var" %}
+    {{ <caret> }}
+{% endfor %}
+
+{% set afterLoop="var" %}

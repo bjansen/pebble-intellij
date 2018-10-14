@@ -54,7 +54,7 @@ tagName
     ;
 
 expression
-    : expression OP_ASSIGN expression
+    : assignment_expression
     | unary_op expression
     | parenthesized_expression
     | expression array_expression
@@ -70,10 +70,18 @@ expression
     | expression OP_PIPE expression
     | expression OP_CONCAT expression
     | expression OP_RANGE expression
-    | expression IN expression
+    | in_expression
     | function_call_expression
     | qualified_expression
     | term
+    ;
+
+assignment_expression
+    : identifier OP_ASSIGN expression
+    ;
+
+in_expression
+    : identifier IN expression
     ;
 
 parenthesized_expression
@@ -164,7 +172,7 @@ numeric_literal
     ;
 
 identifier
-    : ID_NAME | WITH | IN | NONE
+    : ID_NAME | WITH | IN | NONE // TODO NONE is a keyword
     ;
 
 filters
