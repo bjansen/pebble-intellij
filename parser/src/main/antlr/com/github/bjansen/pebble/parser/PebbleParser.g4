@@ -42,7 +42,7 @@ tagDirective
     ;
 
 verbatimTag
-    : VERBATIM_TAG_OPEN VERBATIM_BODY? VERBATIM_TAG_END
+    : VERBATIM_TAG_OPEN CONTENT? VERBATIM_TAG_END
     ;
 
 genericTag

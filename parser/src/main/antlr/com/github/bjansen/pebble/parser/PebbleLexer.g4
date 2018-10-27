@@ -21,14 +21,14 @@ public Token nextToken() {
 
     Token next = customNextToken();
 
-    if (next.getType() != CONTENT && next.getType() != VERBATIM_BODY) {
+    if (next.getType() != CONTENT) {
         return next;
     }
 
     StringBuilder builder = new StringBuilder();
     Token startToken = next;
 
-    while (next.getType() == CONTENT || next.getType() == VERBATIM_BODY) {
+    while (next.getType() == CONTENT) {
         builder.append(next.getText());
         next = customNextToken();
     }
@@ -79,7 +79,7 @@ VERBATIM_TAG_END
     ;
 
 VERBATIM_BODY
-    : .
+    : . -> type(CONTENT)
     ;
 
 

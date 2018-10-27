@@ -35,6 +35,7 @@
 {{ input2() }}
 
 {% verbatim %}
+    <b>html</b>
 	{% for user in users %}
 		{{ user.name }}
 	{% endfor %}}

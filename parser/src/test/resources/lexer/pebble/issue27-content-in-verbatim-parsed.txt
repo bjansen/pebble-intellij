@@ -1,0 +1,7 @@
+(pebbleTemplate (tagDirective (genericTag {% (tagName if) %}))
+(tagDirective (genericTag {% (tagName endif) %}))
+
+(tagDirective (verbatimTag {% verbatim %}
+hello
+{% endverbatim %}))
+)
