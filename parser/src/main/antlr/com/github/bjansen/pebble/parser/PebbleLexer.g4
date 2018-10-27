@@ -249,6 +249,10 @@ SINGLE_QUOTED_STRING
     : '\'' ~[']* '\''?
     ;
 
+LONG
+    : [0-9]+ 'l'
+    ;
+
 NUMERIC
     : [0-9]+(.[0-9]+)?
     ;

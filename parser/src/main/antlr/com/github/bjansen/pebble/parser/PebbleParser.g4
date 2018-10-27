@@ -169,6 +169,7 @@ string_literal
 
 numeric_literal
     : NUMERIC
+    | LONG
     ;
 
 identifier

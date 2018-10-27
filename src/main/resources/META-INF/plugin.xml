@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -9,6 +9,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <b>v0.5</b>
+    <ul>
+        <li>support for long values</li>
+        <li>improved code completion and navigation to declarations</li>
+    </ul>
     <b>v0.4</b>
     <ul>
         <li>support for the implicit `loop` variable in `for` blocks</li>
