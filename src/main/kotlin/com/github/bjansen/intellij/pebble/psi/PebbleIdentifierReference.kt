@@ -10,7 +10,6 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.PsiElementResolveResult.createResults
-import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.scope.util.PsiScopesUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PlatformIcons
@@ -59,12 +58,14 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
     private fun findVariableMatching(referenceText: String): PsiNamedElement? {
         var iv: PsiNamedElement? = null
 
-        val processor = PsiScopeProcessor { element, _ ->
-            if (element is PsiNamedElement && element.name == referenceText) {
-                iv = element
-                return@PsiScopeProcessor false
+        val processor = object : PebbleScopeProcessor {
+            override fun execute(element: PsiElement, state: ResolveState): Boolean {
+                if (element is PsiNamedElement && element.name == referenceText) {
+                    iv = element
+                    return false
+                }
+                return true
             }
-            true
         }
         PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
 
@@ -96,12 +97,14 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             if (file is PebbleFile) {
                 var type: PsiType? = null
 
-                val processor = PsiScopeProcessor { element, _ ->
-                    if (element is PsiVariable && element.name == qualifyingMember.text) {
-                        type = element.type
-                        return@PsiScopeProcessor false
+                val processor = object : PebbleScopeProcessor {
+                    override fun execute(element: PsiElement, state: ResolveState): Boolean {
+                        if (element is PsiVariable && element.name == qualifyingMember.text) {
+                            type = element.type
+                            return false
+                        }
+                        return true
                     }
-                    true
                 }
                 PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
 
@@ -115,20 +118,22 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             val file = psi.containingFile
             if (file is PebbleFile) {
                 val result = arrayListOf<LookupElement>()
-                val processor = PsiScopeProcessor { element, _ ->
-                    if (element is PsiVariable) {
-                        result.add(
-                            LookupElementBuilder.create(element)
-                                .withTypeText(element.type.presentableText)
-                                .withIcon(PlatformIcons.VARIABLE_ICON)
-                        )
-                    } else if (element is PebbleSetTag) {
-                        result.add(
-                            LookupElementBuilder.create(element)
-                                .withIcon(PlatformIcons.VARIABLE_ICON)
-                        )
+                val processor = object : PebbleScopeProcessor {
+                    override fun execute(element: PsiElement, state: ResolveState): Boolean {
+                        if (element is PsiVariable) {
+                            result.add(
+                                LookupElementBuilder.create(element)
+                                    .withTypeText(element.type.presentableText)
+                                    .withIcon(PlatformIcons.VARIABLE_ICON)
+                            )
+                        } else if (element is PebbleSetTag) {
+                            result.add(
+                                LookupElementBuilder.create(element)
+                                    .withIcon(PlatformIcons.VARIABLE_ICON)
+                            )
+                        }
+                        return true
                     }
-                    true
                 }
                 PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
 
