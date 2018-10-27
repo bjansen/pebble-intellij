@@ -117,7 +117,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         } else if (qualifyingMember == null) {
             val file = psi.containingFile
             if (file is PebbleFile) {
-                val result = arrayListOf<LookupElement>()
+                val result = mutableSetOf<LookupElement>()
                 val processor = object : PebbleScopeProcessor {
                     override fun execute(element: PsiElement, state: ResolveState): Boolean {
                         if (element is PsiVariable) {

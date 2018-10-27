@@ -61,7 +61,7 @@ class PebbleForTag(node: ASTNode) : PebblePsiElement(node), ScopeNode {
         return node.lastChildNode?.psi
     }
 
-    fun getVariable(): PsiElement? {
+    private fun getVariable(): PsiElement? {
         val tag = getOpeningTag()
 
         if (tag != null) {
