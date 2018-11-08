@@ -54,3 +54,7 @@
 %}
 
 {{ 1 + 2l }}
+
+{{ "hello world" }}
+{# @pebvariable name="world" type="java.lang.String" #}
+{{ "hello #{world}" }}

@@ -97,7 +97,8 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
 
     private val delimiters = Arrays.asList(
             tokens[PebbleLexer.TAG_OPEN], tokens[PebbleLexer.TAG_CLOSE],
-            tokens[PebbleLexer.PRINT_OPEN], tokens[PebbleLexer.PRINT_CLOSE]
+            tokens[PebbleLexer.PRINT_OPEN], tokens[PebbleLexer.PRINT_CLOSE],
+            tokens[PebbleLexer.INTERPOLATED_STRING_START], tokens[PebbleLexer.INTERPOLATED_STRING_STOP]
     )
 
     private val braces = Arrays.asList(
@@ -119,6 +120,7 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
     )
 
     private val strings = Arrays.asList(
-            tokens[PebbleLexer.STRING], tokens[PebbleLexer.SINGLE_QUOTED_STRING]
+            tokens[PebbleLexer.STRING_START], tokens[PebbleLexer.STRING_END],
+            tokens[PebbleLexer.TEXT], tokens[PebbleLexer.SINGLE_QUOTED_STRING]
     )
 }

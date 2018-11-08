@@ -59,7 +59,6 @@ expression
     | parenthesized_expression
     | expression array_expression
     | expression WITH map_expression
-    | expression map_expression
     | expression OR expression
     | expression AND expression
     | expression ((IS test)|(CONTAINS expression))
@@ -70,6 +69,7 @@ expression
     | expression OP_PIPE expression
     | expression OP_CONCAT expression
     | expression OP_RANGE expression
+    | map_expression
     | in_expression
     | function_call_expression
     | qualified_expression
@@ -163,7 +163,7 @@ boolean_literal
     ;
 
 string_literal
-    : STRING
+    : STRING_START (TEXT | (INTERPOLATED_STRING_START expression? INTERPOLATED_STRING_STOP))* STRING_END?
     | SINGLE_QUOTED_STRING
     ;
 

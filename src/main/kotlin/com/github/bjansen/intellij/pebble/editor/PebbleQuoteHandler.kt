@@ -5,5 +5,5 @@ import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.codeInsight.editorActions.SimpleTokenSetQuoteHandler
 
 class PebbleQuoteHandler
-    : SimpleTokenSetQuoteHandler(tokens[PebbleLexer.STRING], tokens[PebbleLexer.SINGLE_QUOTED_STRING])
+    : SimpleTokenSetQuoteHandler(tokens[PebbleLexer.STRING_START], tokens[PebbleLexer.SINGLE_QUOTED_STRING])
 

@@ -17,7 +17,8 @@ class PebbleBraceMatcher : PairedBraceMatcher {
         return arrayOf(
                 BracePair(tokens[PebbleLexer.LPAREN], tokens[PebbleLexer.RPAREN], false),
                 BracePair(tokens[PebbleLexer.LBRACE], tokens[PebbleLexer.RBRACE], false),
-                BracePair(tokens[PebbleLexer.LBRACKET], tokens[PebbleLexer.RBRACKET], false)
+                BracePair(tokens[PebbleLexer.LBRACKET], tokens[PebbleLexer.RBRACKET], false),
+                BracePair(tokens[PebbleLexer.INTERPOLATED_STRING_START], tokens[PebbleLexer.INTERPOLATED_STRING_STOP], false)
         )
     }
 

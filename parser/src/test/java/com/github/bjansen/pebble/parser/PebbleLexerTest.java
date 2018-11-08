@@ -35,6 +35,11 @@ public class PebbleLexerTest extends AbstractLexerTest {
         lexFile("src/test/resources/lexer/pebble/issue27-content-in-verbatim.peb");
     }
 
+    @Test
+    public void testIssue31() {
+        lexFile("src/test/resources/lexer/pebble/issue31-strings.peb");
+    }
+
     @Override
     PebbleLexer createLexer(String text) {
         return new PebbleLexer(new ANTLRInputStream(text));

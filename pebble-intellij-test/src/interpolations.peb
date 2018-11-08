@@ -1,0 +1,9 @@
+{{ "hello world" }}
+{{ "" }}
+{{ "hello #{}" }}
+{# @pebvariable name="world" type="java.lang.String" #}
+{{ "hello #{world}" }}
+{{ "hello #{world + 1 / 2l}" + "" }}
+{{ "hello #{{'key':'value'}}" }}
+{{ "hello #{{'key':'value'}}" }}
+{{ "hello world }}

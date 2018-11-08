@@ -7,6 +7,8 @@ package com.github.bjansen.pebble.parser;
 @members {
 
 private java.util.Queue<Token> queue = new java.util.LinkedList<Token>();
+private boolean inStringInterpolation = false;
+private int openingBracesCount = 0;
 
 protected Token customNextToken() {
     return super.nextToken();
@@ -90,7 +92,7 @@ TAG_CLOSE
     ;
 
 PRINT_CLOSE
-    : ('-}}' | '}}') -> popMode
+    : ('-}}' | ('}}' {openingBracesCount == 0 && !inStringInterpolation}?)) -> popMode
     ;
 
 NOT
@@ -135,10 +137,28 @@ OP_MEMBER
 
 LBRACE
     : '{'
+    {
+        if (inStringInterpolation) {
+            openingBracesCount++;
+        }
+    }
     ;
 
 RBRACE
     : '}'
+    {
+        if (inStringInterpolation) {
+            if (openingBracesCount > 0) {
+                // We are probably closing a map expression or something similar
+                openingBracesCount--;
+            } else {
+                // We are closing the string interpolation
+                inStringInterpolation = false;
+                setType(INTERPOLATED_STRING_STOP);
+                popMode();
+            }
+        }
+    }
     ;
 
 LBRACKET
@@ -241,8 +261,8 @@ WITH
     : 'with'
     ;
 
-STRING
-    : '"' ~["]* '"'?
+STRING_START
+    : '"' -> pushMode(IN_STRING)
     ;
 
 SINGLE_QUOTED_STRING
@@ -268,4 +288,22 @@ WHITESPACE
 
 ERRCHAR2
     : . -> channel(HIDDEN)
+    ;
+
+mode IN_STRING;
+
+STRING_END
+    : '"' -> popMode
+    ;
+
+INTERPOLATED_STRING_START
+    : '#{' {inStringInterpolation = true;} -> pushMode(IN_TAG)
+    ;
+
+TEXT
+    : (~["#] | ('#' ~'{'))+
+    ;
+
+INTERPOLATED_STRING_STOP
+    : '}'
     ;
