@@ -17,7 +17,7 @@ import com.intellij.util.ProcessingContext
 import java.util.*
 
 class PebbleBlockNameCompletionProvider : CompletionProvider<CompletionParameters>() {
-    override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext?, result: CompletionResultSet) {
+    override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {
 
         val el = parameters.position.originalElement
         val tag = PsiTreeUtil.getParentOfType(el, PebbleTagDirective::class.java)
