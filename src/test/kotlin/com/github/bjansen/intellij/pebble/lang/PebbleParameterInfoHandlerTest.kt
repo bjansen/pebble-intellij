@@ -50,6 +50,9 @@ class PebbleParameterInfoHandlerTest : LightCodeInsightFixtureTestCase() {
         val itemsToShow = getItemsToShow()
         val paramIdx = getHighlightedItem()
         val presentation = getPresentation(itemsToShow, paramIdx)
+                // SDK 2018.3 introduced colors but we don't really care about them for our assertions
+                ?.replace(" color=1d1d1d", "")
+
         // Then
         if (expectedPresentation != null) {
             assertEquals(1, itemsToShow!!.size)
