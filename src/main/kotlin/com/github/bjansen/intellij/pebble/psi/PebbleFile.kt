@@ -9,7 +9,7 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.util.Key
 import com.intellij.psi.*
 import com.intellij.psi.scope.PsiScopeProcessor
-import org.antlr.jetbrains.adaptor.psi.ScopeNode
+import org.antlr.intellij.adaptor.psi.ScopeNode
 
 class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE), ScopeNode {
     private val key = Key.create<PsiClass>("PEBBLE_LOOP_CLASS")

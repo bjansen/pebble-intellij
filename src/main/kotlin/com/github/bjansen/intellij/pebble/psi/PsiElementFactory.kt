@@ -9,7 +9,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiTreeUtil
-import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
+import org.antlr.intellij.adaptor.lexer.TokenIElementType
 
 object PsiElementFactory {
 

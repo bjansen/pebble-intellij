@@ -30,6 +30,7 @@ project(":") {
         compile(project(":parser")) {
             exclude(module="antlr4")
         }
+        compile("org.antlr", "antlr4-intellij-adaptor", "0.1")
     }
 
     apply {

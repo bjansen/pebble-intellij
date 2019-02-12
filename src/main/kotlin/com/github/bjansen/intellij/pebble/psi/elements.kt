@@ -12,7 +12,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.psi.scope.PsiScopeProcessor
-import org.antlr.jetbrains.adaptor.psi.ScopeNode
+import org.antlr.intellij.adaptor.psi.ScopeNode
 import java.util.*
 
 val directivesWithFileRefs = arrayOf("extends", "include", "import")

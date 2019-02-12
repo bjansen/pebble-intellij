@@ -13,7 +13,7 @@ import com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.getCurrentParameterIndex
 import com.intellij.psi.*
 import com.intellij.psi.tree.IElementType
-import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
+import org.antlr.intellij.adaptor.psi.ANTLRPsiNode
 
 class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<PebbleArgumentList, PsiElement, PsiElement> {
 

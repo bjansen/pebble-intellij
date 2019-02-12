@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNameIdentifierOwner
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.util.PsiTreeUtil
-import org.antlr.jetbrains.adaptor.psi.ScopeNode
+import org.antlr.intellij.adaptor.psi.ScopeNode
 
 class PebbleMacroTag(node: ASTNode) : PebbleTagDirective(node), PsiNameIdentifierOwner, ScopeNode {
 

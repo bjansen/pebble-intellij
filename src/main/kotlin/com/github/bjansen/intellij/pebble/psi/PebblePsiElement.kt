@@ -6,8 +6,8 @@ import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.util.PsiUtilCore
-import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode
-import org.antlr.jetbrains.adaptor.psi.ScopeNode
+import org.antlr.intellij.adaptor.psi.ANTLRPsiNode
+import org.antlr.intellij.adaptor.psi.ScopeNode
 import java.util.*
 
 open class PebblePsiElement(node: ASTNode) : ANTLRPsiNode(node) {

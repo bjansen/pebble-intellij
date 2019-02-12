@@ -12,7 +12,7 @@ import com.intellij.psi.templateLanguages.ConfigurableTemplateLanguageFileViewPr
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
 import com.intellij.util.containers.ContainerUtil
-import org.antlr.jetbrains.adaptor.lexer.TokenIElementType
+import org.antlr.intellij.adaptor.lexer.TokenIElementType
 
 class PebbleFileViewProviderFactory : FileViewProviderFactory {
     override fun createFileViewProvider(file: VirtualFile, language: Language?, manager: PsiManager, eventSystemEnabled: Boolean): FileViewProvider {

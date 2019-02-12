@@ -6,7 +6,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.*
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
-import org.antlr.jetbrains.adaptor.psi.ScopeNode
+import org.antlr.intellij.adaptor.psi.ScopeNode
 
 class PebbleForTag(node: ASTNode) : PebblePsiElement(node), ScopeNode {
 
