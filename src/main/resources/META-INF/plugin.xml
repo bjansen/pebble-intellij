@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -11,46 +11,10 @@
     <change-notes><![CDATA[
     <b>v0.5</b>
     <ul>
-        <li>support for long values</li>
-        <li>improved code completion and navigation to declarations</li>
-    </ul>
-    <b>v0.4</b>
-    <ul>
-        <li>support for the implicit `loop` variable in `for` blocks</li>
-        <li>`with` is now correctly recognized as a valid identifier</li>
-        <li>calls to unknown qualified methods/fields are reported as errors</li>
-        <li>bug fixes</li>
-    </ul>
-    <b>v0.3</b>
-    <ul>
-        <li>auto completion (block names, functions etc)</li>
-        <li>navigation to properties and functions</li>
-        <li>code formatting of the templated language</li>
-        <li>support for declarations from pebble-spring (including auto completion)</li>
-        <li>Parameter Info tooltip on functions</li>
-        <li>new intention to detect unknown variables and add '@pebvariable' hints</li>
-        <li>navigation to files specified in extends/include/import directives</li>
-        <li>fixed bugs in the parser</li>
-    </ul>
-    <br/>
-    <b>v0.2</b>
-    <ul>
-        <li>auto-closing of tags</li>
-        <li>support for verbatim and custom tags<li>
-        <li>support for custom tag delimiters</li>
-        <li>support for whitespace control modifiers</li>
-        <li>settings for colors and fonts</li>
-        <li>live templates</li>
-        <li>completion of tag names</li>
-    </ul>
-    <br/>
-    <b>v0.1</b>
-    <ul>
-        <li>basic parser and syntax highlighter (verbatim tag and custom extensions not supported)</li>
-        <li>quote handler</li>
-        <li>brace matcher</li>
-        <li>code commenter</li>
-        <li>code folder</li>
+        <li>support for long values (<a href="https://github.com/bjansen/pebble-intellij/issues/30">#30</a>)</li>
+        <li>improved code completion and navigation to declarations (<a href="https://github.com/bjansen/pebble-intellij/issues/21">#21</a>)</li>
+        <li>recognize template data language in verbatim tags (<a href="https://github.com/bjansen/pebble-intellij/issues/27">#27</a>)</li>
+        <li>support for string interpolations (<a href="https://github.com/bjansen/pebble-intellij/issues/31">#31</a>)</li>
     </ul>
     ]]></change-notes>
 
