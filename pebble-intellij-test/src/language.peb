@@ -55,6 +55,6 @@
 
 {{ 1 + 2l }}
 
-{{ "hello world" }}
+{{ "hello world" | join(",") | lower  }}
 {# @pebvariable name="world" type="java.lang.String" #}
 {{ "hello #{world}" }}

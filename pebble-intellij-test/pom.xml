@@ -9,19 +9,19 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <pebble.version>2.4.0</pebble.version>
+        <pebble.version>3.0.8</pebble.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.mitchellbosecke</groupId>
+            <groupId>io.pebbletemplates</groupId>
             <artifactId>pebble</artifactId>
             <version>${pebble.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.mitchellbosecke</groupId>
+            <groupId>io.pebbletemplates</groupId>
             <artifactId>pebble-spring4</artifactId>
             <version>${pebble.version}</version>
         </dependency>

@@ -1,8 +1,11 @@
 package com.github.bjansen.intellij.pebble.psi
 
+import com.github.bjansen.intellij.pebble.lang.PebbleCore
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.buildPsiTypeLookups
 import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findMembersByName
 import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findQualifyingMember
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.completion.JavaLookupElementBuilder
 import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
@@ -30,6 +33,11 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.returnType), referenceText))
         } else {
             val parentTag = PsiTreeUtil.getParentOfType(psi, PebbleTagDirective::class.java)
+
+            if (parentTag?.getTagName() == "filter" || psi.parent?.node?.elementType == rules[PebbleParser.RULE_filter]) {
+                val source = PebbleCore.getFilter(psi.text, psi.project)?.source
+                return if (source == null) createResults() else createResults(source)
+            }
 
             if (parentTag != null && parentTag.getTagName() == "endblock") {
                 return resolveOpeningBlockTag(parentTag, referenceText)

@@ -230,4 +230,33 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Reference resolved to nothing")
         }
     }
+
+    fun testReferenceToFilter() {
+        initFile("filters.peb")
+
+        moveCaret(23)
+
+        val resolved = resolveRefAtCaret()
+        assertNull("Expected reference to resolve to nothing", resolved)
+
+        moveCaret(60)
+
+        val resolved2 = resolveRefAtCaret()
+        if (resolved2 != null) {
+            assert(resolved2 is PsiMethod)
+            assert((resolved2 as PsiMethod).name == "lower")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+       moveCaret(70)
+
+        val resolved3 = resolveRefAtCaret()
+        if (resolved3 != null) {
+            assert(resolved3 is PsiMethod)
+            assert((resolved3 as PsiMethod).name == "capitalize")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
 }

@@ -46,7 +46,7 @@ verbatimTag
     ;
 
 genericTag
-    : TAG_OPEN tagName expression? TAG_CLOSE
+    : TAG_OPEN tagName expression? filters TAG_CLOSE
     ;
 
 tagName
@@ -66,7 +66,6 @@ expression
     | expression OP_TERNARY expression OP_COLON expression
     | expression additive_op expression
     | expression multiplicative_op expression
-    | expression OP_PIPE expression
     | expression OP_CONCAT expression
     | expression OP_RANGE expression
     | map_expression
@@ -177,5 +176,9 @@ identifier
     ;
 
 filters
-    : (OP_PIPE function_call_expression)*
+    : (OP_PIPE filter)*
+    ;
+
+filter
+    : identifier argument_list?
     ;

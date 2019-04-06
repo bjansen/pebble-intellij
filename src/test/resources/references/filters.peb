@@ -1,0 +1,6 @@
+stuff stuff
+{% filter foo %}stuff{% endfilter %}
+{% filter lower | capitalize %}stuff{% endfilter %}
+
+{{ hello | abs }}
+stuff stuff

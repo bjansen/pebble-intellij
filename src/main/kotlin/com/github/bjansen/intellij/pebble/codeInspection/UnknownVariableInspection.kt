@@ -3,6 +3,8 @@ package com.github.bjansen.intellij.pebble.codeInspection
 import com.github.bjansen.intellij.pebble.PebbleBundle
 import com.github.bjansen.intellij.pebble.PebbleBundle.message
 import com.github.bjansen.intellij.pebble.psi.*
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.TemplateImpl
 import com.intellij.codeInsight.template.impl.TemplateSettings
@@ -19,8 +21,7 @@ import com.intellij.psi.util.PsiTreeUtil.nextVisibleLeaf
 
 class UnknownVariableInspection : LocalInspectionTool() {
 
-    private val tagNamesToIgnore = arrayOf("block", "endblock", "macro",
-            "filter" /* TODO remove me when implementing #17*/)
+    private val tagNamesToIgnore = arrayOf("block", "endblock", "macro")
     private val tagNamesDeclaringId = arrayOf("set", "for")
 
     override fun getDisplayName() = message("inspection.unknown.variable")
@@ -47,11 +48,18 @@ class UnknownVariableInspection : LocalInspectionTool() {
                         val qualifier = PebbleReferencesHelper.findQualifyingMember(element)
 
                         if (qualifier == null && ref.resolve() == null) {
-                            holder.registerProblem(
+                            if (parentTag?.getTagName() == "filter" || element.parent.node.elementType == rules[PebbleParser.RULE_filter]) {
+                                holder.registerProblem(
+                                    element,
+                                    message("inspection.unknown.filter.message", element.name!!)
+                                )
+                            } else {
+                                holder.registerProblem(
                                     element,
                                     message("inspection.unknown.variable.message", element.name!!),
                                     AddImplicitVariableQuickFix(element)
-                            )
+                                )
+                            }
                         }
                     }
                 }

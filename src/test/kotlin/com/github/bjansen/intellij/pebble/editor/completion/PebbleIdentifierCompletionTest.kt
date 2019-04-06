@@ -3,10 +3,9 @@ package com.github.bjansen.intellij.pebble.editor.completion
 import com.google.common.io.Files
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementPresentation
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import java.io.File
 
-class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
+class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     override fun getTestDataPath() = "src/test/resources/completion/identifiers"
 
@@ -165,23 +164,4 @@ class PebbleIdentifierCompletionTest : LightCodeInsightFixtureTestCase() {
         assertLookupsDontContain(listOf("afterLoop"))
     }
 
-    private fun assertLookupsContain(elements: Collection<String>) {
-        val lookups = myFixture.lookupElementStrings
-
-        if (lookups != null) {
-            assertContainsElements(lookups, elements)
-        } else {
-            assertNotNull(lookups)
-        }
-    }
-
-    private fun assertLookupsDontContain(elements: Collection<String>) {
-        val lookups = myFixture.lookupElementStrings
-
-        if (lookups != null) {
-            assertDoesntContain(lookups, elements)
-        } else {
-            assertNotNull(lookups)
-        }
-    }
 }
