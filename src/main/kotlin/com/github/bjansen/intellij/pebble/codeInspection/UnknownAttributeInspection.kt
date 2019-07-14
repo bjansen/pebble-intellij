@@ -3,8 +3,8 @@ package com.github.bjansen.intellij.pebble.codeInspection
 import com.github.bjansen.intellij.pebble.PebbleBundle.message
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
 import com.github.bjansen.intellij.pebble.psi.PebbleIdentifierReference
-import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
 import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper
+import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.*
@@ -13,8 +13,7 @@ import com.intellij.psi.util.PsiTreeUtil.nextVisibleLeaf
 
 class UnknownAttributeInspection : LocalInspectionTool() {
 
-    private val tagNamesToIgnore = arrayOf("block", "macro",
-            "filter" /* TODO remove me when implementing #17*/)
+    private val tagNamesToIgnore = arrayOf("block", "macro")
     private val tagNamesDeclaringId = arrayOf("set", "for")
 
     override fun getDisplayName() = message("inspection.unknown.variable")

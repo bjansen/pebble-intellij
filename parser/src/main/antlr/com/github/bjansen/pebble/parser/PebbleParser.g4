@@ -29,7 +29,7 @@ pebbleTemplate
     ;
 
 printDirective
-    : PRINT_OPEN expression filters PRINT_CLOSE
+    : PRINT_OPEN expression filters? PRINT_CLOSE
     ;
 
 commentDirective
@@ -46,7 +46,7 @@ verbatimTag
     ;
 
 genericTag
-    : TAG_OPEN tagName expression? filters TAG_CLOSE
+    : TAG_OPEN tagName expression? filters? TAG_CLOSE
     ;
 
 tagName
@@ -176,7 +176,7 @@ identifier
     ;
 
 filters
-    : (OP_PIPE filter)*
+    : OP_PIPE filter (OP_PIPE filter)*
     ;
 
 filter

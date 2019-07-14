@@ -1,6 +1,6 @@
-(pebbleTemplate (printDirective {{ (expression (term (string_literal " hello world "))) filters }})
-(printDirective {{ (expression (term (string_literal " hello  #{ (expression (term (identifier world))) } "))) filters }})
-(printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } "))) filters }})
-(printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } } "))) filters }})
+(pebbleTemplate (printDirective {{ (expression (term (string_literal " hello world "))) }})
+(printDirective {{ (expression (term (string_literal " hello  #{ (expression (term (identifier world))) } "))) }})
+(printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } "))) }})
+(printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } } "))) }})
 (printDirective {{ (expression (term (string_literal " hello world }}
-))) filters <missing PRINT_CLOSE>))
+)))))
