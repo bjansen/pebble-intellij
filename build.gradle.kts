@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.4.7"
+    id("org.jetbrains.intellij") version "0.4.9"
     kotlin("jvm") version "1.3.21"
 }
 
@@ -43,7 +43,7 @@ project(":") {
         downloadSources = downloadIdeaSources.toBoolean()
         updateSinceUntilBuild = false
         instrumentCode = false
-        setPlugins("Spring", "java-i18n", "properties")
+        setPlugins("Spring", "java-i18n", "properties"/*, "java"*/)
 
         tasks.withType<PublishTask> {
             username(publishUsername)
