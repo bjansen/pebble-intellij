@@ -1,0 +1,2 @@
+(pebbleTemplate (tagDirective (genericTag {% (tagName set) (expression (assignment_expression (identifier numbers) = (expression (list_expression [ (expression (term (numeric_literal 1))) , (expression (term (numeric_literal 2))) , (expression (term (numeric_literal 3))) ])))) %}))
+)

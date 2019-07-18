@@ -57,7 +57,7 @@ expression
     : assignment_expression
     | unary_op expression
     | parenthesized_expression
-    | expression array_expression
+    | expression list_expression
     | expression WITH map_expression
     | expression OR expression
     | expression AND expression
@@ -68,6 +68,7 @@ expression
     | expression multiplicative_op expression
     | expression OP_CONCAT expression
     | expression OP_RANGE expression
+    | list_expression
     | map_expression
     | in_expression
     | function_call_expression
@@ -87,7 +88,7 @@ parenthesized_expression
     : LPAREN expression RPAREN
     ;
 
-array_expression
+list_expression
     : LBRACKET (expression (COMMA expression)*)? RBRACKET
     ;
 
