@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -9,16 +9,14 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    <b>v0.5</b>
+    <b>v0.6</b>
     <ul>
-        <li>support for long values (<a href="https://github.com/bjansen/pebble-intellij/issues/30">#30</a>)</li>
-        <li>improved code completion and navigation to declarations (<a href="https://github.com/bjansen/pebble-intellij/issues/21">#21</a>)</li>
-        <li>recognize template data language in verbatim tags (<a href="https://github.com/bjansen/pebble-intellij/issues/27">#27</a>)</li>
-        <li>support for string interpolations (<a href="https://github.com/bjansen/pebble-intellij/issues/31">#31</a>)</li>
+        <li>fixed parsing of list expressions (<a href="https://github.com/bjansen/pebble-intellij/issues/36">#36</a>)</li>
+        <li>added code completion and navigation for filters (<a href="https://github.com/bjansen/pebble-intellij/issues/17">#17</a>)</li>
     </ul>
     ]]></change-notes>
 
-    <!-- IDEA 15 and later -->
+    <!-- IDEA 2017.3 and later -->
     <idea-version since-build="173.0"/>
 
     <depends>com.intellij.modules.lang</depends>
