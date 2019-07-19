@@ -45,7 +45,9 @@ internal class PebbleTemplateHighlighter(project: Project?, virtualFile: Virtual
 
         if (type != null) {
             val outerHighlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(type, project, virtualFile)
-            registerLayer(tokens[PebbleLexer.CONTENT], LayerDescriptor(outerHighlighter, ""))
+            if (outerHighlighter != null) {
+                registerLayer(tokens[PebbleLexer.CONTENT], LayerDescriptor(outerHighlighter, ""))
+            }
         }
     }
 }
