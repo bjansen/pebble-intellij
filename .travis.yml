@@ -7,7 +7,8 @@ env:
   - IDEA_VERSION=IU-2018.2.8 ENABLE_JAVA_PLUGIN=false
   - IDEA_VERSION=IU-2018.3.6 ENABLE_JAVA_PLUGIN=false
   - IDEA_VERSION=IU-2019.1.3 ENABLE_JAVA_PLUGIN=false
-  - IDEA_VERSION=IU-192-EAP-SNAPSHOT
+  - IDEA_VERSION=IU-2019.2.3
+  - IDEA_VERSION=IU-193-EAP-SNAPSHOT
 install:
   - sed -i '/ideaVersion=/c\ideaVersion='"$IDEA_VERSION"'' gradle.properties
   - if $ENABLE_JAVA_PLUGIN; then sed -i 's/\/\*, "java"\*\//, "java"/' build.gradle.kts; fi
