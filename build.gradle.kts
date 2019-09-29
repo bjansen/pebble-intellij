@@ -5,6 +5,7 @@ val downloadIdeaSources: String by project
 val publishUsername: String by project
 val publishPassword: String by project
 val publishChannels: String by project
+val pluginVerifier: Configuration by configurations.creating
 
 buildscript {
 
@@ -24,13 +25,19 @@ plugins {
 project(":") {
     repositories {
         mavenCentral()
+        maven {
+            url = uri("http://dl.bintray.com/jetbrains/intellij-plugin-service")
+        }
     }
 
     dependencies {
         compile(project(":parser")) {
-            exclude(module="antlr4")
+            exclude(module = "antlr4")
         }
         compile("org.antlr", "antlr4-intellij-adaptor", "0.1")
+        pluginVerifier("org.jetbrains.intellij.plugins:verifier-cli:1.219:all") {
+            exclude(group = "*")
+        }
     }
 
     apply {
@@ -59,6 +66,25 @@ project(":") {
 
     tasks.withType(JavaCompile::class) {
         options.encoding = "UTF-8"
+    }
+
+    tasks.register("pluginVerifier", JavaExec::class.java) {
+        dependsOn("assemble")
+
+        val pluginVerifierIdes = (properties["pluginVerifierIdes"] ?: "") as String
+        val additionalIdes =
+            if (pluginVerifierIdes == "") emptyArray()
+            else pluginVerifierIdes.split(",").toTypedArray()
+
+        classpath = pluginVerifier
+        main = "com.jetbrains.pluginverifier.PluginVerifierMain"
+        args = listOf(
+            "-verification-reports-dir", "build/pluginVerifier",
+            "check-plugin",
+            "build/distributions/pebble-intellij.zip",
+            (tasks["runIde"].property("ideaDirectory") as File).absolutePath,
+            *additionalIdes
+        )
     }
 
     sourceSets {
