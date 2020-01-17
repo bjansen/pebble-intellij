@@ -19,6 +19,7 @@ buildscript {
 
 plugins {
     id("org.jetbrains.intellij") version "0.4.9"
+    id("org.sonarqube") version "2.8"
     kotlin("jvm") version "1.3.21"
 }
 
@@ -56,6 +57,12 @@ project(":") {
             username(publishUsername)
             password(publishPassword)
             channels(publishChannels)
+        }
+    }
+
+    sonarqube {
+        properties {
+            property("sonar.projectKey", "bjansen_pebble-intellij")
         }
     }
 
