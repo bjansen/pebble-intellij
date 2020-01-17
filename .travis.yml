@@ -21,4 +21,4 @@ install:
   - if $ENABLE_JAVA_PLUGIN; then sed -i 's/\/\*, "java"\*\//, "java"/' build.gradle.kts; fi
 
 script:
-  - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$IDEA_VERSION" = "IU-2019.3" ]; then ./gradlew sonarqube; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$IDEA_VERSION" = "IU-2019.3" ]; then ./gradlew sonarqube; else ./gradlew check fi
