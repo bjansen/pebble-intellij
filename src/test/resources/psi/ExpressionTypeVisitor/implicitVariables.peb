@@ -1,0 +1,5 @@
+{# @pebvariable name="bar" type="java.lang.String" #}
+{{ bar }}
+
+{# @pebvariable name="bar2" type="java.util.List<java.lang.String>" #}
+{{ bar2 }}

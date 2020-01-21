@@ -1,9 +1,5 @@
 lexer grammar PebbleLexer;
 
-@header {
-package com.github.bjansen.pebble.parser;
-}
-
 @members {
 
 private java.util.Queue<Token> queue = new java.util.LinkedList<Token>();

@@ -19,5 +19,5 @@ dependencies {
 }
 
 tasks.generateGrammarSource {
-    arguments = arguments + listOf("-visitor")
+    arguments = arguments + listOf("-visitor", "-package", "com.github.bjansen.pebble.parser", "-Xexact-output-dir")
 }

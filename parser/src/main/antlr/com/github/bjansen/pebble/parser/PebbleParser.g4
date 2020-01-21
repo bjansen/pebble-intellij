@@ -1,9 +1,5 @@
 parser grammar PebbleParser;
 
-@header {
-package com.github.bjansen.pebble.parser;
-}
-
 @members {
 
 private void ideRecover(int ttype, String message) {
@@ -13,11 +9,7 @@ private void ideRecover(int ttype, String message) {
 
 }
 
-// Use this when working with the IntelliJ plugin
-//options { tokenVocab=PebbleLexer; }
-
-// Use this when working with Gradle
-options { tokenVocab='com/github/bjansen/pebble/parser/PebbleLexer'; }
+options { tokenVocab=PebbleLexer; }
 
 pebbleTemplate
     : (

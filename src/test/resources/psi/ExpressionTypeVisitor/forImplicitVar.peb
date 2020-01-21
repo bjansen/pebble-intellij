@@ -1,0 +1,9 @@
+{# @pebvariable name="list" type="pebble.tests.List<java.lang.String>" #}
+{% for i in list %}
+    {{ loop.index }}
+    {{ i. }}
+{% endfor %}
+{% for i in list.subList(0, 1).iterator() %}
+    {{ loop.index }}
+    {{ i. }}
+{% endfor %}

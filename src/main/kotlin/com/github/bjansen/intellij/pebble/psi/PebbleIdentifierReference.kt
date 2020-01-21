@@ -48,7 +48,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                 val variable = findVariableMatching(referenceText)
 
                 if (variable != null) {
-                    return createResults(if (variable is PebbleImplicitVariable) variable.declaration ?: variable else variable)
+                    return createResults(variable)
                 }
 
                 for (func in file.getImplicitFunctions()) {

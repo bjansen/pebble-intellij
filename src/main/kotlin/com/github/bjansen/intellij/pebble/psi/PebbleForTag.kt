@@ -6,6 +6,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.*
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.util.InheritanceUtil
 import org.antlr.intellij.adaptor.psi.ScopeNode
 
 class PebbleForTag(node: ASTNode) : PebblePsiElement(node), ScopeNode {
@@ -24,14 +25,8 @@ class PebbleForTag(node: ASTNode) : PebblePsiElement(node), ScopeNode {
             }
         }
 
-        getVariable()?.let {
-            val javaObject = PsiType.getJavaLangObject(
-                PsiManager.getInstance(containingFile.project),
-                GlobalSearchScope.projectScope(containingFile.project)
-            )
-            val implicitVar = PebbleImplicitVariable(it.text, javaObject, this, null)
-
-            if (!processor.execute(implicitVar, state)) {
+        getVariable(place)?.let {
+            if (!processor.execute(it, state)) {
                 return false
             }
         }
@@ -61,18 +56,56 @@ class PebbleForTag(node: ASTNode) : PebblePsiElement(node), ScopeNode {
         return node.lastChildNode?.psi
     }
 
-    private fun getVariable(): PsiElement? {
-        val tag = getOpeningTag()
+    private fun getVariable(place: PsiElement): PebbleImplicitVariable? {
+        val tagExpression = getOpeningTag()?.children?.find {
+            it.node.elementType == rules[PebbleParser.RULE_expression]
+        }
 
-        if (tag != null) {
-            val expr = tag.children.find { it.node.elementType == rules[PebbleParser.RULE_expression] }
+        if (tagExpression is PebblePsiElement && tagExpression.node.firstChildNode.elementType == rules[PebbleParser.RULE_in_expression]) {
+            val varName = tagExpression.node.firstChildNode.firstChildNode.psi
+            val varValue = tagExpression.node.firstChildNode.lastChildNode.psi
 
-            if (expr is PebblePsiElement && expr.node.firstChildNode.elementType == rules[PebbleParser.RULE_in_expression]) {
-                return expr.node.firstChildNode.firstChildNode.psi
+            val isInSameExpression = varValue.textRange.contains(place.textOffset)
+            val isDefinedAfterPlace = varValue.textRange.startOffset > place.textRange.endOffset
+
+            if (isInSameExpression || isDefinedAfterPlace) {
+                return null // Avoids StackOverflowErrors
             }
+            val variableType = inferVariableType(varValue)
+
+            return PebbleImplicitVariable(varName.text, variableType, this, varName)
         }
 
         return null
+    }
+
+    private fun inferVariableType(iterableExpression: PsiElement): PsiType {
+        val visitor = ExpressionTypeVisitor()
+        iterableExpression.accept(visitor)
+
+        val type = visitor.type
+
+        if (type != null) {
+            var iteratedType: PsiType? = null
+
+            InheritanceUtil.processSuperTypes(type, true) {
+                if (it.canonicalText.startsWith("java.lang.Iterable")
+                        && it is PsiClassType && it.parameters.isNotEmpty()) {
+                    iteratedType = it.parameters[0]
+                }
+
+                true
+            }
+
+            if (iteratedType != null) {
+                return iteratedType as PsiType
+            }
+        }
+
+        return PsiType.getJavaLangObject(
+                PsiManager.getInstance(containingFile.project),
+                GlobalSearchScope.allScope(containingFile.project)
+        )
     }
 
     override fun resolve(element: PsiNamedElement?): PsiElement? {

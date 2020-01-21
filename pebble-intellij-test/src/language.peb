@@ -12,8 +12,10 @@
 
 {% flush %}
 
+{# @pebvariable name="list" type="java.util.List<java.lang.String>" #}
 {% for i in list %}
     {{ loop.index }}
+    {{ i. }}
 {% endfor %}
 {{ loop.index }}
 

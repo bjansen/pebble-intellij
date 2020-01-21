@@ -1,0 +1,3 @@
+{# @pebvariable name="bar" type="pebble.tests.MyClass" #}
+{{ bar.property }}
+{{ bar.child.isThirdProperty() }}
