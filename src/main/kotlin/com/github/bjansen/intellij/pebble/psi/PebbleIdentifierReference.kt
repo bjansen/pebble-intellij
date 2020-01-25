@@ -97,7 +97,9 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
     override fun getVariants(): Array<Any> {
         val qualifyingMember = findQualifyingMember(psi)
 
-        if (qualifyingMember is PsiField) {
+        if (qualifyingMember is PebbleInVariable) {
+            return buildPsiTypeLookups(qualifyingMember.getType())
+        } else if (qualifyingMember is PsiField) {
             return buildPsiTypeLookups(qualifyingMember.type)
         } else if (qualifyingMember is PsiVariable) {
             val file = element.containingFile
@@ -132,6 +134,12 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                             result.add(
                                 LookupElementBuilder.create(element)
                                     .withTypeText(element.type.presentableText)
+                                    .withIcon(PlatformIcons.VARIABLE_ICON)
+                            )
+                        } else if (element is PebbleInVariable) {
+                            result.add(
+                                LookupElementBuilder.create(element)
+                                    .withTypeText(element.getType()?.presentableText)
                                     .withIcon(PlatformIcons.VARIABLE_ICON)
                             )
                         } else if (element is PebbleSetTag) {

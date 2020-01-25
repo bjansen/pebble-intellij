@@ -5,13 +5,12 @@ import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNamedElement
-import com.intellij.psi.PsiReference
-import com.intellij.psi.ResolveState
+import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.util.InheritanceUtil
 import org.antlr.intellij.adaptor.psi.ScopeNode
 import java.util.*
 
@@ -115,6 +114,52 @@ class PebbleIdentifier(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
 
     override fun getReference(): PsiReference? {
         return PebbleIdentifierReference(this, TextRange.from(0, node.textLength))
+    }
+}
+
+class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement {
+
+    override fun getName(): String? {
+        return node.text
+    }
+
+    fun getType(): PsiType? {
+        val expr = node.treeParent.findChildByType(rules[PebbleParser.RULE_expression], node)
+
+        return if (expr != null) inferVariableType(expr.psi) else null
+    }
+
+    override fun setName(name: String): PsiElement {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun inferVariableType(iterableExpression: PsiElement): PsiType {
+        val visitor = ExpressionTypeVisitor()
+        iterableExpression.accept(visitor)
+
+        val type = visitor.type
+
+        if (type != null) {
+            var iteratedType: PsiType? = null
+
+            InheritanceUtil.processSuperTypes(type, true) {
+                if (it.canonicalText.startsWith("java.lang.Iterable")
+                    && it is PsiClassType && it.parameters.isNotEmpty()) {
+                    iteratedType = it.parameters[0]
+                }
+
+                true
+            }
+
+            if (iteratedType != null) {
+                return iteratedType as PsiType
+            }
+        }
+
+        return PsiType.getJavaLangObject(
+            PsiManager.getInstance(containingFile.project),
+            GlobalSearchScope.allScope(containingFile.project)
+        )
     }
 }
 

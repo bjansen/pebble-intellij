@@ -47,6 +47,9 @@ object PsiElementFactory {
         } else if (elType == rules[PebbleParser.RULE_printDirective]) {
             return PebblePrintDirective(node)
         } else if (elType == rules[PebbleParser.RULE_identifier]) {
+            if (node.treeParent.elementType == rules[PebbleParser.RULE_in_expression]) {
+                return PebbleInVariable(node)
+            }
             return PebbleIdentifier(node)
         } else if (elType == rules[PebbleParser.RULE_argument_list]) {
             return PebbleArgumentList(node)
