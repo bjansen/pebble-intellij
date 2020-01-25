@@ -1,0 +1,4 @@
+{# @pebvariable name="list" type="pebble.tests.List<pebble.tests.MyClass>" #}
+{% for foo in list %}
+    {{ foo.<caret> }}
+{% endfor %}

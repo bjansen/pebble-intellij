@@ -259,4 +259,19 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Reference resolved to nothing")
         }
     }
+
+    fun testReferenceToForVar() {
+        initFile("for.peb")
+
+        moveCaret(32)
+
+        val resolved = resolveRefAtCaret()
+
+        if (resolved != null) {
+            assert(resolved is PebbleInVariable)
+            assert((resolved as PebbleInVariable).name == "i")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
 }

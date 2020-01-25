@@ -155,7 +155,6 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
         assertLookupsDontContain(listOf("afterLoop"))
     }
 
-
     fun testScopes1() {
         myFixture.configureByFile("scopes1.peb")
         myFixture.complete(CompletionType.BASIC)
@@ -164,4 +163,12 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
         assertLookupsDontContain(listOf("afterLoop"))
     }
 
+    fun testCompletionOfForVariable() {
+        myFixture.configureByFile("for2.peb")
+        myFixture.addClass(Files.toString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(Files.toString(File("$testDataPath/List.java"), Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("method", "child", "otherProperty", "property", "thirdProperty"))
+    }
 }
