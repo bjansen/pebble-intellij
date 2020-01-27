@@ -73,7 +73,7 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         val vars = arrayListOf<ImplicitVariable>()
 
         acceptChildren(object: PsiRecursiveElementWalkingVisitor() {
-            override fun visitComment(comment: PsiComment?) {
+            override fun visitComment(comment: PsiComment) {
                 super.visitComment(comment)
 
                 if (comment is PebbleComment) {
@@ -92,7 +92,7 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         val macros = arrayListOf<PebbleMacroTag>()
 
         acceptChildren(object: PsiRecursiveElementWalkingVisitor() {
-            override fun visitElement(element: PsiElement?) {
+            override fun visitElement(element: PsiElement) {
                 super.visitElement(element)
 
                 if (element is PebbleMacroTag) {

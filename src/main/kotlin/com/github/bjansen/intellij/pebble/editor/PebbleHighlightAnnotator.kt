@@ -20,21 +20,19 @@ class PebbleHighlightAnnotator : Annotator {
 
 private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiveElementVisitor() {
 
-    override fun visitElement(element: PsiElement?) {
+    override fun visitElement(element: PsiElement) {
         super.visitElement(element)
 
-        if (element != null) {
-            if (element.node.elementType == tokens[PebbleLexer.TAG_OPEN]) {
-                highlightTagName(element)
-            } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_OPEN]) {
-                val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
-                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
-                highlightDelimiters(element)
-            } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_END]) {
-                val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
-                holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
-                highlightDelimiters(element)
-            }
+        if (element.node.elementType == tokens[PebbleLexer.TAG_OPEN]) {
+            highlightTagName(element)
+        } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_OPEN]) {
+            val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
+            holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
+            highlightDelimiters(element)
+        } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_END]) {
+            val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
+            holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
+            highlightDelimiters(element)
         }
     }
 

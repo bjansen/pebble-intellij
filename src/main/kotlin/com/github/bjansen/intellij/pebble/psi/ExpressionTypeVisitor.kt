@@ -10,11 +10,7 @@ import com.intellij.psi.*
 class ExpressionTypeVisitor : PsiRecursiveElementVisitor(false) {
     var type: PsiType? = null
 
-    override fun visitElement(element: PsiElement?) {
-        if (element == null) {
-            return
-        }
-
+    override fun visitElement(element: PsiElement) {
         if (element.node.elementType == rules[PebbleParser.RULE_qualified_expression]) {
             type = typeOfQualifiedExpression(element)
         }

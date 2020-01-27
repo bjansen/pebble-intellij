@@ -18,10 +18,10 @@ class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
         val expression = findExpression(58)
         val visitor = ExpressionTypeVisitor()
 
-        visitor.visitElement(expression)
+        visitor.visitElement(expression!!)
         assertEquals("java.lang.String", visitor.type?.canonicalText)
 
-        visitor.visitElement(findExpression(140))
+        visitor.visitElement(findExpression(140)!!)
         assertEquals("java.util.List<java.lang.String>", visitor.type?.canonicalText)
     }
 
@@ -69,10 +69,10 @@ class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
 
         val visitor = ExpressionTypeVisitor()
 
-        visitor.visitElement(findExpression(64))
+        visitor.visitElement(findExpression(64)!!)
         assertEquals("String", visitor.type?.canonicalText)
 
-        visitor.visitElement(findExpression(84))
+        visitor.visitElement(findExpression(84)!!)
         assertEquals("boolean", visitor.type?.canonicalText)
     }
 
