@@ -24,11 +24,10 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         val qualifyingMember = findQualifyingMember(psi)
         val referenceText = range.substring(psi.text)
 
-        if (qualifyingMember is PsiVariable) {
-            val type = qualifyingMember.type
-            if (type is PsiClassType) {
-                return createResults(findMembersByName(type.resolve(), referenceText))
-            }
+        if (qualifyingMember is PebbleInVariable) {
+            return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.getType()), referenceText))
+        } else if (qualifyingMember is PsiVariable) {
+            return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.type), referenceText))
         } else if (qualifyingMember is PsiMethod) {
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.returnType), referenceText))
         } else {
@@ -102,26 +101,7 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         } else if (qualifyingMember is PsiField) {
             return buildPsiTypeLookups(qualifyingMember.type)
         } else if (qualifyingMember is PsiVariable) {
-            val file = element.containingFile
-
-            if (file is PebbleFile) {
-                var type: PsiType? = null
-
-                val processor = object : PebbleScopeProcessor {
-                    override fun execute(element: PsiElement, state: ResolveState): Boolean {
-                        if (element is PsiVariable && element.name == qualifyingMember.text) {
-                            type = element.type
-                            return false
-                        }
-                        return true
-                    }
-                }
-                PsiScopesUtil.treeWalkUp(processor, psi, psi.containingFile)
-
-                if (type != null) {
-                    return buildPsiTypeLookups(type)
-                }
-            }
+            return buildPsiTypeLookups(qualifyingMember.type)
         } else if (qualifyingMember is PsiMethod) {
             return buildPsiTypeLookups(qualifyingMember.returnType)
         } else if (qualifyingMember == null) {

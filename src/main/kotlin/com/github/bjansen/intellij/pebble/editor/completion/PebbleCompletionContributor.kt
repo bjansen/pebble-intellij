@@ -1,8 +1,10 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
+import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.codeInsight.completion.CompletionContributor
+import com.intellij.codeInsight.completion.CompletionInitializationContext
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns.psiElement
 
@@ -23,5 +25,11 @@ class PebbleCompletionContributor : CompletionContributor() {
                 psiElement(),
                 PebbleBlockNameCompletionProvider()
         )
+    }
+
+    override fun beforeCompletion(context: CompletionInitializationContext) {
+        if (context.file is PebbleFile) {
+            context.dummyIdentifier = CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED
+        }
     }
 }

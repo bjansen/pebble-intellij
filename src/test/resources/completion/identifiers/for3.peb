@@ -1,0 +1,4 @@
+{# @pebvariable name="list" type="pebble.tests.List<pebble.tests.MyClass>" #}
+{% for foo in list %}
+    {{ href("some string #{foo.method().<caret> + 1}") }}
+{% endfor %}
