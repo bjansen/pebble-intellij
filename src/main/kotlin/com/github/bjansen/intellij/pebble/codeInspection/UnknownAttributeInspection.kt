@@ -1,10 +1,7 @@
 package com.github.bjansen.intellij.pebble.codeInspection
 
 import com.github.bjansen.intellij.pebble.PebbleBundle.message
-import com.github.bjansen.intellij.pebble.psi.PebbleIdentifier
-import com.github.bjansen.intellij.pebble.psi.PebbleIdentifierReference
-import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper
-import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
+import com.github.bjansen.intellij.pebble.psi.*
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.*
@@ -48,6 +45,7 @@ class UnknownAttributeInspection : LocalInspectionTool() {
                         val type = when (qualifier) {
                             is PsiField -> qualifier.type
                             is PsiVariable -> qualifier.type
+                            is PebbleInVariable -> qualifier.getType()
                             is PsiMethod -> qualifier.returnType ?: PsiType.VOID
                             else -> null
                         } ?: return
