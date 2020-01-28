@@ -59,7 +59,7 @@ class ExpressionTypeVisitor : PsiRecursiveElementVisitor(false) {
             return PebbleComment.getImplicitVariable(element)?.type
         } else if (element is PsiMethod) {
             return element.returnType
-        } else if (element is PebbleImplicitVariable) {
+        } else if (element is PsiVariable) {
             return element.type
         }
 

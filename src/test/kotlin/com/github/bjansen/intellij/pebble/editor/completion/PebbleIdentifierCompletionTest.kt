@@ -180,4 +180,13 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
         assertLookupsContain(listOf("method", "child", "otherProperty", "property", "thirdProperty"))
     }
+
+    fun testCompletionOfForVariable_field() {
+        myFixture.configureByFile("for4.peb")
+        myFixture.addClass(Files.toString(File("$testDataPath/Part.java"), Charsets.UTF_8))
+        myFixture.addClass(Files.toString(File("$testDataPath/Car.java"), Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("label"))
+    }
 }

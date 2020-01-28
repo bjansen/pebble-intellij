@@ -1,0 +1,4 @@
+{# @pebvariable name="car" type="pebble.tests.Car" #}
+{% for item in car.parts %}
+    {{item.<caret>}}
+{% endfor %}
