@@ -1,11 +1,11 @@
 package com.github.bjansen.intellij.pebble.lang
 
-import com.google.common.io.Files
 import com.intellij.codeInsight.hint.ParameterInfoComponent
 import com.intellij.psi.PsiElement
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import com.intellij.testFramework.utils.parameterInfo.MockCreateParameterInfoContext
 import com.intellij.testFramework.utils.parameterInfo.MockUpdateParameterInfoContext
+import org.apache.commons.io.FileUtils
 import java.io.File
 
 class PebbleParameterInfoHandlerTest : LightCodeInsightFixtureTestCase() {
@@ -17,25 +17,25 @@ class PebbleParameterInfoHandlerTest : LightCodeInsightFixtureTestCase() {
     }
 
     fun testNoParam() {
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
         doTest("<html>&lt;no parameters&gt;</html>")
     }
 
     fun testOneParam() {
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
         doTest("<html><b>E element</b></html>")
     }
 
     fun testTwoParams() {
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
         doTest("<html><b>int offset</b>, E element</html>")
     }
 
     fun testTwoParams2() {
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/List.java"), Charsets.UTF_8))
         doTest(1, "<html>int offset, <b>E element</b></html>")
     }
 

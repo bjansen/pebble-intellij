@@ -1,7 +1,7 @@
 package com.github.bjansen.intellij.pebble.codeInspection
 
-import com.google.common.io.Files
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import org.apache.commons.io.FileUtils
 import java.io.File
 
 class UnknownAttributeInspectionTest : LightCodeInsightFixtureTestCase() {
@@ -13,8 +13,8 @@ class UnknownAttributeInspectionTest : LightCodeInsightFixtureTestCase() {
     fun testInspection() {
         myFixture.configureByFile("unknownRefs.peb")
         myFixture.enableInspections(UnknownAttributeInspection::class.java)
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(Files.toString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
 
         val highlights = myFixture.doHighlighting()
 
@@ -53,7 +53,7 @@ class UnknownAttributeInspectionTest : LightCodeInsightFixtureTestCase() {
     fun testInspectionOnMap() {
         myFixture.configureByFile("mapRefs.peb")
         myFixture.enableInspections(UnknownAttributeInspection::class.java)
-        myFixture.addClass(Files.toString(File("src/test/resources/inspections/Map.java"), Charsets.UTF_8))
+        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/inspections/Map.java"), Charsets.UTF_8))
 
         val highlights = myFixture.doHighlighting()
 
