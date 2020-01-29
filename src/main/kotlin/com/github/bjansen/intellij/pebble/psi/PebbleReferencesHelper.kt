@@ -57,10 +57,6 @@ object PebbleReferencesHelper {
         return emptyArray()
     }
 
-    fun findMemberByName(clazz: PsiClass?, name: String): PsiElement? {
-        return findMembersByName(clazz, name).firstOrNull()
-    }
-
     fun findMembersByName(clazz: PsiClass?, name: String, methodsOnly: Boolean = false): List<PsiElement> {
         if (clazz != null) {
             // TODO check signatures

@@ -29,7 +29,6 @@ import org.antlr.v4.runtime.Parser
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
 import java.util.*
-import org.antlr.v4.runtime.Lexer as AntlrLexer
 
 fun getPebbleCodeStyleSettings(project: Project?): PebbleCodeStyleSettings {
     val codeStyleManager =
