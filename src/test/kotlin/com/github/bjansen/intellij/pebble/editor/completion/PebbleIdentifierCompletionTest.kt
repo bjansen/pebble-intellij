@@ -2,7 +2,6 @@ package com.github.bjansen.intellij.pebble.editor.completion
 
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementPresentation
-import org.apache.commons.io.FileUtils
 import java.io.File
 
 class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
@@ -32,21 +31,21 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfGettersAsProperties() {
         myFixture.configureByFile("file2.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
         assertLookupsContain(listOf("property", "method", "child"))
     }
 
     fun testCompletionOfChainedQualifiedMembers() {
         myFixture.configureByFile("file3.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
         assertLookupsContain(listOf("property", "otherProperty", "thirdProperty", "method", "child"))
     }
 
     fun testCompletionOfFields() {
         myFixture.configureByFile("file4.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass2.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
         assertLookupsContain(listOf("field1", "FIELD2"))
         assertLookupsDontContain(listOf("privateField"))
@@ -54,24 +53,24 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfMethodsFromFields() {
         myFixture.configureByFile("file5.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass2.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
         assertLookupsContain(listOf("property", "method"))
     }
 
     fun testCompletionOfChainedQualifiedMembers2() {
         myFixture.configureByFile("file6.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass2.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
         assertLookupsContain(listOf("property", "otherProperty", "thirdProperty", "method", "child"))
     }
 
     fun testCompletionOfDifferentKindsOfMethods() {
         myFixture.configureByFile("file7.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("pebble-intellij-test/src/foo/bar/SomeClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("pebble-intellij-test/src/foo/bar/SubClass.java"), Charsets.UTF_8))
+        myFixture.addClass(File("pebble-intellij-test/src/foo/bar/SomeClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("pebble-intellij-test/src/foo/bar/SubClass.java").readText(Charsets.UTF_8))
         val completions = myFixture.complete(CompletionType.BASIC)
 
         // public fields
@@ -112,8 +111,8 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
      */
     fun testCompletionWithGenerics() {
         myFixture.configureByFile("generics.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/List.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/List.java").readText(Charsets.UTF_8))
 
         val completions = myFixture.complete(CompletionType.BASIC)
 
@@ -165,8 +164,8 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfForVariable() {
         myFixture.configureByFile("for2.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/List.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/List.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertLookupsContain(listOf("method", "child", "otherProperty", "property", "thirdProperty"))
@@ -174,8 +173,8 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfForVariable_qualifier() {
         myFixture.configureByFile("for3.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/List.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/List.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertLookupsContain(listOf("method", "child", "otherProperty", "property", "thirdProperty"))
@@ -183,8 +182,8 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfForVariable_field() {
         myFixture.configureByFile("for4.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/Part.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("$testDataPath/Car.java"), Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/Part.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/Car.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertLookupsContain(listOf("label"))

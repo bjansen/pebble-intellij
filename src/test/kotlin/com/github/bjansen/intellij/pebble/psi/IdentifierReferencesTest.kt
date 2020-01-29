@@ -4,7 +4,6 @@ import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
-import org.apache.commons.io.FileUtils
 import java.io.File
 
 class IdentifierReferencesTest : AbstractReferencesTest() {
@@ -44,7 +43,7 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
 
     fun testReferenceToGetter() {
         initFile("identifierRefs.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass.java").readText(Charsets.UTF_8))
 
         moveCaret(85)
 
@@ -79,8 +78,8 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
 
     fun testReferenceToNestedGetter() {
         initFile("identifierRefs.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass2.java").readText(Charsets.UTF_8))
 
         moveCaret(110)
 
@@ -105,8 +104,8 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
 
     fun testChainedCallsReference() {
         initFile("identifierRefs.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass2.java").readText(Charsets.UTF_8))
 
         moveCaret(355)
 
@@ -121,7 +120,7 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
 
     fun testReferenceToFields() {
         initFile("identifierRefs.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass2.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass2.java").readText(Charsets.UTF_8))
 
         moveCaret(190)
 

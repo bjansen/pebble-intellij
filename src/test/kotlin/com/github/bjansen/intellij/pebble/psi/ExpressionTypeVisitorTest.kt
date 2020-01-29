@@ -5,7 +5,6 @@ import com.intellij.openapi.util.Condition
 import com.intellij.psi.PsiElement
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 import junit.framework.TestCase
-import org.apache.commons.io.FileUtils
 import java.io.File
 
 class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
@@ -27,7 +26,7 @@ class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
 
     fun test_evaluate_type_of_for_implicit_var() {
         myFixture.configureByFile("forImplicitVar.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/psi/ExpressionTypeVisitor/List.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/psi/ExpressionTypeVisitor/List.java").readText(Charsets.UTF_8))
 
         val visitor = ExpressionTypeVisitor()
 
@@ -45,7 +44,7 @@ class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
 
     fun test_evaluate_type_of_for_implicit_qualified_var() {
         myFixture.configureByFile("forImplicitVar.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/psi/ExpressionTypeVisitor/List.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/psi/ExpressionTypeVisitor/List.java").readText(Charsets.UTF_8))
 
         val visitor = ExpressionTypeVisitor()
 
@@ -65,7 +64,7 @@ class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
 
     fun test_evaluate_type_of_method_call() {
         myFixture.configureByFile("methodCall.peb")
-        myFixture.addClass(FileUtils.readFileToString(File("src/test/resources/completion/identifiers/MyClass.java"), Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass.java").readText(Charsets.UTF_8))
 
         val visitor = ExpressionTypeVisitor()
 
