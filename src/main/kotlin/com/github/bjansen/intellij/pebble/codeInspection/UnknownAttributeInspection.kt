@@ -41,7 +41,7 @@ class UnknownAttributeInspection : LocalInspectionTool() {
                 if (ref is PebbleIdentifierReference) {
                     val qualifier = PebbleReferencesHelper.findQualifyingMember(element)
 
-                    if (qualifier != null && ref.resolve() == null) {
+                    if (qualifier != null && ref.multiResolve(false).isEmpty()) {
                         val type = when (qualifier) {
                             is PsiField -> qualifier.type
                             is PsiVariable -> qualifier.type
