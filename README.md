@@ -39,6 +39,9 @@ templates:
 
 ![Template data languages settings](images/settings.png)
 
+This will enable features like syntax highlighting, code completion, navigation,
+Emmet expansions etc.
+
 ## Using code completion
 
 In order to use code completion, you will have to let the plugin know what the type
