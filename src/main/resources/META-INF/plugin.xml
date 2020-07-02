@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.7</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -9,10 +9,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    <b>v0.6</b>
+    <b>v0.7</b>
     <ul>
-        <li>fixed parsing of list expressions (<a href="https://github.com/bjansen/pebble-intellij/issues/36">#36</a>)</li>
-        <li>added code completion and navigation for filters (<a href="https://github.com/bjansen/pebble-intellij/issues/17">#17</a>)</li>
+        <li>the type of an `in` variable is now correctly recognized (<a href="https://github.com/bjansen/pebble-intellij/issues/37">#37</a>)</li>
     </ul>
     ]]></change-notes>
 
