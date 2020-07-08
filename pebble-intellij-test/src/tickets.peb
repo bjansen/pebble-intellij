@@ -1,0 +1,4 @@
+{# @pebvariable name="tickets" type="java.util.List<ticket.Ticket>" #}
+{% for ticket in tickets %}
+    {{ ticket.client.name }}
+{% endfor %}

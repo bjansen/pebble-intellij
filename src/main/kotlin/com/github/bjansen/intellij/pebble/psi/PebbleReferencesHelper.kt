@@ -57,20 +57,29 @@ object PebbleReferencesHelper {
         return emptyArray()
     }
 
+    // TODO check signatures
     fun findMembersByName(clazz: PsiClass?, name: String, methodsOnly: Boolean = false): List<PsiElement> {
         if (clazz != null) {
-            // TODO check signatures
-            val methods = clazz.allMethods.filter {
-                getPropertyNameAndType(it)?.first == name || it.name == name
+            val capitalizedName = StringUtil.capitalizeWithJavaBeanConvention(name)
+
+            for (prefix in listOf("get", "is", "has")) {
+                for (method in clazz.findMethodsByName(prefix + capitalizedName, true)) {
+                    if (method.parameterList.parametersCount == 0) {
+                        return listOf(method);
+                    }
+                }
             }
 
-            val fields =
-                    if (methodsOnly) emptyList<PsiField>()
+            val methods = clazz.allMethods.filter { it.name == name }
+
+            if (methods.isNotEmpty()) {
+                return methods
+            }
+
+            return if (methodsOnly) emptyList<PsiField>()
                     else clazz.fields.filter {
                         it.hasModifierProperty(PsiModifier.PUBLIC) && it.name == name
                     }
-
-            return methods.plus(fields)
         }
 
         return emptyList()

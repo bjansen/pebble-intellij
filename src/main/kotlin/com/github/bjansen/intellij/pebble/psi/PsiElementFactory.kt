@@ -33,14 +33,14 @@ object PsiElementFactory {
 
         if (elType == rules[PebbleParser.RULE_pebbleTemplate]) {
             return PebbleTemplate(node)
-        } else if (elType == rules[PebbleParser.RULE_tagDirective]
-                || elType == rules[PebbleParser.RULE_verbatimTag]) {
-
-
+        } else if (elType == PebbleParserDefinition.forElementType) {
+            return PebbleForTag(node)
+        } else if (elType == PebbleParserDefinition.macroElementType) {
+            return PebbleMacroTag(node)
+        } else if (elType == PebbleParserDefinition.blockElementType) {
+            return PebbleBlockTag(node)
+        } else if (PebbleParserDefinition.isTagDirectiveLike(elType)) {
             return when (node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.text) {
-                "macro" -> PebbleMacroTag(node)
-                "block" -> PebbleBlockTag(node)
-                "for" -> PebbleForTag(node)
                 "set" -> PebbleSetTag(node)
                 else -> PebbleTagDirective(node)
             }

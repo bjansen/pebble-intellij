@@ -4,3 +4,8 @@
     {{ i.concat("").concat("").lines().anyMatch() }}
     {{  }}
 {% endfor %}
+
+{# @pebvariable name="car" type="car.Car" #}
+{% for item in car.parts %}
+    {{item.label}}
+{% endfor %}

@@ -52,6 +52,13 @@ fun createLexer(input: CharStream?, project: Project?): Lexer {
 
 class PebbleParserDefinition : ParserDefinition {
 
+    private val knowOpeningTagsElementTypes = arrayOf(
+            autoescapeElementType, blockElementType, cacheElementType, filterElementType, forElementType,
+            ifElementType, macroElementType, parallelElementType
+    )
+    private val knownOpeningTags = knowOpeningTagsElementTypes.map { r -> r.toString() }
+    private val knownClosingTags = knownOpeningTags.map { "end$it" }
+
     override fun createLexer(project: Project): Lexer {
         return createLexer(null, project)
     }
@@ -79,27 +86,28 @@ class PebbleParserDefinition : ParserDefinition {
                 throw UnsupportedOperationException("Can't parse ${root?.javaClass?.name}")
             }
 
-            val knownOpeningTags = arrayOf("autoescape", "block", "cache", "filter", "for", "if", "macro", "parallel")
-            val knownClosingTags = knownOpeningTags.map { "end$it" }
-            val markedTags = Stack<Pair<PsiBuilder.Marker, Int>>()
-
             override fun createListener(parser: Parser?, root: IElementType?, builder: PsiBuilder?): ANTLRParseTreeToPSIConverter {
                 return object : ANTLRParseTreeToPSIConverter(PebbleLanguage.INSTANCE, parser, builder) {
+
+                    val markedTags = Stack<Pair<PsiBuilder.Marker, Int>>()
+
                     override fun exitEveryRule(ctx: ParserRuleContext) {
                         if (ctx.ruleIndex == PebbleParser.RULE_tagDirective) {
                             val firstChild = ctx.children[0]
                             if (firstChild is PebbleParser.GenericTagContext) {
-                                if (firstChild.tagName().text in knownOpeningTags) {
-                                    markedTags.push(Pair(markers.pop(), ctx.ruleIndex))
+                                val tagName = firstChild.tagName().text
+
+                                if (tagName in knownOpeningTags) {
+                                    markedTags.push(Pair(markers.pop(), specialElementTypeStart + knownOpeningTags.indexOf(tagName)))
                                     return
                                 }
-                                if (firstChild.tagName().text in knownClosingTags
+                                if (tagName in knownClosingTags
                                         && markedTags.isNotEmpty()) {
                                     super.exitEveryRule(ctx)
 
                                     // call done on the opening tag
                                     val marked = markedTags.pop()
-                                    marked.first.done(getRuleElementTypes()[marked.second])
+                                    marked.first.done(getRuleElementType(marked.second))
 
                                     return
                                 }
@@ -108,11 +116,19 @@ class PebbleParserDefinition : ParserDefinition {
                             // call done on unclosed tags
                             while (markedTags.isNotEmpty()) {
                                 val marked = markedTags.pop()
-                                marked.first.done(getRuleElementTypes()[marked.second])
+                                marked.first.done(getRuleElementType(marked.second))
                             }
                         }
 
                         super.exitEveryRule(ctx)
+                    }
+
+                    private fun getRuleElementType(index: Int): IElementType {
+                        return if (index >= specialElementTypeStart) {
+                            knowOpeningTagsElementTypes[index - specialElementTypeStart]
+                        } else {
+                            getRuleElementTypes()[index]
+                        }
                     }
                 }
             }
@@ -148,5 +164,22 @@ class PebbleParserDefinition : ParserDefinition {
         val COMMENTS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage.INSTANCE, PebbleLexer.COMMENT)
 
         val FILE = IFileElementType(Language.findInstance(PebbleLanguage::class.java))
+
+        private const val specialElementTypeStart = 200
+
+        val autoescapeElementType = RuleIElementType(specialElementTypeStart, "autoescape", PebbleLanguage.INSTANCE)
+        val blockElementType = RuleIElementType(specialElementTypeStart + 1, "block", PebbleLanguage.INSTANCE)
+        val cacheElementType = RuleIElementType(specialElementTypeStart + 2, "cache", PebbleLanguage.INSTANCE)
+        val filterElementType = RuleIElementType(specialElementTypeStart + 3, "filter", PebbleLanguage.INSTANCE)
+        val forElementType = RuleIElementType(specialElementTypeStart + 4, "for", PebbleLanguage.INSTANCE)
+        val ifElementType = RuleIElementType(specialElementTypeStart + 5, "if", PebbleLanguage.INSTANCE)
+        val macroElementType = RuleIElementType(specialElementTypeStart + 6, "macro", PebbleLanguage.INSTANCE)
+        val parallelElementType = RuleIElementType(specialElementTypeStart + 7, "parallel", PebbleLanguage.INSTANCE)
+
+        fun isTagDirectiveLike(elType: IElementType): Boolean {
+            return elType == rules[PebbleParser.RULE_tagDirective]
+                    || elType == rules[PebbleParser.RULE_verbatimTag]
+                    || (elType is RuleIElementType && elType.ruleIndex >= specialElementTypeStart)
+        }
     }
 }
