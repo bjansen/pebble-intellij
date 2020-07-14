@@ -1,5 +1,7 @@
 package com.github.bjansen.intellij.pebble.psi
 
+import com.github.bjansen.intellij.pebble.config.PebbleProjectSettings
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import org.junit.Test
@@ -38,6 +40,25 @@ class FileReferencesTest : AbstractReferencesTest() {
         } else {
             assertNotNull(referenced)
         }
+    }
+
+    @Test fun testRefToFileInSameDirWithSuffix() {
+        val file = initFile("file-with-suffix.peb", "file2.peb")
+
+        moveCaret(20)
+
+        val config = PropertiesComponent.getInstance(project)
+        config.setValue(PebbleProjectSettings.suffixProperty, ".peb")
+
+        val referenced = findReferencedFile(file)
+
+        if (referenced != null) {
+            assertEquals("file2.peb", referenced.name)
+        } else {
+            assertNotNull(referenced)
+        }
+
+        config.unsetValue(PebbleProjectSettings.suffixProperty)
     }
 
     @Test fun testRefToFileInSubDir() {

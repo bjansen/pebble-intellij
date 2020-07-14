@@ -73,6 +73,10 @@
                          key="inspection.unknown.attribute"
                          groupKey="group.name" enabledByDefault="true" level="ERROR" runForWholeFile="true"
                          implementationClass="com.github.bjansen.intellij.pebble.codeInspection.UnknownAttributeInspection"/>
+
+        <projectConfigurable groupId="language" displayName="Pebble"
+                             id="com.github.bjansen.intellij.pebble.config.PebbleProjectSettings"
+                             instance="com.github.bjansen.intellij.pebble.config.PebbleProjectSettings"/>
     </extensions>
 
     <actions>

@@ -1,0 +1,3 @@
+hello
+
+{% import "file2" %}

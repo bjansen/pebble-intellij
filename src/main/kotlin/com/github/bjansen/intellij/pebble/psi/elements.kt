@@ -1,12 +1,15 @@
 package com.github.bjansen.intellij.pebble.psi
 
+import com.github.bjansen.intellij.pebble.config.PebbleProjectSettings
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.pebble.parser.PebbleParser
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
@@ -40,16 +43,15 @@ open class PebbleTagDirective(node: ASTNode) : PebblePsiElement(node) {
                 val range = TextRange.from(it.textOffset - this.textOffset + 1, it.textLength - 2)
                 val templateName = range.substring(text)
 
-                // Resolves relative paths
-                refs.addAll(
-                    FileReferenceSet(
-                        FileUtil.toSystemIndependentName(templateName),
-                        this, range.startOffset, null, true
-                    ).allReferences
-                )
+                val config = PropertiesComponent.getInstance(it.project)
+                val prefix = config.getValue(PebbleProjectSettings.prefixProperty) ?: ""
+                val suffix = config.getValue(PebbleProjectSettings.suffixProperty) ?: ""
 
-                // Resolves partial template names (prefix/suffix are automatically added)
-                refs.add(TemplateReference(this, range))
+                val set = FileReferenceSet(
+                        FileUtil.toSystemIndependentName(prefix + templateName + suffix),
+                        this, range.startOffset, null, true
+                )
+                refs.add(FileReference(set, range, 0, prefix + templateName + suffix))
             }
 
             return refs.toTypedArray()
@@ -74,10 +76,10 @@ class PebbleTemplate(node: ASTNode) : PebblePsiElement(node), ScopeNode {
     }
 
     override fun processDeclarations(
-        processor: PsiScopeProcessor,
-        state: ResolveState,
-        lastParent: PsiElement?,
-        place: PsiElement
+            processor: PsiScopeProcessor,
+            state: ResolveState,
+            lastParent: PsiElement?,
+            place: PsiElement
     ): Boolean {
         val stopElement = lastParent ?: place
 
@@ -107,8 +109,8 @@ class PebbleIdentifier(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
     override fun getReferences(): Array<PsiReference> {
         // Allows our PsiReferenceContributor to contribute their references
         return arrayOf(
-            reference,
-            *ReferenceProvidersRegistry.getReferencesFromProviders(this)
+                reference,
+                *ReferenceProvidersRegistry.getReferencesFromProviders(this)
         ).requireNoNulls()
     }
 
@@ -144,7 +146,7 @@ class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
 
             InheritanceUtil.processSuperTypes(type, true) {
                 if (it.canonicalText.startsWith("java.lang.Iterable")
-                    && it is PsiClassType && it.parameters.isNotEmpty()) {
+                        && it is PsiClassType && it.parameters.isNotEmpty()) {
                     iteratedType = it.parameters[0]
                 }
 
@@ -157,8 +159,8 @@ class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
         }
 
         return PsiType.getJavaLangObject(
-            PsiManager.getInstance(containingFile.project),
-            GlobalSearchScope.allScope(containingFile.project)
+                PsiManager.getInstance(containingFile.project),
+                GlobalSearchScope.allScope(containingFile.project)
         )
     }
 }

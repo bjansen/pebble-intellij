@@ -50,7 +50,6 @@ project(":") {
         version = ideaVersion
         downloadSources = downloadIdeaSources.toBoolean()
         updateSinceUntilBuild = false
-        instrumentCode = false
         setPlugins("Spring", "java-i18n", "properties"/*, "java"*/)
 
         tasks.withType<PublishTask> {
@@ -92,11 +91,5 @@ project(":") {
             (tasks["runIde"].property("ideaDirectory") as File).absolutePath,
             *additionalIdes
         )
-    }
-
-    sourceSets {
-        getByName("main").apply {
-            java.srcDirs("antlr-adaptor/src")
-        }
     }
 }
