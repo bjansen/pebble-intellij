@@ -32,10 +32,10 @@ project(":") {
     }
 
     dependencies {
-        compile(project(":parser")) {
+        implementation(project(":parser")) {
             exclude(module = "antlr4")
         }
-        compile("org.antlr", "antlr4-intellij-adaptor", "0.1")
+        implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
         pluginVerifier("org.jetbrains.intellij.plugins:verifier-cli:1.219:all") {
             exclude(group = "*")
         }
@@ -66,8 +66,8 @@ project(":") {
     }
 
     configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_1_7
-        targetCompatibility = JavaVersion.VERSION_1_7
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     tasks.withType(JavaCompile::class) {

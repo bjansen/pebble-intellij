@@ -1,8 +1,3 @@
-.idea/workspace.xml
-.idea/libraries/
-.idea/modules/
-.idea/gradle.xml
-.idea/modules.xml
 /out/
 src/rebel.xml
 *.tokens
@@ -11,3 +6,5 @@ src/rebel.xml
 /pebble-intellij-test/target/
 /build/
 /parser/build/
+/.gradle/
+/.idea/
