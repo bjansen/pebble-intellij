@@ -18,9 +18,9 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.4.9"
-    id("org.sonarqube") version "2.8"
-    kotlin("jvm") version "1.3.21"
+    id("org.jetbrains.intellij") version "0.4.21"
+    id("org.sonarqube") version "3.0"
+    kotlin("jvm") version "1.3.72"
 }
 
 project(":") {
@@ -36,7 +36,7 @@ project(":") {
             exclude(module = "antlr4")
         }
         implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
-        pluginVerifier("org.jetbrains.intellij.plugins:verifier-cli:1.219:all") {
+        pluginVerifier("org.jetbrains.intellij.plugins:verifier-cli:1.241:all") {
             exclude(group = "*")
         }
     }
@@ -88,7 +88,7 @@ project(":") {
             "-verification-reports-dir", "build/pluginVerifier",
             "check-plugin",
             "build/distributions/pebble-intellij.zip",
-            (tasks["runIde"].property("ideaDirectory") as File).absolutePath,
+            (tasks["runIde"].property("ideaDirectory") as File?)?.absolutePath ?: "missing",
             *additionalIdes
         )
     }
