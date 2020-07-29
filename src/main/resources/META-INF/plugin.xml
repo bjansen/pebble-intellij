@@ -9,9 +9,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    <b>v0.7</b>
+    <b>v0.8</b>
     <ul>
-        <li>the type of an `in` variable is now correctly recognized (<a href="https://github.com/bjansen/pebble-intellij/issues/37">#37</a>)</li>
+        <li>Improved support for variable declared in `for` loops (<a href="https://github.com/bjansen/pebble-intellij/issues/44">#44</a>)</li>
+        <li>Added settings to configure template prefix/suffix (<a href="https://github.com/bjansen/pebble-intellij/issues/43">#43</a>)</li>
     </ul>
     ]]></change-notes>
 
