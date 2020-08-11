@@ -297,7 +297,7 @@ INTERPOLATED_STRING_START
     ;
 
 TEXT
-    : (~["#] | ('#' ~'{'))+
+    : (~["#] | ('#' {_input.LA(1) != '{'}?))+
     ;
 
 INTERPOLATED_STRING_STOP
