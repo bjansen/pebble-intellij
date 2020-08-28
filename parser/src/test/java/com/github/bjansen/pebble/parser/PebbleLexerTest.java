@@ -45,6 +45,11 @@ public class PebbleLexerTest extends AbstractLexerTest {
         lexFile("src/test/resources/lexer/pebble/issue36.peb");
     }
 
+    @Test
+    public void testSingleSharpString() {
+        lexFile("src/test/resources/lexer/pebble/single-sharp-string.peb");
+    }
+
     @Override
     PebbleLexer createLexer(String text) {
         return new PebbleLexer(new ANTLRInputStream(text));
