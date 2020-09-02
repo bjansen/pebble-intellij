@@ -73,8 +73,10 @@ object SpringExtension {
                     .findClass("com.mitchellbosecke.pebble.spring.PebbleView", scope)
             val spring4 = JavaPsiFacade.getInstance(file.project)
                     .findClass("com.mitchellbosecke.pebble.spring4.PebbleView", scope)
+            val spring5 = JavaPsiFacade.getInstance(file.project)
+                    .findClass("com.mitchellbosecke.pebble.spring.servlet.PebbleView", scope)
 
-            return spring3 != null || spring4 != null
+            return spring3 != null || spring4 != null || spring5 != null
         }
 
         return false
