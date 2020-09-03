@@ -77,7 +77,7 @@ object PebbleReferencesHelper {
             }
 
             return if (methodsOnly) emptyList<PsiField>()
-                    else clazz.fields.filter {
+                    else clazz.allFields.filter {
                         it.hasModifierProperty(PsiModifier.PUBLIC) && it.name == name
                     }
         }

@@ -273,4 +273,33 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
             fail("Reference resolved to nothing")
         }
     }
+
+    fun testIssue45() {
+        initFile("issue45/issue45.peb")
+        myFixture.addClass(File("src/test/resources/references/issue45/ActivityPubObject.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/references/issue45/Post.java").readText(Charsets.UTF_8))
+
+        moveCaret(75)
+
+        val resolved = resolveRefAtCaret()
+
+        if (resolved != null) {
+            assert(resolved is PsiMethod) { "Actual type is ${resolved.javaClass.name}" }
+            assert((resolved as PsiMethod).name == "getAdditionalField")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+        moveCaret(100)
+
+        val resolved2 = resolveRefAtCaret()
+
+        if (resolved2 != null) {
+            assert(resolved2 is PsiField) { "Actual type is ${resolved2.javaClass.name}" }
+            assert((resolved2 as PsiField).name == "published")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+    }
 }

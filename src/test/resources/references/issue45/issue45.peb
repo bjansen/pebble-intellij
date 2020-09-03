@@ -1,0 +1,4 @@
+{# @pebvariable name="post" type="references.issue45.Post" #}
+
+{{ post.additionalField }}
+{{ post.published }}
