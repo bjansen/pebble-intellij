@@ -11,10 +11,11 @@
     <change-notes><![CDATA[
     <b>v0.8</b>
     <ul>
-        <li>Improved support for variable declared in `for` loops (<a href="https://github.com/bjansen/pebble-intellij/issues/44">#44</a>)</li>
+        <li>Improved support for variable declared in `for` loops (<a href="https://github.com/bjansen/pebble-intellij/issues/44">#44</a>, <a href="https://github.com/bjansen/pebble-intellij/issues/50">#50</a>)</li>
         <li>Added settings to configure template prefix/suffix (<a href="https://github.com/bjansen/pebble-intellij/issues/43">#43</a>)</li>
         <li>Fixed the Spring extension that didn't work with the latest version of Pebble (<a href="https://github.com/bjansen/pebble-intellij/issues/49">#49</a>)</li>
         <li>Public fields in parent classes are now resolved correctly (<a href="https://github.com/bjansen/pebble-intellij/issues/45">#45</a>)</li>
+        <li>Improved formatting of template data language (<a href="https://github.com/bjansen/pebble-intellij/issues/48">#48</a>)</li>
     </ul>
     ]]></change-notes>
 
@@ -58,6 +59,7 @@
                 implementation="com.github.bjansen.intellij.pebble.codeStyle.PebbleLanguageCodeStyleSettingsProvider"/>
         <lang.formatter language="Pebble"
                         implementationClass="com.github.bjansen.intellij.pebble.formatting.PebbleFormattingModelBuilder"/>
+        <fileIndentOptionsProvider implementation="com.github.bjansen.intellij.pebble.formatting.PebbleFileIndentOptionsProvider"/>
         <lang.ast.factory language="Pebble"
                           implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleAstFactory"/>
         <lang.elementManipulator forClass="com.github.bjansen.intellij.pebble.psi.PebbleIdentifier"

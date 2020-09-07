@@ -47,14 +47,14 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
 
     companion object {
         private val templateDataToLang = ContainerUtil.newConcurrentMap<String, TemplateDataElementType>()
+        val pebbleFragment = TokenIElementType(0, "PEBBLE_FRAGMENT", PebbleLanguage.INSTANCE)
 
         private fun getTemplateDataElementType(lang: Language): TemplateDataElementType {
             val result = templateDataToLang[lang.id]
 
             if (result != null) return result
             val content = PebbleParserDefinition.tokens[PebbleLexer.CONTENT]
-            val outerEl = TokenIElementType(0, "PEBBLE_FRAGMENT", PebbleLanguage.INSTANCE)
-            val created = TemplateDataElementType("PEBBLE_TEMPLATE_DATA", lang, content, outerEl)
+            val created = TemplateDataElementType("PEBBLE_TEMPLATE_DATA", lang, content, pebbleFragment)
             val prevValue = templateDataToLang.putIfAbsent(lang.id, created)
 
             return prevValue ?: created
