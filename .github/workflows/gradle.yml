@@ -1,0 +1,33 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                env:
+                    - IDEA_VERSION: IU-2017.3.6
+                      ENABLE_JAVA_PLUGIN: false
+                    - IDEA_VERSION: IU-2018.3.6
+                      ENABLE_JAVA_PLUGIN: false
+                    - IDEA_VERSION: IU-2019.3.2
+                    - IDEA_VERSION: IU-2020.1.4
+                    - IDEA_VERSION: IU-2020.2
+                    - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
+
+        steps:
+            - uses: actions/checkout@v1
+            - name: Set up JDK 1.8
+              uses: actions/setup-java@v1
+              with:
+                  java-version: 1.8
+            - name: Patch build file
+              run: if $ENABLE_JAVA_PLUGIN; then sed -i 's/\/\*, "java"\*\//, "java"/' build.gradle.kts; fi
+              env: ${{ matrix.env }}
+            - name: Build with Gradle
+              run: ./gradlew build -PideaVersion=${IDEA_VERSION}
+              env: ${{ matrix.env }}
