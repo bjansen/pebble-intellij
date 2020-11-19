@@ -2,8 +2,6 @@ package com.github.bjansen.intellij.pebble.codeStyle
 
 import com.intellij.application.options.codeStyle.CustomizableLanguageCodeStylePanel
 import com.intellij.psi.codeStyle.CodeStyleSettings
-import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable
-import com.intellij.psi.codeStyle.CustomCodeStyleSettings
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
 import com.intellij.ui.OptionGroup
 import com.intellij.ui.components.JBTextField
@@ -95,18 +93,5 @@ class DelimitersConfigurationPanel(settings: CodeStyleSettings) : CustomizableLa
     }
 
     override fun showAllStandardOptions() {
-    }
-
-    /* ** For compatibility with IntelliJ 15 ** */
-    override fun showCustomOption(settingsClass: Class<out CustomCodeStyleSettings>?, fieldName: String?, title: String?, groupName: String?, vararg options: Any?) {
-    }
-
-    override fun showCustomOption(settingsClass: Class<out CustomCodeStyleSettings>?, fieldName: String?, title: String?, groupName: String?, anchor: CodeStyleSettingsCustomizable.OptionAnchor?, anchorFieldName: String?, vararg options: Any?) {
-    }
-
-    override fun renameStandardOption(fieldName: String?, newTitle: String?) {
-    }
-
-    override fun moveStandardOption(fieldName: String?, newGroup: String?) {
     }
 }
