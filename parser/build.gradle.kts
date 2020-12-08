@@ -13,9 +13,9 @@ configure<JavaPluginConvention> {
 }
 
 dependencies {
-    antlr("org.antlr:antlr4:4.7.1")
-    compile("org.antlr:antlr4-runtime:4.7.1")
-    testCompile("junit:junit:4.+")
+    antlr("org.antlr:antlr4:4.9")
+    implementation("org.antlr:antlr4-runtime:4.9")
+    testImplementation("junit:junit:4.+")
 }
 
 tasks.generateGrammarSource {
