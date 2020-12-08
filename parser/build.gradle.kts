@@ -20,4 +20,19 @@ dependencies {
 
 tasks.generateGrammarSource {
     arguments = arguments + listOf("-visitor", "-package", "com.github.bjansen.pebble.parser", "-Xexact-output-dir")
+
+    doLast {
+        val parserPackagePath = "${outputDirectory.canonicalPath}/com/github/bjansen/pebble/parser"
+
+        file(parserPackagePath).mkdirs()
+
+        copy {
+            from(outputDirectory.canonicalPath)
+            into(parserPackagePath)
+            include("Pebble*")
+        }
+        delete(fileTree(outputDirectory.canonicalPath) {
+            include("Pebble*")
+        })
+    }
 }
