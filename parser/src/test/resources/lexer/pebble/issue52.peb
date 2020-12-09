@@ -1,0 +1,8 @@
+{% import "form_util" %}
+{% import 'forms.html' as forms %}
+{% import 'forms.html' asss forms %}
+{% import 'forms.html' as forms bzzorgk %}
+{% import modern ? 'ajax_form_util' : 'simple_form_util' %}
+{% from 'forms.html' import input as input_field, textarea %}
+{% from 'forms.html' import input as input_field, textarea as %}
+{% from 'forms.html' import import as import, as as as %}

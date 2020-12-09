@@ -91,8 +91,59 @@ PRINT_CLOSE
     : ('-}}' | ('}}' {openingBracesCount == 0 && !inStringInterpolation}?)) -> popMode
     ;
 
+// "hard" keywords, can never be legal identifiers
+AND
+    : 'and'
+    ;
+
+CONTAINS
+    : 'contains'
+    ;
+
+EQUALS
+    : 'equals'
+    ;
+
+IS
+    : 'is'
+    ;
+
 NOT
     : 'not'
+    ;
+
+OR
+    : 'or'
+    ;
+
+// "soft" keywords, can be legal identifiers under certains circumstances
+AS
+    : 'as'
+    ;
+
+FROM
+    : 'from'
+    ;
+
+IN
+    : 'in'
+    ;
+
+IMPORT
+    : 'import'
+    ;
+
+WITH
+    : 'with'
+    ;
+
+// reserved keywords, can be legal identifiers under certains circumstances
+TRUE
+    : 'true'
+    ;
+
+FALSE
+    : 'false'
     ;
 
 NULL
@@ -103,6 +154,7 @@ NONE
     : 'none'
     ;
 
+// Others
 OP_ASSIGN
     : '='
     ;
@@ -177,26 +229,6 @@ COMMA
     : ','
     ;
 
-OR
-    : 'or'
-    ;
-
-AND
-    : 'and'
-    ;
-
-IS
-    : 'is'
-    ;
-
-IN
-    : 'in'
-    ;
-
-CONTAINS
-    : 'contains'
-    ;
-
 OP_PLUS
     : '+'
     ;
@@ -221,10 +253,6 @@ OP_EQ
     : '=='
     ;
 
-EQUALS
-    : 'equals'
-    ;
-
 OP_NEQ
     : '!='
     ;
@@ -243,18 +271,6 @@ OP_GE
 
 OP_GT
     : '>'
-    ;
-
-TRUE
-    : 'true'
-    ;
-
-FALSE
-    : 'false'
-    ;
-
-WITH
-    : 'with'
     ;
 
 STRING_START
