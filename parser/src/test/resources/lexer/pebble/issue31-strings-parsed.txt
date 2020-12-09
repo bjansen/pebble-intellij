@@ -4,3 +4,7 @@
 (printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } } "))) }})
 (printDirective {{ (expression (term (string_literal " hello world }}
 )))))
+
+Syntax errors:
+
+6:0 mismatched input '<EOF>' expecting {PRINT_CLOSE, '|'}
