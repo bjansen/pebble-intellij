@@ -274,7 +274,7 @@ NUMERIC
     ;
 
 ID_NAME
-    : [a-zA-Z_][_0-9a-zA-Z]*
+    : [\\p{IsLetter}_][\\p{IsLetter}\\p{IsDigit}_]*
     ;
 
 
