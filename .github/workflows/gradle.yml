@@ -18,6 +18,7 @@ jobs:
                     - IDEA_VERSION: IU-2020.1.4
                     - IDEA_VERSION: IU-2020.2
                     - IDEA_VERSION: IU-2020.3
+                      JDK_VERSION: '11'
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
                       JDK_VERSION: '11'
 
