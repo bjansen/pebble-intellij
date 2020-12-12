@@ -21,8 +21,8 @@
             <option name="Pebble" value="true"/>
         </context>
     </template>
-    <template name="ext" value="{% extends '$TEMPLATE$' %}&#10;"
-              description="extends 'template'" toReformat="true">
+    <template name="ext" value="{% extends &quot;$TEMPLATE$&quot; %}&#10;"
+              description="extends &quot;template&quot;" toReformat="true">
         <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Pebble" value="true"/>
@@ -56,15 +56,15 @@
             <option name="Pebble" value="true"/>
         </context>
     </template>
-    <template name="imp" value="{% import '$TEMPLATE$'$END$ %}"
-              description="import 'template'" toReformat="true">
+    <template name="imp" value="{% import &quot;$TEMPLATE$&quot;$END$ %}"
+              description="import &quot;template&quot;" toReformat="true">
         <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Pebble" value="true"/>
         </context>
     </template>
-    <template name="inc" value="{% include '$TEMPLATE$'$END$ %}"
-              description="include 'template'" toReformat="true">
+    <template name="inc" value="{% include &quot;$TEMPLATE$&quot;$END$ %}"
+              description="include &quot;template&quot;" toReformat="true">
         <variable name="TEMPLATE" expression="" defaultValue="" alwaysStopAt="true"/>
         <context>
             <option name="Pebble" value="true"/>
