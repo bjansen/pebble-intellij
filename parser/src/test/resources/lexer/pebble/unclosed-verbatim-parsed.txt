@@ -7,3 +7,7 @@ hello
 
 {% world %}
 <missing VERBATIM_TAG_END>)))
+
+Syntax errors:
+
+9:0 missing VERBATIM_TAG_END at '<EOF>'

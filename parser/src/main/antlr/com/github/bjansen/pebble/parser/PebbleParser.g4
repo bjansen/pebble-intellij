@@ -30,11 +30,25 @@ commentDirective
 
 tagDirective
     : verbatimTag
+    | importTag
+    | fromImportTag
     | genericTag
     ;
 
 verbatimTag
     : VERBATIM_TAG_OPEN CONTENT? VERBATIM_TAG_END
+    ;
+
+importTag
+    : TAG_OPEN IMPORT expression (AS identifier)? TAG_CLOSE
+    ;
+
+fromImportTag
+    : TAG_OPEN FROM expression IMPORT importedDeclaration (COMMA importedDeclaration)* TAG_CLOSE
+    ;
+
+importedDeclaration
+    : identifier (AS identifier)?
     ;
 
 genericTag
@@ -164,8 +178,13 @@ numeric_literal
     | LONG
     ;
 
+// Everything but "hard" keywords (not, or, and, is, contains, equals)
 identifier
-    : ID_NAME | WITH | IN | NONE // TODO NONE is a keyword
+    : ID_NAME
+    | AS | FROM | IN | IMPORT | WITH
+    | NONE
+    // We could allow true/false/null as legal identifiers, but since they are
+    // illegal Java identifiers, there is no way to use them in templates
     ;
 
 filters

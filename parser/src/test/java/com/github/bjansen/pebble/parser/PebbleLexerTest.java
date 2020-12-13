@@ -46,6 +46,11 @@ public class PebbleLexerTest extends AbstractLexerTest {
     }
 
     @Test
+    public void testIssue52() {
+        lexFile("src/test/resources/lexer/pebble/issue52.peb");
+    }
+
+    @Test
     public void testSingleSharpString() {
         lexFile("src/test/resources/lexer/pebble/single-sharp-string.peb");
     }

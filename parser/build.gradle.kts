@@ -13,11 +13,26 @@ configure<JavaPluginConvention> {
 }
 
 dependencies {
-    antlr("org.antlr:antlr4:4.7.1")
-    compile("org.antlr:antlr4-runtime:4.7.1")
-    testCompile("junit:junit:4.+")
+    antlr("org.antlr:antlr4:4.9")
+    implementation("org.antlr:antlr4-runtime:4.9")
+    testImplementation("junit:junit:4.+")
 }
 
 tasks.generateGrammarSource {
     arguments = arguments + listOf("-visitor", "-package", "com.github.bjansen.pebble.parser", "-Xexact-output-dir")
+
+    doLast {
+        val parserPackagePath = "${outputDirectory.canonicalPath}/com/github/bjansen/pebble/parser"
+
+        file(parserPackagePath).mkdirs()
+
+        copy {
+            from(outputDirectory.canonicalPath)
+            into(parserPackagePath)
+            include("Pebble*")
+        }
+        delete(fileTree(outputDirectory.canonicalPath) {
+            include("Pebble*")
+        })
+    }
 }

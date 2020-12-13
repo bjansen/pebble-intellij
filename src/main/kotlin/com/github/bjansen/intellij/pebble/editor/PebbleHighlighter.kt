@@ -89,10 +89,19 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
                 DefaultLanguageHighlighterColors.STRING)
     }
 
+    // Built-in reserved words that can't be used as legal identifiers, and thus should
+    // always be highlighted as keywords.
     private val keywords = Arrays.asList(
-            tokens[PebbleLexer.TRUE], tokens[PebbleLexer.FALSE], tokens[PebbleLexer.EQUALS],
-            tokens[PebbleLexer.CONTAINS], tokens[PebbleLexer.AND], tokens[PebbleLexer.OR], tokens[PebbleLexer.NOT],
-            tokens[PebbleLexer.IS], tokens[PebbleLexer.NULL]
+            // Unary operators listed in com.mitchellbosecke.pebble.extension.core.CoreExtension
+            tokens[PebbleLexer.NOT],
+
+            // Binary operators listed in com.mitchellbosecke.pebble.extension.core.CoreExtension
+            tokens[PebbleLexer.OR], tokens[PebbleLexer.AND], tokens[PebbleLexer.IS],
+            tokens[PebbleLexer.CONTAINS], tokens[PebbleLexer.EQUALS],
+
+            // Reserved words listed in com.mitchellbosecke.pebble.parser.ExpressionParser
+            // "none" can be a legal Java identifier so we do not list it here
+            tokens[PebbleLexer.TRUE], tokens[PebbleLexer.FALSE], tokens[PebbleLexer.NULL]
     )
 
     private val delimiters = Arrays.asList(

@@ -1,8 +1,12 @@
 package com.github.bjansen.intellij.pebble.editor
 
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.SOFT_KEYWORDS
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.TAG_NAMES
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.intellij.pebble.psi.getPebbleCodeStyleSettings
 import com.github.bjansen.pebble.parser.PebbleLexer
+import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.openapi.util.TextRange
@@ -33,6 +37,9 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
             val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
             holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
             highlightDelimiters(element)
+        } else if (element.node.elementType in SOFT_KEYWORDS && element.node.treeParent.elementType != rules[PebbleParser.RULE_identifier]) {
+            // A soft keyword that is not used as an identifier
+            holder.createInfoAnnotation(element, null).textAttributes = PebbleHighlighter.KEYWORDS
         }
     }
 
@@ -51,8 +58,7 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
 
     fun highlightTagName(tag: PsiElement) {
         val id = PsiTreeUtil.nextVisibleLeaf(tag)
-        if (id != null &&
-                id.node.elementType == tokens[PebbleLexer.ID_NAME]) {
+        if (id != null && TAG_NAMES.contains(id.node.elementType)) {
             holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.KEYWORDS
         }
     }

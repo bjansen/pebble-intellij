@@ -2,6 +2,8 @@ package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.config.PebbleProjectSettings
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.lang.ASTNode
@@ -13,18 +15,25 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.InheritanceUtil
 import org.antlr.intellij.adaptor.psi.ScopeNode
 import java.util.*
 
 val directivesWithFileRefs = arrayOf("extends", "include", "import")
 
+val validTagNames = TokenSet.create(
+    rules[PebbleParser.RULE_tagName],
+    tokens[PebbleLexer.IMPORT],
+    tokens[PebbleLexer.FROM],
+)
+
 open class PebbleTagDirective(node: ASTNode) : PebblePsiElement(node) {
 
     fun getTagName() = getTagNameElement()?.text
 
     fun getTagNameElement(): PsiElement? {
-        return node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.psi
+        return node.firstChildNode.findChildByType(validTagNames)?.psi
     }
 
     override fun getReferences(): Array<PsiReference> {
