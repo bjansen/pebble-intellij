@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.8</version>
+    <version>0.9-SNAPSHOT</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -9,13 +9,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    <b>v0.8</b>
+    <b>v0.9</b>
     <ul>
-        <li>Improved support for variable declared in `for` loops (<a href="https://github.com/bjansen/pebble-intellij/issues/44">#44</a>, <a href="https://github.com/bjansen/pebble-intellij/issues/50">#50</a>)</li>
-        <li>Added settings to configure template prefix/suffix (<a href="https://github.com/bjansen/pebble-intellij/issues/43">#43</a>)</li>
-        <li>Fixed the Spring extension that didn't work with the latest version of Pebble (<a href="https://github.com/bjansen/pebble-intellij/issues/49">#49</a>)</li>
-        <li>Public fields in parent classes are now resolved correctly (<a href="https://github.com/bjansen/pebble-intellij/issues/45">#45</a>)</li>
-        <li>Improved formatting of template data language (<a href="https://github.com/bjansen/pebble-intellij/issues/48">#48</a>)</li>
     </ul>
     ]]></change-notes>
 
