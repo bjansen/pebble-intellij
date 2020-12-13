@@ -21,7 +21,7 @@ pebbleTemplate
     ;
 
 printDirective
-    : PRINT_OPEN expression filters? PRINT_CLOSE
+    : PRINT_OPEN expression PRINT_CLOSE
     ;
 
 commentDirective
@@ -52,7 +52,7 @@ importedDeclaration
     ;
 
 genericTag
-    : TAG_OPEN tagName expression? filters? TAG_CLOSE
+    : TAG_OPEN tagName expression? TAG_CLOSE
     ;
 
 tagName
@@ -61,6 +61,7 @@ tagName
 
 expression
     : assignment_expression
+    | expression filters
     | unary_op expression
     | parenthesized_expression
     | expression list_expression

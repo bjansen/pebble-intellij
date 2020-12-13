@@ -3,8 +3,8 @@
 (printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } "))) }})
 (printDirective {{ (expression (term (string_literal " hello  #{ (expression (map_expression { (map_element (string_literal 'key') : (expression (term (string_literal 'value')))) })) } } "))) }})
 (printDirective {{ (expression (term (string_literal " hello world }}
-)))))
+))) <missing PRINT_CLOSE>))
 
 Syntax errors:
 
-6:0 mismatched input '<EOF>' expecting {PRINT_CLOSE, '|'}
+6:0 missing PRINT_CLOSE at '<EOF>'

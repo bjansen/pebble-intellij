@@ -1,0 +1,2 @@
+(pebbleTemplate (printDirective {{ (expression (expression (parenthesized_expression ( (expression (expression (term (string_literal " aaa "))) (additive_op +) (expression (parenthesized_expression ( (expression (expression (term (string_literal " b "))) (filters | (filter (identifier upper)))) )))) ))) (filters | (filter (identifier capitalize)))) }})
+)
