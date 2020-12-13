@@ -17,8 +17,13 @@ public class Main {
         try {
             HashMap<String, Object> context = new HashMap<>();
             context.put("someClass", new SomeClass());
+            context.put("foo", "foo");
+            context.put("baz", "baz");
 
-            engine.getTemplate("references.peb").evaluate(new StringWriter(), context);
+            StringWriter writer = new StringWriter();
+            engine.getTemplate("ticket/foo.peb").evaluate(writer, context);
+
+            System.out.println(writer.toString());
         } catch (PebbleException | IOException e) {
             e.printStackTrace();
         }

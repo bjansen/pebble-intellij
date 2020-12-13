@@ -52,4 +52,20 @@ class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
         myFixture.launchAction(intention!!)
         myFixture.checkResultByFile("addImplicitVariable.after.peb")
     }
+
+    fun testInspectionOnNestedTagsIssue54() {
+        myFixture.configureByFile("addImplicitVariableNested.peb")
+        myFixture.enableInspections(UnknownVariableInspection::class.java)
+
+        val highlights = myFixture.doHighlighting()
+            .filter { it.severity == HighlightSeverity.WARNING }
+
+        assertEquals(3, highlights.size)
+
+        val intention = highlights[2].quickFixActionRanges?.get(0)?.first?.action
+
+        assertNotNull(intention)
+        myFixture.launchAction(intention!!)
+        myFixture.checkResultByFile("addImplicitVariableNested.after.peb")
+    }
 }

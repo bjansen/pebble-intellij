@@ -1,0 +1,5 @@
+{{ test }}
+
+{% for element in list %}
+    {# @pebvariable name="foo" type="" #}{{ foo }}
+{% endfor %}

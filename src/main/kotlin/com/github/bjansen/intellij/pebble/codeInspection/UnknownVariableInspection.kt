@@ -84,7 +84,7 @@ class AddImplicitVariableQuickFix(element: PsiElement) : LocalQuickFixAndIntenti
         if (tpl is TemplateImpl && editor != null) {
             val directive = getParentOfType(startElement, PebbleTagDirective::class.java, PebblePrintDirective::class.java)
             if (directive != null) {
-                editor.caretModel.moveToOffset(directive.startOffsetInParent)
+                editor.caretModel.moveToOffset(directive.textRange.startOffset)
 
                 val params = mapOf("NAME" to startElement.text)
                 TemplateManager.getInstance(project).startTemplate(editor, tpl, false, params, null)
