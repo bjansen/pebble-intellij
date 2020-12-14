@@ -39,7 +39,7 @@ object PsiElementFactory {
             return PebbleMacroTag(node)
         } else if (elType == PebbleParserDefinition.blockElementType) {
             return PebbleBlockTag(node)
-        } else if (PebbleParserDefinition.isTagDirectiveLike(elType)) {
+        } else if (PebbleParserDefinition.isTagDirectiveLike(elType) && node.firstChildNode != null) {
             return when (node.firstChildNode.findChildByType(rules[PebbleParser.RULE_tagName])?.text) {
                 "set" -> PebbleSetTag(node)
                 else -> PebbleTagDirective(node)

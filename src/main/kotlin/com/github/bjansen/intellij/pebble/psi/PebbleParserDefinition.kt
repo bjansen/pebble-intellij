@@ -10,10 +10,12 @@ import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
 import com.intellij.lang.PsiBuilder
 import com.intellij.lexer.Lexer
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.IFileElementType
@@ -31,6 +33,9 @@ import org.antlr.v4.runtime.tree.ParseTree
 import java.util.*
 
 fun getPebbleCodeStyleSettings(project: Project?): PebbleCodeStyleSettings {
+    if (ApplicationManager.getApplication().isUnitTestMode) {
+        return PebbleCodeStyleSettings(CodeStyleSettings(false))
+    }
     val codeStyleManager =
             if (project != null) CodeStyleSettingsManager.getInstance(project)
             else CodeStyleSettingsManager.getInstance()
@@ -93,7 +98,7 @@ class PebbleParserDefinition : ParserDefinition {
 
                     override fun exitEveryRule(ctx: ParserRuleContext) {
                         if (ctx.ruleIndex == PebbleParser.RULE_tagDirective) {
-                            val firstChild = ctx.children[0]
+                            val firstChild = ctx.children?.get(0)
                             if (firstChild is PebbleParser.GenericTagContext) {
                                 val tagName = firstChild.tagName().text
 

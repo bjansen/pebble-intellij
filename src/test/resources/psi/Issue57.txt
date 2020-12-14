@@ -1,0 +1,8 @@
+Pebble file
+  PebbleTemplate(pebbleTemplate)
+    PebblePsiElement(tagDirective)
+      <empty list>
+    PebbleTagDirective(tagDirective)
+      PsiErrorElement:no viable alternative at input '{%'
+
+        PsiElement(TAG_OPEN)('{%')
