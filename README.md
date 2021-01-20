@@ -1,4 +1,4 @@
-# IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij) [![Travis CI](https://travis-ci.org/bjansen/pebble-intellij.svg?branch=master)](https://travis-ci.org/bjansen/pebble-intellij) [![GitHub release](https://img.shields.io/github/release/bjansen/pebble-intellij.svg)]()
+# IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij) [![GitHub Actions](https://github.com/bjansen/pebble-intellij/workflows/Java%20CI/badge.svg?branch=master)](https://github.com/bjansen/pebble-intellij/actions) [![GitHub release](https://img.shields.io/github/release/bjansen/pebble-intellij.svg)](https://plugins.jetbrains.com/plugin/9407-pebble)
 
 This plugin provides support for the [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
 IntelliJ IDEA 2017.3 and later.
