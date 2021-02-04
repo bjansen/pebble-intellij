@@ -154,7 +154,7 @@ class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
             var iteratedType: PsiType? = null
 
             InheritanceUtil.processSuperTypes(type, true) {
-                if (it.canonicalText.startsWith("java.lang.Iterable")
+                if ((it.canonicalText.startsWith("java.lang.Iterable") || it.canonicalText.startsWith("scala.collection.Iterable"))
                         && it is PsiClassType && it.parameters.isNotEmpty()) {
                     iteratedType = it.parameters[0]
                 }
