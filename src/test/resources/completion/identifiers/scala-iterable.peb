@@ -1,0 +1,4 @@
+stuff
+
+{# @pebvariable name="scalaCollection" type="scala.collection.List<String>" #}
+{{ scalaCollection.<caret> }}

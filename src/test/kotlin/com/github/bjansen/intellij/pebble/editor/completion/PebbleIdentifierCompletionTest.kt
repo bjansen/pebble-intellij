@@ -197,4 +197,12 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
         assertLookupsContain(listOf("label"))
     }
+
+    fun testCompletionOfScalaCollection() {
+        myFixture.configureByFile("scala-iterable.peb")
+        myFixture.addClass(File("$testDataPath/ScalaIterable.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("add"))
+    }
 }
