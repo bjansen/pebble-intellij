@@ -1,7 +1,9 @@
 package com.github.bjansen.intellij.pebble.psi
 
 import com.intellij.testFramework.ParsingTestCase
+import org.junit.Ignore
 
+@Ignore
 class PsiParserTest : ParsingTestCase("", "peb", PebbleParserDefinition()) {
 
     override fun getTestDataPath(): String {
