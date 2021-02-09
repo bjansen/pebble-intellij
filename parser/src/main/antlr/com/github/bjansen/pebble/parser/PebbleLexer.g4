@@ -290,7 +290,7 @@ NUMERIC
     ;
 
 ID_NAME
-    : [a-zA-Z_][_0-9a-zA-Z]*
+    : [\p{Letter}_][\p{Letter}\p{Digit}_]*
     ;
 
 
