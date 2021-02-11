@@ -38,6 +38,11 @@ public Token nextToken() {
     CommonToken token = new CommonToken(startToken);
     token.setStopIndex(startToken.getStartIndex() + builder.length() - 1);
 
+    if (!token.getText().isEmpty() && token.getText().trim().isEmpty()) {
+        // treat CONTENT that is all whitespace as WHITESPACE to make the formatter work correctly
+        token.setType(WHITESPACE);
+    }
+
     return token;
 }
 

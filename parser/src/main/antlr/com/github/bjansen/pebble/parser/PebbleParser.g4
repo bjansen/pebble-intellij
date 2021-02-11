@@ -13,7 +13,7 @@ options { tokenVocab=PebbleLexer; }
 
 pebbleTemplate
     : (
-        CONTENT
+        CONTENT | WHITESPACE
         | printDirective
         | commentDirective
         | tagDirective
