@@ -26,9 +26,6 @@ plugins {
 project(":") {
     repositories {
         mavenCentral()
-        maven {
-            url = uri("http://dl.bintray.com/jetbrains/intellij-plugin-service")
-        }
     }
 
     dependencies {
