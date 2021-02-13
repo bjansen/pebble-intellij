@@ -51,3 +51,7 @@ and Velocity plugins:
 follow this syntax:
 
     {# @pebvariable name="<name>" type="<type>" #}
+
+For code completion to work properly in the `type` attribute, your `.peb` files need to be placed
+under a [content root](https://www.jetbrains.com/help/idea/content-roots.html) (e.g. `src/main/resources`).
+Otherwise, classes defined in your own source files won't be suggested.
