@@ -1,12 +1,12 @@
 package com.github.bjansen.intellij.pebble.lang
 
 import com.github.bjansen.intellij.pebble.psi.PebbleComment
-import com.intellij.core.CoreASTFactory
+import com.intellij.lang.DefaultASTFactoryImpl
 import com.intellij.psi.impl.source.tree.LeafElement
 import com.intellij.psi.templateLanguages.OuterLanguageElementImpl
 import com.intellij.psi.tree.IElementType
 
-class PebbleAstFactory : CoreASTFactory() {
+class PebbleAstFactory : DefaultASTFactoryImpl() {
 
     override fun createLeaf(type: IElementType, text: CharSequence): LeafElement {
         if (type == PebbleFileViewProvider.pebbleFragment) {
@@ -14,6 +14,7 @@ class PebbleAstFactory : CoreASTFactory() {
         }
         return super.createLeaf(type, text)
     }
+
     override fun createComment(type: IElementType, text: CharSequence): LeafElement {
         return PebbleComment(type, text)
     }
