@@ -1,0 +1,5 @@
+{{ "multi-line
+    string" }}
+{{ "escaped\\" + "te\"st" }}
+{{ 'escaped\\' + 'te\'st' }}
+{{ 'one #{two} three' }}

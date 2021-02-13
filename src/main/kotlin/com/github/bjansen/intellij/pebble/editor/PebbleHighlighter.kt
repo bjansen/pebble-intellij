@@ -130,6 +130,7 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
 
     private val strings = Arrays.asList(
             tokens[PebbleLexer.STRING_START], tokens[PebbleLexer.STRING_END],
-            tokens[PebbleLexer.TEXT], tokens[PebbleLexer.SINGLE_QUOTED_STRING]
+            tokens[PebbleLexer.TEXT], tokens[PebbleLexer.SINGLE_QUOTED_STRING],
+            tokens[PebbleLexer.DOUBLE_QUOTED_PLAIN_STRING]
     )
 }

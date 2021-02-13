@@ -1,0 +1,6 @@
+(pebbleTemplate (printDirective {{ (expression (term (string_literal "multi-line
+string"))) }})
+(printDirective {{ (expression (expression (term (string_literal "escaped\\"))) (additive_op +) (expression (term (string_literal "te\"st")))) }})
+(printDirective {{ (expression (expression (term (string_literal 'escaped\\'))) (additive_op +) (expression (term (string_literal 'te\'st')))) }})
+(printDirective {{ (expression (term (string_literal 'one #{two} three'))) }})
+)

@@ -172,6 +172,7 @@ boolean_literal
 string_literal
     : STRING_START (TEXT | (INTERPOLATED_STRING_START expression? INTERPOLATED_STRING_STOP))* STRING_END?
     | SINGLE_QUOTED_STRING
+    | DOUBLE_QUOTED_PLAIN_STRING
     ;
 
 numeric_literal

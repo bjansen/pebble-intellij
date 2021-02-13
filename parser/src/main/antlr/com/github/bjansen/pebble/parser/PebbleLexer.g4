@@ -278,12 +278,16 @@ OP_GT
     : '>'
     ;
 
+DOUBLE_QUOTED_PLAIN_STRING
+    : '"' ~[#"\\]* ('\\'.~[#"\\]*)* '"'
+    ;
+
 STRING_START
     : '"' -> pushMode(IN_STRING)
     ;
 
 SINGLE_QUOTED_STRING
-    : '\'' ~[']* '\''?
+    : '\'' ~['\\]* ('\\'.~['\\]*)* '\''?
     ;
 
 LONG

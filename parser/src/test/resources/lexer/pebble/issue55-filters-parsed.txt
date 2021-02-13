@@ -1,2 +1,2 @@
-(pebbleTemplate (printDirective {{ (expression (expression (expression (term (identifier foo))) (additive_op +) (expression (expression (term (string_literal " foo "))) (filters | (filter (identifier capitalize))))) (additive_op +) (expression (term (identifier baz)))) }})
+(pebbleTemplate (printDirective {{ (expression (expression (expression (term (identifier foo))) (additive_op +) (expression (expression (term (string_literal "foo"))) (filters | (filter (identifier capitalize))))) (additive_op +) (expression (term (identifier baz)))) }})
 )
