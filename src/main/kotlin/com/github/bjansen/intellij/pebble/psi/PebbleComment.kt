@@ -3,11 +3,11 @@ package com.github.bjansen.intellij.pebble.psi
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.JavaClassReferenceProvider
-import com.intellij.psi.impl.source.tree.PsiCoreCommentImpl
+import com.intellij.psi.impl.source.tree.PsiCommentImpl
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.tree.IElementType
 
-class PebbleComment(type: IElementType, text: CharSequence) : PsiCoreCommentImpl(type, text), PsiNamedElement {
+class PebbleComment(type: IElementType, text: CharSequence) : PsiCommentImpl(type, text), PsiNamedElement {
 
     override fun setName(name: String): PsiElement {
         val nameRange = getValueRange(text, "name")
