@@ -7,15 +7,16 @@ import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.t
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.hint.api.impls.MethodParameterInfoHandler
-import com.intellij.codeInsight.lookup.LookupElement
-import com.intellij.lang.parameterInfo.*
+import com.intellij.lang.parameterInfo.CreateParameterInfoContext
+import com.intellij.lang.parameterInfo.ParameterInfoUIContext
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.getCurrentParameterIndex
+import com.intellij.lang.parameterInfo.UpdateParameterInfoContext
 import com.intellij.psi.*
 import com.intellij.psi.tree.IElementType
 import org.antlr.intellij.adaptor.psi.ANTLRPsiNode
 
-class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<PebbleArgumentList, PsiElement, PsiElement> {
+class PebbleParameterInfoHandler : PebbleBaseParameterInfoHandler() {
 
     override fun getArgListStopSearchClasses(): MutableSet<out Class<Any>>
             = mutableSetOf()
@@ -67,10 +68,6 @@ class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<Pebb
         return findParentOfType(context.file, context.offset, PebbleArgumentList::class.java)
     }
 
-    override fun getParameterCloseChars(): String? {
-        return ParameterInfoUtils.DEFAULT_PARAMETER_CLOSE_CHARS
-    }
-
     override fun findElementForParameterInfo(context: CreateParameterInfoContext): PebbleArgumentList? {
         val argList = findParentOfType(context.file, context.offset, PebbleArgumentList::class.java)
 
@@ -89,17 +86,7 @@ class PebbleParameterInfoHandler : ParameterInfoHandlerWithTabActionSupport<Pebb
         return null
     }
 
-    override fun getParametersForDocumentation(p: PsiElement?, context: ParameterInfoContext?): Array<Any>? {
-        return null
-    }
-
-    override fun tracksParameterIndex() = true
-
     override fun showParameterInfo(element: PebbleArgumentList, context: CreateParameterInfoContext) {
         context.showHint(element, element.textRange.startOffset, this)
     }
-
-    override fun getParametersForLookup(item: LookupElement?, context: ParameterInfoContext?): Array<out Any>? = null
-
-    override fun couldShowInLookup() = true
 }

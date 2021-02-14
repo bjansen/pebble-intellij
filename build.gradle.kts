@@ -1,4 +1,6 @@
 import org.jetbrains.intellij.tasks.PublishTask
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask
+import kotlin.collections.listOf
 
 val ideaVersion: String by project
 val downloadIdeaSources: String by project
@@ -46,6 +48,10 @@ project(":") {
             username(publishUsername)
             password(publishPassword)
             channels(publishChannels)
+        }
+
+        tasks.withType<RunPluginVerifierTask> {
+            setIdeVersions(listOf("IU-2017.3.7", "IU-2020.3.2"))
         }
     }
 
