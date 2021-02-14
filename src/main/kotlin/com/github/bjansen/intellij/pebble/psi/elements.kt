@@ -25,7 +25,7 @@ val directivesWithFileRefs = arrayOf("extends", "include", "import")
 val validTagNames = TokenSet.create(
     rules[PebbleParser.RULE_tagName],
     tokens[PebbleLexer.IMPORT],
-    tokens[PebbleLexer.FROM],
+    tokens[PebbleLexer.FROM]
 )
 
 open class PebbleTagDirective(node: ASTNode) : PebblePsiElement(node) {

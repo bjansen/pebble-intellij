@@ -1,9 +1,9 @@
 package com.github.bjansen.intellij.pebble.codeInspection
 
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import java.io.File
 
-class UnknownAttributeInspectionTest : LightCodeInsightFixtureTestCase() {
+class UnknownAttributeInspectionTest : LightJavaCodeInsightFixtureTestCase() {
 
     override fun getTestDataPath(): String {
         return "src/test/resources/inspections"

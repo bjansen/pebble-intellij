@@ -24,6 +24,7 @@ class PebbleFileType private constructor() : LanguageFileType(PebbleLanguage.INS
     }
 
     companion object {
+        @JvmField
         val INSTANCE = PebbleFileType()
     }
 }

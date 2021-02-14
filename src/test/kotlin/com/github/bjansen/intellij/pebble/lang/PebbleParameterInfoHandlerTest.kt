@@ -2,12 +2,12 @@ package com.github.bjansen.intellij.pebble.lang
 
 import com.intellij.codeInsight.hint.ParameterInfoComponent
 import com.intellij.psi.PsiElement
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import com.intellij.testFramework.utils.parameterInfo.MockCreateParameterInfoContext
 import com.intellij.testFramework.utils.parameterInfo.MockUpdateParameterInfoContext
 import java.io.File
 
-class PebbleParameterInfoHandlerTest : LightCodeInsightFixtureTestCase() {
+class PebbleParameterInfoHandlerTest : LightJavaCodeInsightFixtureTestCase() {
 
     private val myParameterInfoHandler = PebbleParameterInfoHandler()
 

@@ -5,6 +5,7 @@ import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.github.bjansen.pebble.parser.ConfigurableLexer
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
+import com.intellij.application.options.CodeStyle
 import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.lang.ParserDefinition
@@ -16,7 +17,6 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleSettings
-import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
@@ -36,10 +36,9 @@ fun getPebbleCodeStyleSettings(project: Project?): PebbleCodeStyleSettings {
     if (ApplicationManager.getApplication().isUnitTestMode) {
         return PebbleCodeStyleSettings(CodeStyleSettings(false))
     }
-    val codeStyleManager =
-            if (project != null) CodeStyleSettingsManager.getInstance(project)
-            else CodeStyleSettingsManager.getInstance()
-    return codeStyleManager.currentSettings.getCustomSettings(PebbleCodeStyleSettings::class.java)
+    return CodeStyle
+        .getProjectOrDefaultSettings(project)
+        .getCustomSettings(PebbleCodeStyleSettings::class.java)
 }
 
 fun createLexer(input: CharStream?, project: Project?): Lexer {
@@ -146,10 +145,6 @@ class PebbleParserDefinition : ParserDefinition {
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile {
         return PebbleFile(viewProvider)
-    }
-
-    override fun spaceExistanceTypeBetweenTokens(left: ASTNode, right: ASTNode): ParserDefinition.SpaceRequirements {
-        return ParserDefinition.SpaceRequirements.MAY
     }
 
     override fun createElement(node: ASTNode): PsiElement {

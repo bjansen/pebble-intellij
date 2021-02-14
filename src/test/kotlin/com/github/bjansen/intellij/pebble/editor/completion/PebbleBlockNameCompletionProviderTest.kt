@@ -1,9 +1,9 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
 import com.intellij.codeInsight.completion.CompletionType
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
-class PebbleBlockNameCompletionProviderTest : LightCodeInsightFixtureTestCase() {
+class PebbleBlockNameCompletionProviderTest : BasePlatformTestCase() {
 
     override fun getTestDataPath() = "src/test/resources/completion/blockNames"
 
