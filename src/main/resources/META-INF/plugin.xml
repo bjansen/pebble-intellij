@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.bjansen.intellij.pebble</id>
     <name>Pebble</name>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
     <vendor url="https://github.com/bjansen">Bastien Jansen</vendor>
 
     <description><![CDATA[
@@ -11,7 +11,14 @@
     <change-notes><![CDATA[
     <b>v0.9</b>
     <ul>
+      <li>Fixed many bugs related to the formatter, that appeared in 2020.3 (#58, #69, #71, #74, #75)</li>
+      <li>Use double quotes by default in live templates (<a href="https://github.com/bjansen/pebble-intellij/issues/66">#66</a>)</li>
+      <li>Support Scala iterables in `for` loops (<a href="https://github.com/bjansen/pebble-intellij/issues/73">#73</a>)</li>
+      <li>Support new identifier pattern (<a href="https://github.com/bjansen/pebble-intellij/issues/63">#63</a>)</li>
+      <li>Support `import ... as ...` (<a href="https://github.com/bjansen/pebble-intellij/issues/52">#52</a>)</li>
     </ul>
+
+    Full changelog at https://github.com/bjansen/pebble-intellij/milestone/9?closed=1
     ]]></change-notes>
 
     <!-- IDEA 2017.3 and later -->
