@@ -1,0 +1,8 @@
+{{ 3 is empty }}
+{{ 3 is even }}
+{{ 3 is map }}
+{{ 3 is null }}
+{{ 3 is odd }}
+{{ 3 is iterable }}
+{{ 3 is three }}
+{{ 3 is even and 4 is odd and "" is null and [] is map and {} is iterable }}

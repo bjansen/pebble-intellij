@@ -38,6 +38,11 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
                 return if (source == null) createResults() else createResults(source)
             }
 
+            if (psi.parent?.node?.elementType == rules[PebbleParser.RULE_test]) {
+                val source = PebbleCore.getTest(psi.text, psi.project)?.source
+                return if (source == null) createResults() else createResults(source)
+            }
+
             if (parentTag != null && parentTag.getTagName() == "endblock") {
                 return resolveOpeningBlockTag(parentTag, referenceText)
             }

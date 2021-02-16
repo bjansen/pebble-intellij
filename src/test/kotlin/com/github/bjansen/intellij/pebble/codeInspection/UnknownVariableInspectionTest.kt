@@ -68,4 +68,15 @@ class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
         myFixture.launchAction(intention!!)
         myFixture.checkResultByFile("addImplicitVariableNested.after.peb")
     }
+
+    fun testInspectionIgnoresKnownTests() {
+        myFixture.configureByFile("tests.peb")
+        myFixture.enableInspections(UnknownVariableInspection::class.java)
+
+        val highlights = myFixture.doHighlighting()
+            .filter { it.severity == HighlightSeverity.WARNING }
+
+        assertEquals(1, highlights.size)
+        assertEquals("Unknown variable 'three'", highlights[0].description)
+    }
 }

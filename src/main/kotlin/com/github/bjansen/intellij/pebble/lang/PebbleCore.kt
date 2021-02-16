@@ -8,36 +8,36 @@ import com.intellij.psi.PsiMethod
 
 object PebbleCore {
 
-    private val key = Key.create<PsiClass>("PEBBLE_FILTERS_CLASS")
+    private val filtersKey = Key.create<PsiClass>("PEBBLE_FILTERS_CLASS")
+    private val testsKey = Key.create<PsiClass>("PEBBLE_TESTS_CLASS")
 
     private val filtersByProject = hashMapOf<Project, Map<String, Filter>>()
+    private val testsByProject = hashMapOf<Project, Map<String, Test>>()
 
     fun getFilters(project: Project): Collection<Filter> {
-        if (!filtersByProject.containsKey(project)) {
-            initFilters(project)
-        }
-
-        return filtersByProject[project]!!.values
+        return filtersByProject.computeIfAbsent(project, this::initFilters).values
     }
 
     fun getFilter(name: String, project: Project): Filter? {
-        if (!filtersByProject.containsKey(project)) {
-            initFilters(project)
-        }
-
-        return filtersByProject[project]?.get(name)
+        return filtersByProject.computeIfAbsent(project, this::initFilters)[name]
     }
 
-    private fun initFilters(project: Project) {
-        val loopClass = ResourceUtil.loadPsiClassFromFile("/implicitCode/Filters.java", key, project)
-        val filters = hashMapOf<String, Filter>()
+    fun getTest(name: String, project: Project): Test? {
+        return testsByProject.computeIfAbsent(project, this::initTests)[name]
+    }
 
-        loopClass?.methods?.forEach {
-            val filter = Filter(it)
-            filters[filter.name] = filter
-        }
+    private fun initFilters(project: Project): Map<String, Filter> {
+        val filtersClass =
+            ResourceUtil.loadPsiClassFromFile("/implicitCode/Filters.java", filtersKey, project)
 
-        filtersByProject.put(project, filters)
+        return filtersClass?.methods?.map { Filter(it) }?.map { it.name to it }?.toMap() ?: emptyMap()
+    }
+
+    private fun initTests(project: Project): Map<String, Test> {
+        val testsClass =
+            ResourceUtil.loadPsiClassFromFile("/implicitCode/Tests.java", testsKey, project)
+
+        return testsClass?.methods?.map { it.name to Test(it) }?.toMap() ?: emptyMap()
     }
 }
 
@@ -46,7 +46,12 @@ class Filter(val source: PsiMethod) {
 
     val name = source.name.replace("$$", "")
 
-    val parameters = source.parameterList.parameters.associate {
-            p -> (p.name?.replace("$$", "") ?: "arg${idx++}") to p.type
+    val parameters = source.parameterList.parameters.associate { p ->
+        (p.name?.replace("$$", "") ?: "arg${idx++}") to p.type
     }
+}
+
+class Test(val source: PsiMethod) {
+
+    val name = source.name
 }
