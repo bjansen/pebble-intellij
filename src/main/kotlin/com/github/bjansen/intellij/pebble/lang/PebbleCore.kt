@@ -22,6 +22,10 @@ object PebbleCore {
         return filtersByProject.computeIfAbsent(project, this::initFilters)[name]
     }
 
+    fun getTests(project: Project): Collection<Test> {
+        return testsByProject.computeIfAbsent(project, this::initTests).values
+    }
+
     fun getTest(name: String, project: Project): Test? {
         return testsByProject.computeIfAbsent(project, this::initTests)[name]
     }
@@ -37,7 +41,7 @@ object PebbleCore {
         val testsClass =
             ResourceUtil.loadPsiClassFromFile("/implicitCode/Tests.java", testsKey, project)
 
-        return testsClass?.methods?.map { it.name to Test(it) }?.toMap() ?: emptyMap()
+        return testsClass?.methods?.map { Test(it) }?.map { it.name to it }?.toMap() ?: emptyMap()
     }
 }
 
@@ -53,5 +57,5 @@ class Filter(val source: PsiMethod) {
 
 class Test(val source: PsiMethod) {
 
-    val name = source.name
+    val name = source.name.replace("$$", "")
 }

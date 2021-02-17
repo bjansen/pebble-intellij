@@ -47,7 +47,7 @@ interface Tests {
      * {% endif %}
      * </pre></code>
      */
-    boolean null();
+    boolean null$$();
 
     /**
      * The {@code odd} test checks if an integer is odd.

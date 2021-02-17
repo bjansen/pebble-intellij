@@ -22,6 +22,11 @@ class PebbleCompletionContributor : CompletionContributor() {
                 PebbleFiltersCompletionProvider()
         )
         extend(CompletionType.BASIC,
+                psiElement(PebbleParserDefinition.tokens[PebbleLexer.ID_NAME])
+                        .afterLeaf(psiElement(PebbleParserDefinition.tokens[PebbleLexer.IS])),
+                PebbleTestsCompletionProvider()
+        )
+        extend(CompletionType.BASIC,
                 psiElement(),
                 PebbleBlockNameCompletionProvider()
         )
