@@ -2,6 +2,7 @@ package com.github.bjansen.intellij.pebble.editor
 
 import com.github.bjansen.intellij.pebble.PebbleBundle
 import com.github.bjansen.intellij.pebble.lang.PebbleFileType
+import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
@@ -54,16 +55,5 @@ class PebbleColorsAndFontsPage : ColorSettingsPage {
         return PebbleHighlighter()
     }
 
-    override fun getDemoText(): String {
-        return "{# Pebble template example #}\n" +
-            "Greetings, {{ who | capitalize }}!\n" +
-            "\n" +
-            "{% <kw>block</kw> content %}{% <kw>endblock</kw> %}\n" +
-            "\n" +
-            "{% <kw>if</kw> fun(\"string\", 1 + 2 % 3, {\"a\": [12]}) ^^ %}\n" +
-            "   Your neighbor.\n" +
-            "{% <kw>else</kw> %}\n" +
-            "   Your boss.\n" +
-            "{% <kw>endif</kw> %}"
-    }
+    override fun getDemoText() = PebbleLanguage.INSTANCE.codeSample
 }

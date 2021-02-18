@@ -81,17 +81,5 @@ class PebbleLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvide
         return PebbleLanguage.INSTANCE
     }
 
-    // TODO share with PebbleColorsAndFontsPage
-    override fun getCodeSample(settingsType: SettingsType): String {
-        return "{# Pebble template example #}\n" +
-                "Greetings, {{ who | capitalize }}!\n" +
-                "\n" +
-                "{% <kw>block</kw> content %}{% <kw>endblock</kw> %}\n" +
-                "\n" +
-                "{% <kw>if</kw> fun(\"string\", 1 + 2 % 3, {\"a\": [12]}) ^^ %}\n" +
-                "   Your neighbor.\n" +
-                "{% <kw>else</kw> %}\n" +
-                "   Your boss.\n" +
-                "{% <kw>endif</kw> %}"
-    }
+    override fun getCodeSample(settingsType: SettingsType) = PebbleLanguage.INSTANCE.codeSample
 }
