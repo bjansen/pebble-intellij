@@ -11,7 +11,7 @@ import com.intellij.psi.*
 import com.intellij.psi.scope.PsiScopeProcessor
 import org.antlr.intellij.adaptor.psi.ScopeNode
 
-class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage.INSTANCE), ScopeNode {
+class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, PebbleLanguage), ScopeNode {
     private val key = Key.create<PsiClass>("PEBBLE_LOOP_CLASS")
 
     val loopImplicitVariable: ImplicitVariable by lazy {

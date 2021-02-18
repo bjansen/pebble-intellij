@@ -25,7 +25,7 @@ object PsiElementFactory {
 
     private fun createFile(content: String, project: Project): PsiFile {
         return PsiFileFactory.getInstance(project)
-                .createFileFromText("a.peb", PebbleLanguage.INSTANCE, content)
+                .createFileFromText("a.peb", PebbleLanguage, content)
     }
 
     fun createElement(node: ASTNode): PsiElement {

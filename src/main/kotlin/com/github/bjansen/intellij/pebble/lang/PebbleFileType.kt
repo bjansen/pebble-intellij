@@ -5,7 +5,7 @@ import com.intellij.openapi.fileTypes.TemplateLanguageFileType
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
-class PebbleFileType private constructor() : LanguageFileType(PebbleLanguage.INSTANCE), TemplateLanguageFileType {
+class PebbleFileType private constructor() : LanguageFileType(PebbleLanguage), TemplateLanguageFileType {
 
     override fun getName(): String {
         return "Pebble"

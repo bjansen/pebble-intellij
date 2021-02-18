@@ -61,10 +61,10 @@ class PebbleCodeStyleSettingsProvider : CodeStyleSettingsProvider() {
         return PebbleCodeStyleSettings(settings)
     }
 
-    override fun getLanguage() = PebbleLanguage.INSTANCE
+    override fun getLanguage() = PebbleLanguage
 
     private class MyCodeStyleMainPanel(currentSettings: CodeStyleSettings, settings: CodeStyleSettings)
-        : TabbedLanguageCodeStylePanel(PebbleLanguage.INSTANCE, currentSettings, settings) {
+        : TabbedLanguageCodeStylePanel(PebbleLanguage, currentSettings, settings) {
 
         // Only show tabs we're interested in
         override fun initTabs(settings: CodeStyleSettings) {
@@ -77,9 +77,7 @@ class PebbleCodeStyleSettingsProvider : CodeStyleSettingsProvider() {
  * The actual configurable part of the code style.
  */
 class PebbleLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
-    override fun getLanguage(): Language {
-        return PebbleLanguage.INSTANCE
-    }
+    override fun getLanguage(): Language = PebbleLanguage
 
-    override fun getCodeSample(settingsType: SettingsType) = PebbleLanguage.INSTANCE.codeSample
+    override fun getCodeSample(settingsType: SettingsType) = PebbleLanguage.codeSample
 }

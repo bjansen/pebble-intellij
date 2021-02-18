@@ -52,7 +52,7 @@ fun createLexer(input: CharStream?, project: Project?): Lexer {
                     .withPrintOpenDelimiter(ourSettings.printOpen)
                     .withPrintCloseDelimiter(ourSettings.printClose)
 
-    return ANTLRLexerAdaptor(PebbleLanguage.INSTANCE, antlrLexer)
+    return ANTLRLexerAdaptor(PebbleLanguage, antlrLexer)
 }
 
 class PebbleParserDefinition : ParserDefinition {
@@ -81,7 +81,7 @@ class PebbleParserDefinition : ParserDefinition {
     }
 
     override fun createParser(project: Project): ANTLRParserAdaptor {
-        return object : ANTLRParserAdaptor(PebbleLanguage.INSTANCE, PebbleParser(null)) {
+        return object : ANTLRParserAdaptor(PebbleLanguage, PebbleParser(null)) {
             override fun parse(parser: Parser?, root: IElementType?): ParseTree {
 
                 if (root is IFileElementType) {
@@ -92,7 +92,7 @@ class PebbleParserDefinition : ParserDefinition {
             }
 
             override fun createListener(parser: Parser?, root: IElementType?, builder: PsiBuilder?): ANTLRParseTreeToPSIConverter {
-                return object : ANTLRParseTreeToPSIConverter(PebbleLanguage.INSTANCE, parser, builder) {
+                return object : ANTLRParseTreeToPSIConverter(PebbleLanguage, parser, builder) {
 
                     val markedTags = Stack<Pair<PsiBuilder.Marker, Int>>()
 
@@ -158,34 +158,34 @@ class PebbleParserDefinition : ParserDefinition {
 
     companion object {
         init {
-            PSIElementTypeFactory.defineLanguageIElementTypes(PebbleLanguage.INSTANCE,
+            PSIElementTypeFactory.defineLanguageIElementTypes(PebbleLanguage,
                     PebbleLexer.tokenNames, PebbleParser.ruleNames)
         }
 
-        val tokens: List<TokenIElementType> = PSIElementTypeFactory.getTokenIElementTypes(PebbleLanguage.INSTANCE)
-        val rules: List<RuleIElementType> = PSIElementTypeFactory.getRuleIElementTypes(PebbleLanguage.INSTANCE)
+        val tokens: List<TokenIElementType> = PSIElementTypeFactory.getTokenIElementTypes(PebbleLanguage)
+        val rules: List<RuleIElementType> = PSIElementTypeFactory.getRuleIElementTypes(PebbleLanguage)
 
-        val WHITE_SPACES: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage.INSTANCE, PebbleLexer.WHITESPACE)
-        val COMMENTS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage.INSTANCE, PebbleLexer.COMMENT)
-        val TAG_NAMES: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage.INSTANCE,
+        val WHITE_SPACES: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage, PebbleLexer.WHITESPACE)
+        val COMMENTS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage, PebbleLexer.COMMENT)
+        val TAG_NAMES: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage,
             PebbleLexer.ID_NAME, PebbleLexer.IMPORT, PebbleLexer.FROM)
 
         // "Soft" keywords can also be valid identifiers. We only highlight them when their parent is not a RULE_identifier
-        val SOFT_KEYWORDS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage.INSTANCE,
+        val SOFT_KEYWORDS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage,
             PebbleLexer.AS, PebbleLexer.FROM, PebbleLexer.IN, PebbleLexer.IMPORT, PebbleLexer.WITH)
 
         val FILE = IFileElementType(Language.findInstance(PebbleLanguage::class.java))
 
         private const val specialElementTypeStart = 200
 
-        val autoescapeElementType = RuleIElementType(specialElementTypeStart, "autoescape", PebbleLanguage.INSTANCE)
-        val blockElementType = RuleIElementType(specialElementTypeStart + 1, "block", PebbleLanguage.INSTANCE)
-        val cacheElementType = RuleIElementType(specialElementTypeStart + 2, "cache", PebbleLanguage.INSTANCE)
-        val filterElementType = RuleIElementType(specialElementTypeStart + 3, "filter", PebbleLanguage.INSTANCE)
-        val forElementType = RuleIElementType(specialElementTypeStart + 4, "for", PebbleLanguage.INSTANCE)
-        val ifElementType = RuleIElementType(specialElementTypeStart + 5, "if", PebbleLanguage.INSTANCE)
-        val macroElementType = RuleIElementType(specialElementTypeStart + 6, "macro", PebbleLanguage.INSTANCE)
-        val parallelElementType = RuleIElementType(specialElementTypeStart + 7, "parallel", PebbleLanguage.INSTANCE)
+        val autoescapeElementType = RuleIElementType(specialElementTypeStart, "autoescape", PebbleLanguage)
+        val blockElementType = RuleIElementType(specialElementTypeStart + 1, "block", PebbleLanguage)
+        val cacheElementType = RuleIElementType(specialElementTypeStart + 2, "cache", PebbleLanguage)
+        val filterElementType = RuleIElementType(specialElementTypeStart + 3, "filter", PebbleLanguage)
+        val forElementType = RuleIElementType(specialElementTypeStart + 4, "for", PebbleLanguage)
+        val ifElementType = RuleIElementType(specialElementTypeStart + 5, "if", PebbleLanguage)
+        val macroElementType = RuleIElementType(specialElementTypeStart + 6, "macro", PebbleLanguage)
+        val parallelElementType = RuleIElementType(specialElementTypeStart + 7, "parallel", PebbleLanguage)
 
         fun isTagDirectiveLike(elType: IElementType): Boolean {
             return elType == rules[PebbleParser.RULE_tagDirective]

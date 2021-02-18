@@ -55,5 +55,5 @@ class PebbleColorsAndFontsPage : ColorSettingsPage {
         return PebbleHighlighter()
     }
 
-    override fun getDemoText() = PebbleLanguage.INSTANCE.codeSample
+    override fun getDemoText() = PebbleLanguage.codeSample
 }

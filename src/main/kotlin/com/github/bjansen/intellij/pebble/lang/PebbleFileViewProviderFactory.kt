@@ -25,13 +25,13 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
     : MultiplePsiFilesPerDocumentFileViewProvider(manager, file, eventSystemEnabled),
         ConfigurableTemplateLanguageFileViewProvider {
 
-    override fun getBaseLanguage() = PebbleLanguage.INSTANCE
+    override fun getBaseLanguage() = PebbleLanguage
 
     override fun cloneInner(file: VirtualFile) = PebbleFileViewProvider(manager, file, false, myTemplateLanguage)
 
     override fun getTemplateDataLanguage() = myTemplateLanguage
 
-    override fun getLanguages() = setOf(PebbleLanguage.INSTANCE, templateDataLanguage)
+    override fun getLanguages() = setOf(PebbleLanguage, templateDataLanguage)
 
     override fun createFile(lang: Language): PsiFile? {
         return when (lang) {
@@ -47,7 +47,7 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
 
     companion object {
         private val templateDataToLang = ContainerUtil.newConcurrentMap<String, TemplateDataElementType>()
-        val pebbleFragment = TokenIElementType(0, "PEBBLE_FRAGMENT", PebbleLanguage.INSTANCE)
+        val pebbleFragment = TokenIElementType(0, "PEBBLE_FRAGMENT", PebbleLanguage)
 
         private fun getTemplateDataElementType(lang: Language): TemplateDataElementType {
             val result = templateDataToLang[lang.id]
