@@ -55,9 +55,15 @@ object PsiElementFactory {
             return PebbleArgumentList(node)
         } else if (elType is TokenIElementType) {
             return PebblePsiElement(node)
+        } else if (
+            elType == rules[PebbleParser.RULE_string_literal] ||
+            elType == rules[PebbleParser.RULE_boolean_literal] ||
+            elType == rules[PebbleParser.RULE_numeric_literal]
+        ) {
+            return PebbleLiteral(node)
         }
 
-        return PebblePsiElement(node) // TODO
+        return PebblePsiElement(node)
     }
 }
 

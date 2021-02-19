@@ -103,6 +103,8 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
 
         if (qualifyingMember is PebbleInVariable) {
             return buildPsiTypeLookups(qualifyingMember.getType())
+        } else if (qualifyingMember is PebbleLiteral) {
+            return buildPsiTypeLookups(qualifyingMember.getType())
         } else if (qualifyingMember is PsiField) {
             return buildPsiTypeLookups(qualifyingMember.type)
         } else if (qualifyingMember is PsiVariable) {

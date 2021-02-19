@@ -41,7 +41,10 @@ class PebbleHighlighter(val project: Project? = null) : SyntaxHighlighterBase() 
             attributes = COMMENT
         } else if (tokenType == tokens[PebbleLexer.ID_NAME]) {
             attributes = IDENTIFIER
-        } else if (tokenType == tokens[PebbleLexer.NUMERIC]) {
+        } else if (
+            tokenType == tokens[PebbleLexer.NUMERIC] ||
+            tokenType == tokens[PebbleLexer.LONG]
+        ) {
             attributes = NUMBER
         } else if (tokenType == TokenType.BAD_CHARACTER) {
             attributes = BAD_CHARACTER

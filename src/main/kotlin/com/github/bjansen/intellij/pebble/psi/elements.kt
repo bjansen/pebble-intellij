@@ -18,6 +18,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.util.InheritanceUtil
 import org.antlr.intellij.adaptor.psi.ScopeNode
+import java.lang.IllegalArgumentException
 import java.util.*
 
 val directivesWithFileRefs = arrayOf("extends", "include", "import")
@@ -175,3 +176,18 @@ class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
 }
 
 class PebbleArgumentList(node: ASTNode) : PebblePsiElement(node)
+
+class PebbleLiteral(node: ASTNode) : PebblePsiElement(node) {
+
+    fun getType(): PsiType {
+        val manager = PsiManager.getInstance(containingFile.project)
+        val scope = GlobalSearchScope.allScope(containingFile.project)
+
+        return when (node.elementType) {
+            rules[PebbleParser.RULE_string_literal] -> PsiType.getJavaLangString(manager, scope)
+            rules[PebbleParser.RULE_boolean_literal] -> PsiType.getTypeByName("java.lang.Boolean", project, scope)
+            rules[PebbleParser.RULE_numeric_literal] -> PsiType.getTypeByName("java.lang.Number", project, scope)
+            else -> throw IllegalArgumentException("Unsupported element type ${node.elementType}")
+        }
+    }
+}

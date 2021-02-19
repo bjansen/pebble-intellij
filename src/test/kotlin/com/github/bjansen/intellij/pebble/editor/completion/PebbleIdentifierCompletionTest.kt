@@ -1,5 +1,6 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
+import com.github.bjansen.intellij.pebble.lang.PebbleFileType
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementPresentation
 import java.io.File
@@ -204,5 +205,45 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
         myFixture.complete(CompletionType.BASIC)
 
         assertLookupsContain(listOf("add"))
+    }
+
+    fun testCompletionOfStringMembers() {
+        myFixture.configureByFile("literals-string.peb")
+        myFixture.addClass(File("$testDataPath/String.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("toUpperCase"))
+    }
+
+    fun testCompletionOfBooleanMembers() {
+        myFixture.configureByFile("literals-boolean.peb")
+        myFixture.addClass(File("$testDataPath/Boolean.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("booleanValue"))
+    }
+
+    fun testCompletionOfNumberMembers() {
+        myFixture.configureByFile("literals-number.peb")
+        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("intValue"))
+    }
+
+    fun testCompletionOfNoneMembers() {
+        myFixture.configureByText(PebbleFileType.INSTANCE, "{{ none.<caret> }}")
+        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertNoLookups()
+    }
+
+    fun testCompletionOfNullMembers() {
+        myFixture.configureByText(PebbleFileType.INSTANCE, "{{ null.<caret> }}")
+        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertNoLookups()
     }
 }

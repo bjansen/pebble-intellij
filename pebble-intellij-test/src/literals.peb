@@ -1,0 +1,7 @@
+{{ 1.byteValue() }}
+{{ "hello".toUpperCase() }}
+{{ false.booleanValue() }}
+{{ 3.1415927.intValue() }}
+{{ 42L.floatValue() }}
+{{ null.foo }}
+{{ none.foo }}

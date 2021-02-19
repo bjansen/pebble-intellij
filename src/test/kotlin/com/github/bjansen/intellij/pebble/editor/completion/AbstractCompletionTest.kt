@@ -4,6 +4,13 @@ import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
 
 abstract class AbstractCompletionTest : LightCodeInsightFixtureTestCase() {
 
+    protected fun assertNoLookups() {
+        val lookups = myFixture.lookupElementStrings
+
+        if (lookups != null) {
+            assertEmpty(lookups)
+        }
+    }
     protected fun assertLookupsContain(elements: Collection<String>) {
         val lookups = myFixture.lookupElementStrings
 

@@ -118,6 +118,9 @@ object PebbleReferencesHelper {
                 }
 
                 fun resolveReference(): PsiElement? {
+                    if (identifier is PebbleLiteral) {
+                        return identifier
+                    }
                     identifier.references.forEach {
                         val resolved = it.resolve()
                         if (resolved != null) {
