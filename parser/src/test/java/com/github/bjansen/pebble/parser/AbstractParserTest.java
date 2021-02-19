@@ -3,26 +3,22 @@ package com.github.bjansen.pebble.parser;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import org.antlr.v4.runtime.BaseErrorListener;
+import java.io.InputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Utils;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Assert;
 
-abstract class AbstractLexerTest {
+abstract class AbstractParserTest {
 
-    abstract PebbleLexer createLexer(String text);
+    abstract PebbleLexer createLexer(InputStream text) throws IOException;
 
-    void lexFile(String filePath) {
-        try {
-            String input = new String(readAllBytes(get(filePath)));
-            PebbleLexer lexer = createLexer(input);
+    void parseFile(String filePath) {
+        try (InputStream in = new FileInputStream(get(filePath).toFile())) {
+            PebbleLexer lexer = createLexer(in);
             PebbleParser parser = new PebbleParser(new CommonTokenStream(lexer));
 
             SyntaxErrorListener errorListener = new SyntaxErrorListener();
@@ -53,26 +49,5 @@ abstract class AbstractLexerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-}
-
-class SyntaxErrorListener extends BaseErrorListener {
-
-    private List<String> errors = new ArrayList<>();
-
-    @Override
-    public void syntaxError(Recognizer<?, ?> recognizer,
-        Object offendingSymbol, int line, int charPositionInLine, String msg,
-        RecognitionException e) {
-
-        errors.add(String.format("%s:%s %s", line, charPositionInLine, msg));
-    }
-
-    public boolean hasErrors() {
-        return !errors.isEmpty();
-    }
-
-    public List<String> getErrors() {
-        return errors;
     }
 }

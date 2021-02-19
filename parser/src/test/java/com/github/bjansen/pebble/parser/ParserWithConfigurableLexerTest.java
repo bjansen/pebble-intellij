@@ -1,41 +1,43 @@
 package com.github.bjansen.pebble.parser;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.junit.Test;
 
-public class ConfigurableLexerTest extends AbstractLexerTest {
+public class ParserWithConfigurableLexerTest extends AbstractParserTest {
     private boolean overridePrintDelimiters = true;
 
     @Test
     public void testSimpleTag() {
-        lexFile("src/test/resources/lexer/configurable/simpletag.peb");
+        parseFile("src/test/resources/lexer/configurable/simpletag.peb");
     }
 
     @Test
     public void testCustomizedTagAndDefaultTag() {
-        lexFile("src/test/resources/lexer/configurable/customized-default.peb");
+        parseFile("src/test/resources/lexer/configurable/customized-default.peb");
     }
 
     @Test
     public void testWhitespaceControlModifiers() {
-        lexFile("src/test/resources/lexer/configurable/ws-ctrl-modifier.peb");
+        parseFile("src/test/resources/lexer/configurable/ws-ctrl-modifier.peb");
     }
 
     @Test
     public void testContentOnly() {
-        lexFile("src/test/resources/lexer/configurable/content-only.peb");
+        parseFile("src/test/resources/lexer/configurable/content-only.peb");
     }
 
     @Test
     public void testMixed() {
         overridePrintDelimiters = false;
-        lexFile("src/test/resources/lexer/configurable/mixed.peb");
+        parseFile("src/test/resources/lexer/configurable/mixed.peb");
         overridePrintDelimiters = true;
     }
 
     @Override
-    PebbleLexer createLexer(String text) {
-        ConfigurableLexer lexer = new ConfigurableLexer(new ANTLRInputStream(text))
+    PebbleLexer createLexer(InputStream text) throws IOException {
+        ConfigurableLexer lexer = new ConfigurableLexer(CharStreams.fromStream(text))
                 .withTagOpenDelimiter("{*")
                 .withTagCloseDelimiter("*}");
 
