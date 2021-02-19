@@ -108,7 +108,7 @@ map_element
     ;
 
 qualified_expression
-    : (function_call_expression | identifier) (OP_MEMBER (function_call_expression | identifier))+
+    : (function_call_expression | term) (OP_MEMBER (function_call_expression | identifier))+
     ;
 
 function_call_expression

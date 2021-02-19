@@ -111,9 +111,11 @@ object PebbleReferencesHelper {
             val qualifier = prevLeaf.prevSibling
 
             if (qualifier != null) {
-                val identifier = if (qualifier.node.elementType == PebbleParserDefinition.rules[PebbleParser.RULE_function_call_expression])
-                    qualifier.firstChild
-                else qualifier
+                val identifier = when (qualifier.node.elementType) {
+                    PebbleParserDefinition.rules[PebbleParser.RULE_function_call_expression] -> qualifier.firstChild
+                    PebbleParserDefinition.rules[PebbleParser.RULE_term] -> qualifier.firstChild
+                    else -> qualifier
+                }
 
                 fun resolveReference(): PsiElement? {
                     identifier.references.forEach {

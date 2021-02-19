@@ -2,7 +2,7 @@
 {% if %}
 {% else %}
 {% endif %}
-(printDirective {{ (expression (qualified_expression (identifier loop) . (identifier index))) }})  -  (printDirective {{ (expression (qualified_expression (identifier user) . (identifier id))) }})
+(printDirective {{ (expression (qualified_expression (term (identifier loop)) . (identifier index))) }})  -  (printDirective {{ (expression (qualified_expression (term (identifier user)) . (identifier id))) }})
 {% else %}
 There are no users to display.
 {% i %}

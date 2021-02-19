@@ -1,0 +1,6 @@
+{{ false.booleanValue() }}
+{{ null.toString() }}
+{{ none.toString() }}
+{{ 'abc'.toUpperCase() }}
+{{ 1.doubleValue() }}
+{{ 1L.doubleValue() }}

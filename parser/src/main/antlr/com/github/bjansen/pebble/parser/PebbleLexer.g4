@@ -291,7 +291,7 @@ SINGLE_QUOTED_STRING
     ;
 
 LONG
-    : [0-9]+ 'l'
+    : [0-9]+ 'L'
     ;
 
 NUMERIC

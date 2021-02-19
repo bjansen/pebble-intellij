@@ -77,6 +77,11 @@ public class ParserTest extends AbstractParserTest {
         parseFile("/lexer/pebble/strings.peb");
     }
 
+    @Test
+    public void testMethodsOnLiterals() {
+        parseFile("/lexer/pebble/issue-62-methods-on-literals.peb");
+    }
+
     @Override
     PebbleLexer createLexer(InputStream text) throws IOException {
         return new PebbleLexer(CharStreams.fromStream(text));
