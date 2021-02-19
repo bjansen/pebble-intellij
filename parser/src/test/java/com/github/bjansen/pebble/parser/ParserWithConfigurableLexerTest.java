@@ -10,28 +10,28 @@ public class ParserWithConfigurableLexerTest extends AbstractParserTest {
 
     @Test
     public void testSimpleTag() {
-        parseFile("src/test/resources/lexer/configurable/simpletag.peb");
+        parseFile("/lexer/configurable/simpletag.peb");
     }
 
     @Test
     public void testCustomizedTagAndDefaultTag() {
-        parseFile("src/test/resources/lexer/configurable/customized-default.peb");
+        parseFile("/lexer/configurable/customized-default.peb");
     }
 
     @Test
     public void testWhitespaceControlModifiers() {
-        parseFile("src/test/resources/lexer/configurable/ws-ctrl-modifier.peb");
+        parseFile("/lexer/configurable/ws-ctrl-modifier.peb");
     }
 
     @Test
     public void testContentOnly() {
-        parseFile("src/test/resources/lexer/configurable/content-only.peb");
+        parseFile("/lexer/configurable/content-only.peb");
     }
 
     @Test
     public void testMixed() {
         overridePrintDelimiters = false;
-        parseFile("src/test/resources/lexer/configurable/mixed.peb");
+        parseFile("/lexer/configurable/mixed.peb");
         overridePrintDelimiters = true;
     }
 

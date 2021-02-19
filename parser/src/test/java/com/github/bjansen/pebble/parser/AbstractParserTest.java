@@ -1,11 +1,8 @@
 package com.github.bjansen.pebble.parser;
 
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Paths.get;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Utils;
@@ -17,7 +14,7 @@ abstract class AbstractParserTest {
     abstract PebbleLexer createLexer(InputStream text) throws IOException;
 
     void parseFile(String filePath) {
-        try (InputStream in = new FileInputStream(get(filePath).toFile())) {
+        try (InputStream in = getClass().getResourceAsStream(filePath)) {
             PebbleLexer lexer = createLexer(in);
             PebbleParser parser = new PebbleParser(new CommonTokenStream(lexer));
 
@@ -34,7 +31,7 @@ abstract class AbstractParserTest {
             }
 
             String expectedOutputFile = filePath.replace(".peb", "-parsed.txt");
-            String expectedOutput = new String(readAllBytes(get(expectedOutputFile)));
+            String expectedOutput = readString(getClass().getResourceAsStream(expectedOutputFile));
 
             Token previousToken = null;
             for (int i = 0; i < parser.getTokenStream().size(); i++) {
@@ -48,6 +45,12 @@ abstract class AbstractParserTest {
             Assert.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static String readString(InputStream is) {
+        try (Scanner s = new Scanner(is).useDelimiter("\\A")) {
+            return s.hasNext() ? s.next() : "";
         }
     }
 }
