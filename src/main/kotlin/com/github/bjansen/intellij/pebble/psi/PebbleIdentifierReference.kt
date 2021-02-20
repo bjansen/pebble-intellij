@@ -26,6 +26,8 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
 
         if (qualifyingMember is PebbleInVariable) {
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.getType()), referenceText))
+        } else if (qualifyingMember is PebbleLiteral) {
+            return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.getType()), referenceText))
         } else if (qualifyingMember is PsiVariable) {
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.type), referenceText))
         } else if (qualifyingMember is PsiMethod) {

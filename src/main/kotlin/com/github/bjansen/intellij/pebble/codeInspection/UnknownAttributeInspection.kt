@@ -46,6 +46,7 @@ class UnknownAttributeInspection : LocalInspectionTool() {
                             is PsiField -> qualifier.type
                             is PsiVariable -> qualifier.type
                             is PebbleInVariable -> qualifier.getType()
+                            is PebbleLiteral -> qualifier.getType()
                             is PsiMethod -> qualifier.returnType ?: PsiType.VOID
                             else -> null
                         } ?: return

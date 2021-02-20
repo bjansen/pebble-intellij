@@ -3,5 +3,6 @@
 {{ false.booleanValue() }}
 {{ 3.1415927.intValue() }}
 {{ 42L.floatValue() }}
+{{ 42L.noExistas() }}
 {{ null.foo }}
 {{ none.foo }}
