@@ -19,6 +19,7 @@ plugins {
     id("org.jetbrains.intellij") version "0.6.5"
     id("org.sonarqube") version "3.1.1"
     kotlin("jvm") version "1.4.0"
+    jacoco
 }
 
 project(":") {
@@ -55,9 +56,11 @@ project(":") {
         }
     }
 
-    sonarqube {
-        properties {
-            property("sonar.projectKey", "bjansen_pebble-intellij")
+    tasks.jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            csv.isEnabled = false
+            html.isEnabled = false
         }
     }
 

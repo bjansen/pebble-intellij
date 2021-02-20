@@ -40,3 +40,10 @@ jobs:
             - name: Build with Gradle
               run: ./gradlew build -PideaVersion=${IDEA_VERSION}
               env: ${{ matrix.env }}
+            - name: SonarQube analysis
+              if: matrix.env.IDEA_VERSION == 'IU-2020.3'
+              run: ./gradlew jacocoTestReport sonarqube -Dsonar.login=${SONAR_TOKEN} -PideaVersion=${IDEA_VERSION}
+              env:
+                IDEA_VERSION: ${{ matrix.env.IDEA_VERSION }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
