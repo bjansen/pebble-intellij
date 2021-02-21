@@ -18,7 +18,7 @@ buildscript {
 plugins {
     id("org.jetbrains.intellij") version "0.6.5"
     id("org.sonarqube") version "3.1.1"
-    kotlin("jvm") version "1.4.0"
+    kotlin("jvm") version "1.3.72"
     jacoco
 }
 
@@ -43,7 +43,7 @@ project(":") {
         version = ideaVersion
         downloadSources = downloadIdeaSources.toBoolean()
         updateSinceUntilBuild = false
-        setPlugins("Spring", "java-i18n", "properties"/*, "java"*/)
+        setPlugins("Spring", "java-i18n", "properties", "java")
 
         tasks.withType<PublishTask> {
             username(publishUsername)
@@ -52,7 +52,7 @@ project(":") {
         }
 
         tasks.withType<RunPluginVerifierTask> {
-            setIdeVersions(listOf("IU-2017.3.7", "IU-2020.3.2"))
+            setIdeVersions(listOf("IU-2019.2.3", "IU-2020.3.2"))
         }
     }
 

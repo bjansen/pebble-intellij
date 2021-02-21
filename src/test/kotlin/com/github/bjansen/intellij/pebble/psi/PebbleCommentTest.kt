@@ -1,10 +1,10 @@
 package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.psi.PebbleComment.Companion.getImplicitVariable
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.junit.Assert
 
-class PebbleCommentTest : LightCodeInsightFixtureTestCase(){
+class PebbleCommentTest : BasePlatformTestCase(){
 
     fun testIssue25() {
         val comment = PsiElementFactory.createComment("{# @pebvariable name=\"contextVariable\" type=\"String\" #}", myFixture.project)

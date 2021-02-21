@@ -1,8 +1,8 @@
 package com.github.bjansen.intellij.pebble.editor.completion
 
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 
-abstract class AbstractCompletionTest : LightCodeInsightFixtureTestCase() {
+abstract class AbstractCompletionTest : LightJavaCodeInsightFixtureTestCase() {
 
     protected fun assertNoLookups() {
         val lookups = myFixture.lookupElementStrings

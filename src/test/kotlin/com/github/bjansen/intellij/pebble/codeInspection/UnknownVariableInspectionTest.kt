@@ -1,9 +1,9 @@
 package com.github.bjansen.intellij.pebble.codeInspection
 
 import com.intellij.lang.annotation.HighlightSeverity
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
-class UnknownVariableInspectionTest : LightCodeInsightFixtureTestCase() {
+class UnknownVariableInspectionTest : BasePlatformTestCase() {
 
     override fun getTestDataPath(): String {
         return "src/test/resources/inspections"

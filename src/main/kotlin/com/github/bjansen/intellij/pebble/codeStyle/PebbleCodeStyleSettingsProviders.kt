@@ -5,11 +5,7 @@ import com.intellij.application.options.CodeStyleAbstractConfigurable
 import com.intellij.application.options.CodeStyleAbstractPanel
 import com.intellij.application.options.TabbedLanguageCodeStylePanel
 import com.intellij.lang.Language
-import com.intellij.openapi.options.Configurable
-import com.intellij.psi.codeStyle.CodeStyleSettings
-import com.intellij.psi.codeStyle.CodeStyleSettingsProvider
-import com.intellij.psi.codeStyle.CustomCodeStyleSettings
-import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
+import com.intellij.psi.codeStyle.*
 import com.intellij.util.xmlb.XmlSerializer
 import org.jdom.Element
 
@@ -47,8 +43,8 @@ class PebbleCodeStyleSettings(container: CodeStyleSettings)
  * Adds a 'Pebble' entry to the 'Code Style' UI.
  */
 class PebbleCodeStyleSettingsProvider : CodeStyleSettingsProvider() {
-    override fun createSettingsPage(settings: CodeStyleSettings, originalSettings: CodeStyleSettings?): Configurable {
-        return object : CodeStyleAbstractConfigurable(settings, originalSettings, "Pebble") {
+    override fun createConfigurable(settings: CodeStyleSettings, modelSettings: CodeStyleSettings): CodeStyleConfigurable {
+        return object : CodeStyleAbstractConfigurable(settings, modelSettings, "Pebble") {
             override fun createPanel(settings: CodeStyleSettings): CodeStyleAbstractPanel {
                 return MyCodeStyleMainPanel(currentSettings, settings)
             }

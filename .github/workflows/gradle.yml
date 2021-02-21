@@ -10,14 +10,10 @@ jobs:
         strategy:
             matrix:
                 env:
-                    - IDEA_VERSION: IU-2017.3.6
-                      ENABLE_JAVA_PLUGIN: false
-                    - IDEA_VERSION: IU-2018.3.6
-                      ENABLE_JAVA_PLUGIN: false
-                    - IDEA_VERSION: IU-2019.3.2
+                    - IDEA_VERSION: IU-2019.2.4
                     - IDEA_VERSION: IU-2020.1.4
-                    - IDEA_VERSION: IU-2020.2
-                    - IDEA_VERSION: IU-2020.3
+                    - IDEA_VERSION: IU-2020.2.4
+                    - IDEA_VERSION: IU-2020.3.2
                       JDK_VERSION: '11'
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
                       JDK_VERSION: '11'
@@ -34,9 +30,6 @@ jobs:
               with:
                   java-version: 11
               if: matrix.env.JDK_VERSION == '11'
-            - name: Patch build file
-              run: if $ENABLE_JAVA_PLUGIN; then sed -i 's/\/\*, "java"\*\//, "java"/' build.gradle.kts; fi
-              env: ${{ matrix.env }}
             - name: Build with Gradle
               run: ./gradlew build -PideaVersion=${IDEA_VERSION}
               env: ${{ matrix.env }}

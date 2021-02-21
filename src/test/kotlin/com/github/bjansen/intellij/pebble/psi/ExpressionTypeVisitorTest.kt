@@ -3,11 +3,11 @@ package com.github.bjansen.intellij.pebble.psi
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.openapi.util.Condition
 import com.intellij.psi.PsiElement
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import junit.framework.TestCase
 import java.io.File
 
-class ExpressionTypeVisitorTest : LightCodeInsightFixtureTestCase() {
+class ExpressionTypeVisitorTest : LightJavaCodeInsightFixtureTestCase() {
 
     override fun getTestDataPath() = "src/test/resources/psi/ExpressionTypeVisitor"
 
