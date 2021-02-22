@@ -58,4 +58,17 @@ class UnknownAttributeInspectionTest : LightJavaCodeInsightFixtureTestCase() {
 
         assertEquals(0, highlights.size)
     }
+
+    fun testInspectionOnLiterals() {
+        myFixture.configureByFile("literals.peb")
+        myFixture.enableInspections(UnknownAttributeInspection::class.java)
+        myFixture.addClass(File("src/test/resources/completion/identifiers/String.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/Long.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("src/test/resources/completion/identifiers/Double.java").readText(Charsets.UTF_8))
+
+        val highlights = myFixture.doHighlighting()
+
+        assertEquals(1, highlights.size)
+        assertEquals("Attribute [noExistas] of [java.lang.Long] does not exist or can not be accessed", highlights[0].description)
+    }
 }

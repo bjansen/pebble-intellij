@@ -225,7 +225,7 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfNumberMembers() {
         myFixture.configureByFile("literals-number.peb")
-        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/Double.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertLookupsContain(listOf("intValue"))
@@ -233,7 +233,7 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfNoneMembers() {
         myFixture.configureByText(PebbleFileType.INSTANCE, "{{ none.<caret> }}")
-        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/Long.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertNoLookups()
@@ -241,7 +241,7 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
     fun testCompletionOfNullMembers() {
         myFixture.configureByText(PebbleFileType.INSTANCE, "{{ null.<caret> }}")
-        myFixture.addClass(File("$testDataPath/Number.java").readText(Charsets.UTF_8))
+        myFixture.addClass(File("$testDataPath/Long.java").readText(Charsets.UTF_8))
         myFixture.complete(CompletionType.BASIC)
 
         assertNoLookups()

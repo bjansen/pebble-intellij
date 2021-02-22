@@ -186,8 +186,13 @@ class PebbleLiteral(node: ASTNode) : PebblePsiElement(node) {
         return when (node.elementType) {
             rules[PebbleParser.RULE_string_literal] -> PsiType.getJavaLangString(manager, scope)
             rules[PebbleParser.RULE_boolean_literal] -> PsiType.getTypeByName("java.lang.Boolean", project, scope)
-            rules[PebbleParser.RULE_numeric_literal] -> PsiType.getTypeByName("java.lang.Number", project, scope)
+            rules[PebbleParser.RULE_numeric_literal] -> getNumericType(scope)
             else -> throw IllegalArgumentException("Unsupported element type ${node.elementType}")
         }
+    }
+
+    private fun getNumericType(scope: GlobalSearchScope): PsiClassType {
+        val typeName = if (node.text.contains('.')) "java.lang.Double" else "java.lang.Long"
+        return PsiType.getTypeByName(typeName, project, scope)
     }
 }

@@ -1,6 +1,6 @@
 package java.lang;
 
-public final class Number {
+public final class Long {
     public int intValue() {
         return 1;
     }
