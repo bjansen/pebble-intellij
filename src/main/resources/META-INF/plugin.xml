@@ -23,10 +23,11 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
     <depends optional="true" config-file="plugin-spring.xml">com.intellij.spring</depends>
+    <depends optional="true" config-file="pebble-intellilang.xml">org.intellij.intelliLang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleFileType"
-            fieldName="INSTANCE" name="Pebble" extensions="peb" language="Pebble"/>
+            fieldName="INSTANCE" name="Pebble" extensions="peb;pebble" language="Pebble"/>
         <lang.fileViewProviderFactory language="Pebble"
                                       implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleFileViewProviderFactory"/>
         <lang.parserDefinition language="Pebble"

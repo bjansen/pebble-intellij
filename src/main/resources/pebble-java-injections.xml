@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="LanguageInjectionConfiguration">
+    <injection language="Pebble" injector-id="java">
+        <display-name>Pebble</display-name>
+        <place><![CDATA[psiParameter().ofMethod(0, psiMethod().withName("getReader").withParameters("java.lang.String").definedInClass("com.mitchellbosecke.pebble.loader.StringLoader"))]]></place>
+    </injection>
+</component>

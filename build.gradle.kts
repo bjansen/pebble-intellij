@@ -43,7 +43,7 @@ project(":") {
         version = ideaVersion
         downloadSources = downloadIdeaSources.toBoolean()
         updateSinceUntilBuild = false
-        setPlugins("Spring", "java-i18n", "properties", "java")
+        setPlugins("Spring", "java-i18n", "properties", "java", "IntelliLang")
 
         tasks.withType<PublishTask> {
             username(publishUsername)
