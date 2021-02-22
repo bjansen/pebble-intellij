@@ -27,7 +27,6 @@ class PebbleFoldingBuilder : CustomFoldingBuilder() {
 
     override fun buildLanguageFoldRegions(descriptors: MutableList<FoldingDescriptor>,
                                           root: PsiElement, document: Document, quick: Boolean) {
-//        try {
         root.accept(object : PsiRecursiveElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 if (element is PebbleTagDirective) {
@@ -36,9 +35,6 @@ class PebbleFoldingBuilder : CustomFoldingBuilder() {
                 super.visitElement(element)
             }
         })
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
     }
 
     override fun getLanguagePlaceholderText(node: ASTNode, range: TextRange): String {
