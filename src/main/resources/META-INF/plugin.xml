@@ -38,6 +38,7 @@
                                implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition"/>
         <editorHighlighterProvider filetype="Pebble"
                                    implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleEditorHighlighterProvider"/>
+        <lang.syntaxHighlighter language="Pebble" implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleHighlighter"/>
         <annotator language="Pebble"
                    implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleHighlightAnnotator"/>
         <quoteHandler fileType="Pebble" className="com.github.bjansen.intellij.pebble.editor.PebbleQuoteHandler"/>
