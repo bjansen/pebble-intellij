@@ -15,9 +15,11 @@ class PebbleTemplateContextType : TemplateContextType("Pebble", "Pebble") {
     override fun isInContext(file: PsiFile, offset: Int): Boolean {
         if (file is PebbleFile) {
             val currentElement = file.findElementAt(offset)
-            if (currentElement != null) {
+            val viewProvider = file.viewProvider
+
+            if (currentElement != null && viewProvider is PebbleFileViewProvider) {
                 return currentElement.node.elementType == tokens[PebbleLexer.CONTENT]
-                    || (file.viewProvider as PebbleFileViewProvider).templateDataLanguage.isKindOf(currentElement.language)
+                    || viewProvider.templateDataLanguage.isKindOf(currentElement.language)
             }
         }
 

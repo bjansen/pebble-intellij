@@ -1,6 +1,7 @@
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.error.PebbleException;
 import com.mitchellbosecke.pebble.loader.ClasspathLoader;
+import com.mitchellbosecke.pebble.loader.StringLoader;
 import foo.bar.SomeClass;
 
 import java.io.IOException;
@@ -27,5 +28,7 @@ public class Main {
         } catch (PebbleException | IOException e) {
             e.printStackTrace();
         }
+
+        new StringLoader().getReader("{{ 'hello' | upper | abbreviate(2) }}");
     }
 }

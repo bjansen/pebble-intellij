@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="org.intellij.intelliLang">
+        <injectionConfig config="pebble-java-injections.xml"/>
+    </extensions>
+</idea-plugin>

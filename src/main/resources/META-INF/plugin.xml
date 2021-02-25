@@ -11,6 +11,10 @@
     <change-notes><![CDATA[
     <b>v0.10</b>
     <ul>
+      <li>The plugin also recognizes the `.pebble` extension (<a href="https://github.com/bjansen/pebble-intellij/issues/56">#56</a>)</li>
+      <li>Allow method calls on literals (<a href="https://github.com/bjansen/pebble-intellij/issues/62">#62</a>)</li>
+      <li>Support built-in tests (<a href="https://github.com/bjansen/pebble-intellij/issues/51">#51</a>)</li>
+      <li>Drop support for IDEA < 2019.2 (<a href="https://github.com/bjansen/pebble-intellij/issues/82">#82</a>)</li>
       <li>xxx (<a href="https://github.com/bjansen/pebble-intellij/issues/xx">#xx</a>)</li>
     </ul>
 
@@ -23,16 +27,18 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
     <depends optional="true" config-file="plugin-spring.xml">com.intellij.spring</depends>
+    <depends optional="true" config-file="pebble-intellilang.xml">org.intellij.intelliLang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleFileType"
-            fieldName="INSTANCE" name="Pebble" extensions="peb" language="Pebble"/>
+            fieldName="INSTANCE" name="Pebble" extensions="peb;pebble" language="Pebble"/>
         <lang.fileViewProviderFactory language="Pebble"
                                       implementationClass="com.github.bjansen.intellij.pebble.lang.PebbleFileViewProviderFactory"/>
         <lang.parserDefinition language="Pebble"
                                implementationClass="com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition"/>
         <editorHighlighterProvider filetype="Pebble"
                                    implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleEditorHighlighterProvider"/>
+        <lang.syntaxHighlighter language="Pebble" implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleHighlighter"/>
         <annotator language="Pebble"
                    implementationClass="com.github.bjansen.intellij.pebble.editor.PebbleHighlightAnnotator"/>
         <quoteHandler fileType="Pebble" className="com.github.bjansen.intellij.pebble.editor.PebbleQuoteHandler"/>
