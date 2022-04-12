@@ -13,7 +13,7 @@ configure<JavaPluginConvention> {
 }
 
 dependencies {
-    antlr("org.antlr:antlr4:4.9.3")
+    antlr("org.antlr:antlr4:4.10")
     implementation("org.antlr:antlr4-runtime:4.9.3")
     testImplementation("junit:junit:4.+")
 }
