@@ -19,6 +19,7 @@ import com.intellij.psi.*
 import com.intellij.psi.PsiElementResolveResult.createResults
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTypesUtil
+import com.intellij.spring.SpringApiIcons
 import com.intellij.spring.SpringManager
 import com.intellij.spring.contexts.model.SpringModel
 import com.intellij.spring.model.CommonSpringBean
@@ -28,7 +29,6 @@ import com.intellij.spring.model.pom.SpringBeanPomTargetUtils
 import com.intellij.spring.model.utils.SpringModelSearchers
 import com.intellij.spring.model.xml.AbstractDomSpringBean
 import com.intellij.util.ProcessingContext
-import icons.SpringApiIcons
 
 object SpringExtension {
     private val key = Key.create<PsiClass>("PEBBLE_SPRING_CLASS")
