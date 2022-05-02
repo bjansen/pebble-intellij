@@ -28,7 +28,7 @@ import com.intellij.spring.model.pom.SpringBeanPomTargetUtils
 import com.intellij.spring.model.utils.SpringModelSearchers
 import com.intellij.spring.model.xml.AbstractDomSpringBean
 import com.intellij.util.ProcessingContext
-import icons.SpringApiIcons
+import javax.swing.Icon
 
 object SpringExtension {
     private val key = Key.create<PsiClass>("PEBBLE_SPRING_CLASS")
@@ -108,6 +108,18 @@ class PebbleSpringReferenceProvider : PsiReferenceProvider() {
 class PebbleSpringReference(private val psi: PsiElement, private val range: TextRange)
     : PsiPolyVariantReferenceBase<PsiElement>(psi, range) {
 
+    val springBeanIcon: Icon? by lazy {
+        var clazz: Class<*>?
+
+        try {
+            clazz = Class.forName("icons.SpringApiIcons")
+        } catch (e: ClassNotFoundException) {
+            clazz = Class.forName("com.intellij.spring.SpringApiIcons")
+        }
+
+        clazz?.getField("SpringBean")?.get(clazz) as Icon
+    }
+
     private fun isBeansField(field: PsiField) =
             field.name == "beans" && field.containingClass?.qualifiedName == "PebbleSpring"
 
@@ -152,7 +164,7 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
                         .mapNotNull {
                             val lookup = LookupElementBuilder.create(it.name ?: "?")
                                     .withTypeText(it.beanClass?.name)
-                                    .withIcon(SpringApiIcons.SpringBean)
+                                    .withIcon(springBeanIcon)
                             PrioritizedLookupElement.withPriority(lookup, 1.0)
                         }
                         .toTypedArray()
