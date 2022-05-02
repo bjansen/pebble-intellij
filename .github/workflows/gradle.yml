@@ -10,10 +10,16 @@ jobs:
         strategy:
             matrix:
                 env:
-                    - IDEA_VERSION: IU-2019.2.4
-                    - IDEA_VERSION: IU-2020.3.2
+                    - IDEA_VERSION: IU-2020.1
+                      KOTLIN_VERSION: 1.3.70
+                    - IDEA_VERSION: IU-2020.3.4
+                      KOTLIN_VERSION: 1.4.0
+                    - IDEA_VERSION: IU-2021.3.3
+                      KOTLIN_VERSION: 1.5.10
                     - IDEA_VERSION: IU-2022.1
+                      KOTLIN_VERSION: 1.6.20
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
+                      KOTLIN_VERSION: 1.6.20
 
         steps:
             - uses: actions/checkout@v1
@@ -22,7 +28,7 @@ jobs:
               with:
                   java-version: 11
             - name: Build with Gradle
-              run: ./gradlew build -PideaVersion=${IDEA_VERSION}
+              run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PkotlinVersion=${KOTLIN_VERSION}
               env: ${{ matrix.env }}
             - name: SonarQube analysis
               if: matrix.env.IDEA_VERSION == 'IU-2020.3'
