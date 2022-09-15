@@ -167,7 +167,7 @@ class PebbleParserDefinition : ParserDefinition {
 
         // "Soft" keywords can also be valid identifiers. We only highlight them when their parent is not a RULE_identifier
         val SOFT_KEYWORDS: TokenSet = PSIElementTypeFactory.createTokenSet(PebbleLanguage,
-            PebbleLexer.AS, PebbleLexer.FROM, PebbleLexer.IN, PebbleLexer.IMPORT, PebbleLexer.WITH)
+            PebbleLexer.AS, PebbleLexer.FROM, PebbleLexer.IN, PebbleLexer.IMPORT, PebbleLexer.WITH, PebbleLexer.EMPTY)
 
         val FILE = IFileElementType(Language.findInstance(PebbleLanguage::class.java))
 
