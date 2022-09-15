@@ -155,6 +155,10 @@ NULL
     : 'null'
     ;
 
+EMPTY
+    : 'empty'
+    ;
+
 NONE
     : 'none'
     ;
