@@ -3,6 +3,7 @@ import org.jetbrains.intellij.tasks.RunPluginVerifierTask
 import kotlin.collections.listOf
 
 val ideaVersion: String by project
+val kotlinVersion: String by project
 val downloadIdeaSources: String by project
 val publishToken: String by project
 val publishChannels: String by project
@@ -15,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "1.5.3"
+    id("org.jetbrains.intellij") version "1.9.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm")
     jacoco
@@ -31,6 +32,10 @@ project(":") {
             exclude(module = "antlr4")
         }
         implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
+
+        if (kotlinVersion > "1.4") {
+            implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+        }
     }
 
     apply {
