@@ -4,6 +4,7 @@ import kotlin.collections.listOf
 
 val ideaVersion: String by project
 val kotlinVersion: String by project
+val intellilangName: String by project
 val downloadIdeaSources: String by project
 val publishToken: String by project
 val publishChannels: String by project
@@ -47,7 +48,7 @@ project(":") {
         version.set(ideaVersion)
         downloadSources.set(downloadIdeaSources.toBoolean())
         updateSinceUntilBuild.set(false)
-        plugins.set(listOf("Spring", "java-i18n", "properties", "java", "IntelliLang"))
+        plugins.set(listOf("Spring", "java-i18n", "properties", "java", intellilangName))
 
         tasks.withType<PublishPluginTask> {
             token.set(publishToken)
