@@ -9,6 +9,7 @@ import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor
@@ -27,19 +28,28 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
     override fun visitElement(element: PsiElement) {
         super.visitElement(element)
 
-        if (element.node.elementType == tokens[PebbleLexer.TAG_OPEN]) {
+        if (TAG_NAMES.contains(element.node.elementType)) {
             highlightTagName(element)
         } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_OPEN]) {
             val range = TextRange.from(element.textOffset + element.text.indexOf("verbatim"), "verbatim".length)
-            holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(range)
+                .textAttributes(PebbleHighlighter.KEYWORDS)
+                .create()
             highlightDelimiters(element)
         } else if (element.node.elementType == tokens[PebbleLexer.VERBATIM_TAG_END]) {
             val range = TextRange.from(element.textOffset + element.text.lastIndexOf("endverbatim"), "endverbatim".length)
-            holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.KEYWORDS
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(range)
+                .textAttributes(PebbleHighlighter.KEYWORDS)
+                .create()
             highlightDelimiters(element)
         } else if (element.node.elementType in SOFT_KEYWORDS && element.node.treeParent.elementType != rules[PebbleParser.RULE_identifier]) {
             // A soft keyword that is not used as an identifier
-            holder.createInfoAnnotation(element, null).textAttributes = PebbleHighlighter.KEYWORDS
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(element)
+                .textAttributes(PebbleHighlighter.KEYWORDS)
+                .create()
         }
     }
 
@@ -48,18 +58,27 @@ private class PebbleHighlightVisitor(val holder: AnnotationHolder) : PsiRecursiv
         val range = TextRange.from(
                 element.textOffset + element.text.lastIndexOf(codeStyle.tagOpen),
                 codeStyle.tagOpen.length)
-        holder.createInfoAnnotation(range, null).textAttributes = PebbleHighlighter.DELIMITER
+        holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+            .range(range)
+            .textAttributes(PebbleHighlighter.DELIMITER)
+            .create()
 
         val endRange = TextRange.from(
                 element.textOffset + element.text.lastIndexOf(codeStyle.tagClose),
                 codeStyle.tagClose.length)
-        holder.createInfoAnnotation(endRange, null).textAttributes = PebbleHighlighter.DELIMITER
+        holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+            .range(endRange)
+            .textAttributes(PebbleHighlighter.DELIMITER)
+            .create()
     }
 
-    fun highlightTagName(tag: PsiElement) {
-        val id = PsiTreeUtil.nextVisibleLeaf(tag)
-        if (id != null && TAG_NAMES.contains(id.node.elementType)) {
-            holder.createInfoAnnotation(id, null).textAttributes = PebbleHighlighter.KEYWORDS
+    fun highlightTagName(id: PsiElement) {
+        val tag = PsiTreeUtil.prevVisibleLeaf(id)
+        if (tag?.node?.elementType == tokens[PebbleLexer.TAG_OPEN]) {
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                .range(id)
+                .textAttributes(PebbleHighlighter.KEYWORDS)
+                .create()
         }
     }
 }

@@ -21,8 +21,8 @@
     Full changelog at https://github.com/bjansen/pebble-intellij/milestone/10?closed=1
     ]]></change-notes>
 
-    <!-- IDEA 2019.2 and later -->
-    <idea-version since-build="192.0"/>
+    <!-- IDEA 2020.1 and later -->
+    <idea-version since-build="201.0"/>
 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
