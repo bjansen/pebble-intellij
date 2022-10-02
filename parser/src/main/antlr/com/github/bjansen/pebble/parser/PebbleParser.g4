@@ -134,7 +134,7 @@ term
     ;
 
 test
-    : NOT? (NULL | identifier)
+    : NOT? (NULL | EMPTY | identifier)
     ;
 
 unary_op
