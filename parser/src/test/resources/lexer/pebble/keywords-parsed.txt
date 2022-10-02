@@ -1,0 +1,2 @@
+(pebbleTemplate (tagDirective (genericTag {% (tagName if) (expression (expression (term (identifier foo))) is (test not empty)) %})) - (tagDirective (genericTag {% (tagName endif) %}))
+)
