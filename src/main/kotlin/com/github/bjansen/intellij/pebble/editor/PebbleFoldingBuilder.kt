@@ -29,7 +29,7 @@ class PebbleFoldingBuilder : CustomFoldingBuilder() {
                                           root: PsiElement, document: Document, quick: Boolean) {
         root.accept(object : PsiRecursiveElementVisitor() {
             override fun visitElement(element: PsiElement) {
-                if (element is PebbleTagDirective) {
+                if (element is PebbleTagDirective && !element.textRange.isEmpty) {
                     descriptors.add(FoldingDescriptor(element, element.textRange))
                 }
                 super.visitElement(element)
