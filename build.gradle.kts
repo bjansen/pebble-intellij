@@ -62,13 +62,13 @@ project(":") {
 
     tasks.jacocoTestReport {
         reports {
-            xml.isEnabled = true
-            csv.isEnabled = false
-            html.isEnabled = false
+            xml.required.set(true)
+            csv.required.set(false)
+            html.required.set(false)
         }
     }
 
-    configure<JavaPluginConvention> {
+    configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
