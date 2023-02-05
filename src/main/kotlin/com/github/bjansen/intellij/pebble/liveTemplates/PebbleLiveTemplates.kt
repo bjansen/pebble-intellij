@@ -26,13 +26,3 @@ class PebbleTemplateContextType : TemplateContextType("Pebble", "Pebble") {
         return false
     }
 }
-
-class PebbleLiveTemplatesProvider: DefaultLiveTemplatesProvider {
-    override fun getDefaultLiveTemplateFiles(): Array<out String> {
-        return arrayOf("/liveTemplates/pebble")
-    }
-
-    override fun getHiddenLiveTemplateFiles(): Array<out String>? {
-        return null
-    }
-}

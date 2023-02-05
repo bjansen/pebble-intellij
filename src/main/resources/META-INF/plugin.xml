@@ -54,8 +54,7 @@
         <colorSettingsPage implementation="com.github.bjansen.intellij.pebble.editor.PebbleColorsAndFontsPage"/>
         <liveTemplateContext
                 implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleTemplateContextType"/>
-        <defaultLiveTemplatesProvider
-                implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleLiveTemplatesProvider"/>
+        <defaultLiveTemplates file="/liveTemplates/pebble.xml"/>
         <completion.contributor language="Pebble"
                                 implementationClass="com.github.bjansen.intellij.pebble.editor.completion.PebbleCompletionContributor"/>
         <codeStyleSettingsProvider
