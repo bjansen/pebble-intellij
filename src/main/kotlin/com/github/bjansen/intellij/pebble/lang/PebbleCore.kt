@@ -46,12 +46,11 @@ object PebbleCore {
 }
 
 class Filter(val source: PsiMethod) {
-    private var idx = 0;
 
     val name = source.name.replace("$$", "")
 
     val parameters = source.parameterList.parameters.associate { p ->
-        (p.name?.replace("$$", "") ?: "arg${idx++}") to p.type
+        p.name.replace("$$", "") to p.type
     }
 }
 

@@ -5,7 +5,6 @@ import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.pebble.parser.PebbleLexer
 import com.intellij.codeInsight.template.TemplateContextType
-import com.intellij.codeInsight.template.impl.DefaultLiveTemplatesProvider
 import com.intellij.psi.PsiFile
 
 /**

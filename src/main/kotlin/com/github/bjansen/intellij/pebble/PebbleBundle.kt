@@ -1,6 +1,6 @@
 package com.github.bjansen.intellij.pebble
 
-import com.intellij.CommonBundle
+import com.intellij.AbstractBundle
 import com.intellij.reference.SoftReference
 import org.jetbrains.annotations.PropertyKey
 import java.lang.ref.Reference
@@ -14,7 +14,7 @@ object PebbleBundle {
     private const val bundleName = "messages.PebbleBundle"
 
     fun message(@PropertyKey(resourceBundle = bundleName) key: String, vararg params: Any): String {
-        return CommonBundle.message(bundle, key, *params)
+        return AbstractBundle.message(bundle, key, *params)
     }
 
     private val bundle: ResourceBundle get() {

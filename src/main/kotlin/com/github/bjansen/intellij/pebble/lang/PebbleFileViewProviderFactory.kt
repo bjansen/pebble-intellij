@@ -63,7 +63,7 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
             val mappings = TemplateDataLanguageMappings.getInstance(manager.project)
             val dataLang = mappings.getMapping(file)
                     ?: PlainTextLanguage.INSTANCE
-            val substituteLang = LanguageSubstitutors.INSTANCE.substituteLanguage(dataLang, file, manager.project)
+            val substituteLang = LanguageSubstitutors.getInstance().substituteLanguage(dataLang, file, manager.project)
 
             if (TemplateDataLanguageMappings.getTemplateableLanguages().contains(substituteLang)) {
                 return substituteLang
