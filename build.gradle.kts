@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "1.13.0"
+    id("org.jetbrains.intellij") version "1.13.2"
     id("org.sonarqube") version "4.0.0.2929"
     kotlin("jvm")
     jacoco
