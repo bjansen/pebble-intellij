@@ -2,7 +2,9 @@ package com.github.bjansen.intellij.pebble.formatting
 
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.intellij.pebble.psi.PebbleTagDirective
+import com.github.bjansen.intellij.pebble.psi.PebbleTemplate
 import com.github.bjansen.pebble.parser.PebbleLexer
+import com.intellij.formatting.ASTBlock
 import com.intellij.formatting.Alignment
 import com.intellij.formatting.Indent
 import com.intellij.formatting.Wrap
@@ -39,6 +41,11 @@ class PebbleBlock(
 
     override fun getTemplateTextElementType() = tokens[PebbleLexer.CONTENT]
 
+    override fun shouldBuildBlockFor(childNode: ASTNode?): Boolean {
+        // We want to indent non-PebbleBlock child nodes too
+        return true
+    }
+
     override fun getIndent(): Indent? {
         // ignore whitespace
         if (myNode.text.trim().isEmpty()) {
@@ -47,31 +54,31 @@ class PebbleBlock(
 
         val parent = parent
 
-        if (parent is DataLanguageBlockWrapper) {
-            return Indent.getNormalIndent()
-        } else if (parent is PebbleBlock) {
-            if (parent.node.lastChildNode == node) {
-                // we're the parent's end tag, don't indent
+        if (parent is PebbleBlock || parent is DataLanguageBlockWrapper) {
+            val parentNode = (parent as ASTBlock).node ?: return Indent.getNoneIndent()
+
+            if (parentNode.psi is PebbleTemplate) {
+                // Do not indent root nodes
                 return Indent.getNoneIndent()
             }
 
-            for (subBlock in parent.subBlocks) {
-                if (subBlock is DataLanguageBlockWrapper && subBlock.textRange.startOffset < textRange.startOffset) {
-                    // We're next to a data language block, so we use its indent
-                    return subBlock.indent
-                }
+            if (parent is PebbleBlock && (parentNode.firstChildNode == node || parentNode.lastChildNode == node)) {
+                // Do not the start/end tags of a block
+                return Indent.getNoneIndent()
             }
 
-            if (node.psi is PebbleTagDirective) {
-                // we're an opening tag, indent
-                return Indent.getNormalIndent()
-            }
+            // Indent contents of a block
+            return Indent.getNormalIndent()
         }
 
         return Indent.getNoneIndent()
     }
 
-    override fun getChildIndent(): Indent? {
-        return Indent.getNormalIndent()
+    override fun getChildIndent(): Indent {
+        return if (node.psi is PebbleTagDirective) {
+            Indent.getNormalIndent(true)
+        } else {
+            Indent.getNoneIndent()
+        }
     }
 }
