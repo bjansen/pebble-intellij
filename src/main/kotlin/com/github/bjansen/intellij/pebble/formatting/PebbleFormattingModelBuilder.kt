@@ -41,11 +41,6 @@ class PebbleBlock(
 
     override fun getTemplateTextElementType() = tokens[PebbleLexer.CONTENT]
 
-    override fun shouldBuildBlockFor(childNode: ASTNode?): Boolean {
-        // We want to indent non-PebbleBlock child nodes too
-        return true
-    }
-
     override fun getIndent(): Indent? {
         // ignore whitespace
         if (myNode.text.trim().isEmpty()) {
