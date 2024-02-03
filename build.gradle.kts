@@ -52,10 +52,6 @@ project(":") {
             token.set(publishToken)
             channels.set(publishChannels.split(','))
         }
-
-        tasks.withType<RunPluginVerifierTask> {
-            ideVersions.set(listOf("IU-2019.2.3", "IU-2020.3.2"))
-        }
     }
 
     tasks.jacocoTestReport {
