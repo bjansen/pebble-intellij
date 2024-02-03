@@ -12,7 +12,7 @@
         <pebble.version>3.1.5</pebble.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.version>5.3.19</spring.version>
+        <spring.version>5.3.20</spring.version>
     </properties>
 
     <dependencies>
