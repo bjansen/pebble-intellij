@@ -8,6 +8,7 @@ import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.codeInsight.hint.api.impls.MethodParameterInfoHandler
 import com.intellij.lang.parameterInfo.CreateParameterInfoContext
+import com.intellij.lang.parameterInfo.ParameterInfoHandlerWithTabActionSupport
 import com.intellij.lang.parameterInfo.ParameterInfoUIContext
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
 import com.intellij.lang.parameterInfo.ParameterInfoUtils.getCurrentParameterIndex
@@ -16,7 +17,8 @@ import com.intellij.psi.*
 import com.intellij.psi.tree.IElementType
 import org.antlr.intellij.adaptor.psi.ANTLRPsiNode
 
-class PebbleParameterInfoHandler : PebbleBaseParameterInfoHandler() {
+class PebbleParameterInfoHandler :
+    ParameterInfoHandlerWithTabActionSupport<PebbleArgumentList, PsiElement, PsiElement> {
 
     override fun getArgListStopSearchClasses(): MutableSet<out Class<Any>>
             = mutableSetOf()

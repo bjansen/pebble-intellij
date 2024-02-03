@@ -8,7 +8,7 @@ import com.intellij.openapi.editor.ex.util.LayeredLexerEditorHighlighter
 import com.intellij.openapi.editor.highlighter.EditorHighlighter
 import com.intellij.openapi.fileTypes.EditorHighlighterProvider
 import com.intellij.openapi.fileTypes.FileType
-import com.intellij.openapi.fileTypes.StdFileTypes
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -32,14 +32,14 @@ internal class PebbleTemplateHighlighter(project: Project?, virtualFile: Virtual
         var type: FileType? = null
 
         if (project == null || virtualFile == null) {
-            type = StdFileTypes.PLAIN_TEXT
+            type = PlainTextFileType.INSTANCE
         } else {
             val language = TemplateDataLanguageMappings.getInstance(project).getMapping(virtualFile)
             if (language != null) {
                 type = language.associatedFileType
             }
             if (type == null) {
-                type = StdFileTypes.PLAIN_TEXT
+                type = PlainTextFileType.INSTANCE
             }
         }
 

@@ -16,7 +16,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.codeStyle.CodeStyleSettings
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
@@ -34,7 +34,7 @@ import java.util.*
 
 fun getPebbleCodeStyleSettings(project: Project?): PebbleCodeStyleSettings {
     if (ApplicationManager.getApplication().isUnitTestMode) {
-        return PebbleCodeStyleSettings(CodeStyleSettings(false))
+        return PebbleCodeStyleSettings(CodeStyleSettingsManager.getInstance().createSettings())
     }
     return CodeStyle
         .getProjectOrDefaultSettings(project)

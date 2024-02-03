@@ -20,7 +20,7 @@ class PebbleFileType private constructor() : LanguageFileType(PebbleLanguage), T
     }
 
     override fun getIcon(): Icon {
-        return IconLoader.getIcon("/icons/pebble/logo.png")
+        return IconLoader.getIcon("/icons/pebble/logo.png", this.javaClass)
     }
 
     companion object {

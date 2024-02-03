@@ -1,5 +1,4 @@
 import org.jetbrains.intellij.tasks.PublishPluginTask
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask
 import kotlin.collections.listOf
 
 val ideaVersion: String by project
@@ -10,14 +9,13 @@ val publishToken: String by project
 val publishChannels: String by project
 
 buildscript {
-
     repositories {
         mavenCentral()
     }
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij") version "1.17.0"
     id("org.sonarqube") version "4.3.0.3225"
     kotlin("jvm")
     jacoco
@@ -48,7 +46,7 @@ project(":") {
         version.set(ideaVersion)
         downloadSources.set(downloadIdeaSources.toBoolean())
         updateSinceUntilBuild.set(false)
-        plugins.set(listOf("Spring", "java-i18n", "properties", "java", intellilangName))
+        plugins.set(listOf("Spring", "java-i18n", "properties", "java", "platform-langInjection"))
 
         tasks.withType<PublishPluginTask> {
             token.set(publishToken)
@@ -69,8 +67,8 @@ project(":") {
     }
 
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType(JavaCompile::class) {

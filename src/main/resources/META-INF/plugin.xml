@@ -21,8 +21,8 @@
     Full changelog at https://github.com/bjansen/pebble-intellij/milestone/10?closed=1
     ]]></change-notes>
 
-    <!-- IDEA 2020.1 and later -->
-    <idea-version since-build="201.0"/>
+    <!-- IDEA 2022.1 and later -->
+    <idea-version since-build="222.0"/>
 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.java</depends>
@@ -52,7 +52,7 @@
         <typedHandler implementation="com.github.bjansen.intellij.pebble.editor.PebbleTypedHandler"/>
         <enterHandlerDelegate implementation="com.github.bjansen.intellij.pebble.editor.PebbleEnterBetweenTagsHandler"/>
         <colorSettingsPage implementation="com.github.bjansen.intellij.pebble.editor.PebbleColorsAndFontsPage"/>
-        <liveTemplateContext
+        <liveTemplateContext contextId="Pebble"
                 implementation="com.github.bjansen.intellij.pebble.liveTemplates.PebbleTemplateContextType"/>
         <defaultLiveTemplates file="/liveTemplates/pebble.xml"/>
         <completion.contributor language="Pebble"

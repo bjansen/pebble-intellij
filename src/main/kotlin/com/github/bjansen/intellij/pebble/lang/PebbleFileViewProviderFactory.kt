@@ -11,8 +11,8 @@ import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.ConfigurableTemplateLanguageFileViewProvider
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
-import com.intellij.util.containers.ContainerUtil
 import org.antlr.intellij.adaptor.lexer.TokenIElementType
+import java.util.concurrent.ConcurrentHashMap
 
 class PebbleFileViewProviderFactory : FileViewProviderFactory {
     override fun createFileViewProvider(file: VirtualFile, language: Language?, manager: PsiManager, eventSystemEnabled: Boolean): FileViewProvider {
@@ -46,7 +46,7 @@ class PebbleFileViewProvider(manager: PsiManager, private val file: VirtualFile,
     }
 
     companion object {
-        private val templateDataToLang = ContainerUtil.newConcurrentMap<String, TemplateDataElementType>()
+        private val templateDataToLang = ConcurrentHashMap<String, TemplateDataElementType>()
         val pebbleFragment = TokenIElementType(0, "PEBBLE_FRAGMENT", PebbleLanguage)
 
         private fun getTemplateDataElementType(lang: Language): TemplateDataElementType {

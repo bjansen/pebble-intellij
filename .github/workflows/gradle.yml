@@ -10,31 +10,28 @@ jobs:
         strategy:
             matrix:
                 env:
-                    - IDEA_VERSION: IU-2020.1
-                      KOTLIN_VERSION: 1.3.70
-                    - IDEA_VERSION: IU-2020.3.4
-                      KOTLIN_VERSION: 1.4.0
-                    - IDEA_VERSION: IU-2021.3.3
-                      KOTLIN_VERSION: 1.5.10
-                    - IDEA_VERSION: IU-2022.1
-                      KOTLIN_VERSION: 1.6.20
-                    - IDEA_VERSION: IU-2022.2.2
-                      KOTLIN_VERSION: 1.7.10
-#                    - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
-#                      KOTLIN_VERSION: 1.6.20
-#                      INTELLILANG_OPT: -PintellilangName=platform-langInjection
+                    # see https://www.jetbrains.com/idea/download/previous.html
+                    # and https://www.jetbrains.com/intellij-repository/snapshots/
+                    - IDEA_VERSION: IC-2022.2
+                      KOTLIN_VERSION: 1.6.21
+                    - IDEA_VERSION: IC-2023.1
+                      KOTLIN_VERSION: 1.8.0
+                    - IDEA_VERSION: IU-2023.3.3
+                      KOTLIN_VERSION: 1.9.10
+                    - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
+                      KOTLIN_VERSION: 1.9.10
 
         steps:
             - uses: actions/checkout@v1
-            - name: Set up JDK 11
+            - name: Set up JDK 17
               uses: actions/setup-java@v1
               with:
-                  java-version: 11
+                  java-version: 17
             - name: Build with Gradle
-              run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PkotlinVersion=${KOTLIN_VERSION} ${INTELLILANG_OPT}
+              run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PkotlinVersion=${KOTLIN_VERSION}
               env: ${{ matrix.env }}
             - name: SonarQube analysis
-              if: matrix.env.IDEA_VERSION == 'IU-2020.3'
+              if: matrix.env.IDEA_VERSION == 'IU-2023.3.3'
               run: ./gradlew jacocoTestReport sonarqube -Dsonar.login=${SONAR_TOKEN} -PideaVersion=${IDEA_VERSION}
               env:
                 IDEA_VERSION: ${{ matrix.env.IDEA_VERSION }}
