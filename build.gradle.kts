@@ -46,7 +46,7 @@ project(":") {
         version.set(ideaVersion)
         downloadSources.set(downloadIdeaSources.toBoolean())
         updateSinceUntilBuild.set(false)
-        plugins.set(listOf("Spring", "java-i18n", "properties", "java", "platform-langInjection"))
+        plugins.set(listOf("Spring", "java-i18n", "properties", "java", "org.intellij.intelliLang"))
 
         tasks.withType<PublishPluginTask> {
             token.set(publishToken)
