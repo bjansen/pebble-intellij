@@ -14,8 +14,8 @@
       <li>The plugin also recognizes the `.pebble` extension (<a href="https://github.com/bjansen/pebble-intellij/issues/56">#56</a>)</li>
       <li>Allow method calls on literals (<a href="https://github.com/bjansen/pebble-intellij/issues/62">#62</a>)</li>
       <li>Support built-in tests (<a href="https://github.com/bjansen/pebble-intellij/issues/51">#51</a>)</li>
-      <li>Drop support for IDEA < 2019.2 (<a href="https://github.com/bjansen/pebble-intellij/issues/82">#82</a>)</li>
-      <li>xxx (<a href="https://github.com/bjansen/pebble-intellij/issues/xx">#xx</a>)</li>
+      <li>Drop support for IDEA < 2022.2 (<a href="https://github.com/bjansen/pebble-intellij/issues/82">#82</a>)</li>
+      <li>Fixed issue in EAP 2024.1 (<a href="https://github.com/bjansen/pebble-intellij/issues/174">#174</a>)</li>
     </ul>
 
     Full changelog at https://github.com/bjansen/pebble-intellij/milestone/10?closed=1
