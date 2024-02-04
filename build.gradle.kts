@@ -31,10 +31,7 @@ project(":") {
             exclude(module = "antlr4")
         }
         implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
-
-        if (kotlinVersion > "1.4") {
-            implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
-        }
+        implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
     }
 
     apply {

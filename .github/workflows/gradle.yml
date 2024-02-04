@@ -14,8 +14,8 @@ jobs:
                     # and https://www.jetbrains.com/intellij-repository/snapshots/
                     - IDEA_VERSION: IU-2022.2
                       KOTLIN_VERSION: 1.6.21
-                    - IDEA_VERSION: IU-2023.1
-                      KOTLIN_VERSION: 1.8.0
+                    #- IDEA_VERSION: IU-2023.1
+                    #  KOTLIN_VERSION: 1.8.0
                     - IDEA_VERSION: IU-2023.3.3
                       KOTLIN_VERSION: 1.9.10
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT

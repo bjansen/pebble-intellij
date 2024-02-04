@@ -47,12 +47,12 @@ class UnknownAttributeInspection : LocalInspectionTool() {
                             is PsiVariable -> qualifier.type
                             is PebbleInVariable -> qualifier.getType()
                             is PebbleLiteral -> qualifier.getType()
-                            is PsiMethod -> qualifier.returnType ?: PsiTypes.voidType()
+                            is PsiMethod -> qualifier.returnType ?: PsiType.VOID
                             else -> null
                         } ?: return
 
                         when {
-                            type == PsiTypes.voidType() -> holder.registerProblem(
+                            type == PsiType.VOID -> holder.registerProblem(
                                     element,
                                     message("inspection.unknown.attribute.null.message")
                             )
