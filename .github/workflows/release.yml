@@ -1,0 +1,49 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Java CI for releases
+
+on:
+    release:
+        types:
+            - published
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                env:
+                    # see https://www.jetbrains.com/idea/download/previous.html
+                    # and https://www.jetbrains.com/intellij-repository/snapshots/
+
+                    - IDEA_VERSION: IU-2022.2 # Oldest supported version
+                      KOTLIN_VERSION: 1.6.21
+                      SINCE_VERSION: 222
+                      UNTIL_VERSION: 230.*
+                      VERSION_SUFFIX: "-2022"
+
+                    - IDEA_VERSION: IU-2023.3.3
+                      KOTLIN_VERSION: 1.9.10
+                      SINCE_VERSION: 230
+                      VERSION_SUFFIX: ""
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up JDK 17
+              uses: actions/setup-java@v3
+              with:
+                  java-version: 17
+                  distribution: temurin
+
+            - name: Build with Gradle
+              run: |
+                  ./gradlew -PideaVersion=${IDEA_VERSION} -PsinceBuildVersion=${SINCE_VERSION} -PuntilBuildVersion=${UNTIL_VERSION} -PpluginVersion=${GITHUB_REF_NAME}${VERSION_SUFFIX} check buildPlugin
+              env: ${{ matrix.env }}
+
+            - name: Publish to the marketplace
+              run: |
+                  ./gradlew -PideaVersion=${IDEA_VERSION} -PsinceBuildVersion=${SINCE_VERSION} -PuntilBuildVersion=${UNTIL_VERSION} -PpluginVersion=${GITHUB_REF_NAME}${VERSION_SUFFIX} -PpublishToken="${{ secrets.PUBLISH_TOKEN }}" -PpublishChannels=default publishPlugin
+              env: ${{ matrix.env }}

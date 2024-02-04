@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishPluginTask
 import kotlin.collections.listOf
 
@@ -7,6 +8,11 @@ val intellilangName: String by project
 val downloadIdeaSources: String by project
 val publishToken: String by project
 val publishChannels: String by project
+val pluginVersion: String by project
+val sinceBuildVersion: String by project
+val untilBuildVersion: String by project
+
+version=pluginVersion
 
 buildscript {
     repositories {
@@ -42,8 +48,13 @@ project(":") {
     intellij {
         version.set(ideaVersion)
         downloadSources.set(downloadIdeaSources.toBoolean())
-        updateSinceUntilBuild.set(false)
+        updateSinceUntilBuild.set(true)
         plugins.set(listOf("Spring", "java-i18n", "properties", "java", "org.intellij.intelliLang"))
+
+        tasks.withType<PatchPluginXmlTask> {
+            sinceBuild.set(sinceBuildVersion)
+            untilBuild.set(untilBuildVersion)
+        }
 
         tasks.withType<PublishPluginTask> {
             token.set(publishToken)
