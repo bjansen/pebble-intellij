@@ -1,6 +1,7 @@
 package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.ext.SpringExtension
+import com.github.bjansen.intellij.pebble.lang.PebbleCore
 import com.github.bjansen.intellij.pebble.lang.PebbleFileType
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.github.bjansen.intellij.pebble.utils.ResourceUtil
@@ -55,6 +56,7 @@ class PebbleFile constructor(viewProvider: FileViewProvider) : PsiFileBase(viewP
         val list = arrayListOf<PsiNameIdentifierOwner>()
 
         list.addAll(findLocalMacros())
+        list.addAll(PebbleCore.getFunctions(project).map { it.source })
         list.addAll(SpringExtension.getImplicitFunctions(this))
 
         return list

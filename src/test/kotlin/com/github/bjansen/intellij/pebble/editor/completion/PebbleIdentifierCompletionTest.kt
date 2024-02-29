@@ -30,6 +30,17 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
         assertLookupsContain(implicitFunctions)
     }
 
+    fun testCompletionOfBuiltinImplicitFunctions() {
+        myFixture.configureByFile("file1.peb")
+        myFixture.addClass("package java.util; interface Map<K, V> {}")
+        myFixture.addClass("package javax.servlet.http; class HttpServletRequest {}")
+        myFixture.addClass("package javax.servlet.http; class HttpServletResponse {}")
+        myFixture.addClass("package javax.servlet.http; class HttpSession {}")
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("block", "i18n", "max", "min", "parent", "range"))
+    }
+
     fun testCompletionOfGettersAsProperties() {
         myFixture.configureByFile("file2.peb")
         myFixture.addClass(File("$testDataPath/MyClass.java").readText(Charsets.UTF_8))

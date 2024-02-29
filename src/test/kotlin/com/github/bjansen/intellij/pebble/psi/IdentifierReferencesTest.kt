@@ -300,6 +300,31 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
         } else {
             fail("Reference resolved to nothing")
         }
+    }
 
+    fun testReferenceToBuiltinFunction() {
+        initFile("functions.peb")
+
+        moveCaret(5)
+
+        var resolved = resolveRefAtCaret()
+
+        if (resolved != null) {
+            assert(resolved is PsiMethod)
+            assert((resolved as PsiMethod).name == "i18n")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+
+        moveCaret(32)
+
+        resolved = resolveRefAtCaret()
+
+        if (resolved != null) {
+            assert(resolved is PsiMethod)
+            assert((resolved as PsiMethod).name == "max")
+        } else {
+            fail("Reference resolved to nothing")
+        }
     }
 }

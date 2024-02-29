@@ -9,9 +9,11 @@ import com.intellij.psi.PsiMethod
 object PebbleCore {
 
     private val filtersKey = Key.create<PsiClass>("PEBBLE_FILTERS_CLASS")
+    private val functionsKey = Key.create<PsiClass>("PEBBLE_FUNCTIONS_CLASS")
     private val testsKey = Key.create<PsiClass>("PEBBLE_TESTS_CLASS")
 
     private val filtersByProject = hashMapOf<Project, Map<String, Filter>>()
+    private val functionsByProject = hashMapOf<Project, Map<String, Filter>>()
     private val testsByProject = hashMapOf<Project, Map<String, Test>>()
 
     fun getFilters(project: Project): Collection<Filter> {
@@ -20,6 +22,10 @@ object PebbleCore {
 
     fun getFilter(name: String, project: Project): Filter? {
         return filtersByProject.computeIfAbsent(project, this::initFilters)[name]
+    }
+
+    fun getFunctions(project: Project): Collection<Filter> {
+        return functionsByProject.computeIfAbsent(project, this::initFunctions).values
     }
 
     fun getTests(project: Project): Collection<Test> {
@@ -35,6 +41,13 @@ object PebbleCore {
             ResourceUtil.loadPsiClassFromFile("/implicitCode/Filters.java", filtersKey, project)
 
         return filtersClass?.methods?.map { Filter(it) }?.map { it.name to it }?.toMap() ?: emptyMap()
+    }
+
+    private fun initFunctions(project: Project): Map<String, Filter> {
+        val functionsClass =
+            ResourceUtil.loadPsiClassFromFile("/implicitCode/Functions.java", functionsKey, project)
+
+        return functionsClass?.methods?.map { Filter(it) }?.map { it.name to it }?.toMap() ?: emptyMap()
     }
 
     private fun initTests(project: Project): Map<String, Test> {
