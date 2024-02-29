@@ -4,6 +4,7 @@ import com.github.bjansen.intellij.pebble.lang.PebbleFileViewProvider
 import com.github.bjansen.intellij.pebble.psi.PebbleFile
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.pebble.parser.PebbleLexer
+import com.intellij.codeInsight.AutoPopupController
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate
 import com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegate
 import com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegateAdapter
@@ -43,7 +44,7 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
         if (file.viewProvider !is PebbleFileViewProvider) {
             return TypedHandlerDelegate.Result.CONTINUE
         }
-        if (c != '}' && c != '#' && c != '{') {
+        if (c != '}' && c != '#' && c != '{' && c != '%') {
             return TypedHandlerDelegate.Result.CONTINUE
         }
 
@@ -71,6 +72,10 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
                 buf.append("}{% ").append(closingTag).append(" %}")
             }
             caretShift = 1
+        }
+
+        if (charBefore == '{' && c == '%') {
+            buf.append(c).append(" ")
         }
 
         if (buf.isEmpty()) {
@@ -132,6 +137,23 @@ class PebbleTypedHandler : TypedHandlerDelegate() {
         return document.charsSequence[offset]
     }
 
+    override fun checkAutoPopup(charTyped: Char, project: Project, editor: Editor, file: PsiFile): Result {
+        if (file !is PebbleFile && file.viewProvider !is PebbleFileViewProvider) {
+            return Result.CONTINUE
+        }
+
+        if (charTyped == '%') {
+            val offset = editor.caretModel.offset
+            val charBefore = getCharAt(editor.document, offset - 1)
+
+            if (charBefore == '{') {
+                AutoPopupController.getInstance(project).autoPopupMemberLookup(editor, null)
+                return Result.STOP
+            }
+        }
+
+        return Result.CONTINUE
+    }
 }
 
 class PebbleEnterBetweenTagsHandler : EnterHandlerDelegateAdapter() {
