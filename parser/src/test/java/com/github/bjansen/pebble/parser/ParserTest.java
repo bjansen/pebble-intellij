@@ -87,6 +87,11 @@ public class ParserTest extends AbstractParserTest {
         parseFile("/lexer/pebble/keywords.peb");
     }
 
+    @Test
+    public void testParenthesizedExpressions() {
+        parseFile("/lexer/pebble/parens.peb");
+    }
+
     @Override
     PebbleLexer createLexer(InputStream text) throws IOException {
         return new PebbleLexer(CharStreams.fromStream(text));

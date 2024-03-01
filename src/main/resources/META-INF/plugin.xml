@@ -14,6 +14,7 @@
       <li>Automatically show the completion popup after typing `{%`</li>
       <li>Add support for built-in functions like `i18n` (<a href="https://github.com/bjansen/pebble-intellij/issues/163">#163</a>)</li>
       <li>Fixed incorrect closing of double quotes (<a href="https://github.com/bjansen/pebble-intellij/issues/176">#176</a>)</li>
+      <li>Fixed syntax error on parenthesized expressions (<a href="https://github.com/bjansen/pebble-intellij/issues/97">#97</a>)</li>
     </ul>
 
     Full changelog at https://github.com/bjansen/pebble-intellij/milestone/12?closed=1
