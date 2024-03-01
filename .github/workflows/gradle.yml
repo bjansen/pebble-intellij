@@ -30,3 +30,13 @@ jobs:
             - name: Build with Gradle
               run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PkotlinVersion=${KOTLIN_VERSION}
               env: ${{ matrix.env }}
+
+            - name: Prepare distribution
+              run: cd build/distributions && unzip -d tmp pebble-intellij-next-SNAPSHOT.zip
+
+            - name: Archive distribution artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: "pebble-intellij-development"
+                path: build/distributions/tmp
+              if: matrix.env.IDEA_VERSION == 'IU-2022.2'

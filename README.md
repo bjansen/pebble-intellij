@@ -55,3 +55,11 @@ follow this syntax:
 For code completion to work properly in the `type` attribute, your `.peb` files need to be placed
 under a [content root](https://www.jetbrains.com/help/idea/content-roots.html) (e.g. `src/main/resources`).
 Otherwise, classes defined in your own source files won't be suggested.
+
+## Nightly builds
+
+Snapshot builds are available as part of the Actions CI:
+ * go to https://github.com/bjansen/pebble-intellij/actions
+ * click on the latest build
+ * scroll to the bottom of the page, under the `Artifacts` section click on `pebble-intellij-development`
+ * this will download a zip file that can be installed in your IDE using [Install plugin from disk](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk)
