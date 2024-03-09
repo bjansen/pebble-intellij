@@ -1,5 +1,5 @@
 (pebbleTemplate (commentDirective {# 'with' should be a valid identifier #})
-(printDirective {{ (expression (qualified_expression (term (identifier context)) . (function_call_expression (identifier with) (argument_list ( (expression (term (string_literal "arg1"))) , (expression (term (boolean_literal true))) ))))) }})
-(printDirective {{ (expression (qualified_expression (term (identifier context)) . (function_call_expression (identifier in) (argument_list ( (expression (term (numeric_literal 1))) , (expression (term (numeric_literal 2))) ))))) }})
-(printDirective {{ (expression (qualified_expression (term (identifier context)) . (function_call_expression (identifier none) (argument_list ( (expression (term (numeric_literal 1))) , (expression (term (numeric_literal 2))) ))))) }})
+(printDirective {{ (expression (expression (term (identifier context))) . (function_call_expression (identifier with) (argument_list ( (expression (term (string_literal "arg1"))) , (expression (term (boolean_literal true))) )))) }})
+(printDirective {{ (expression (expression (term (identifier context))) . (function_call_expression (identifier in) (argument_list ( (expression (term (numeric_literal 1))) , (expression (term (numeric_literal 2))) )))) }})
+(printDirective {{ (expression (expression (term (identifier context))) . (function_call_expression (identifier none) (argument_list ( (expression (term (numeric_literal 1))) , (expression (term (numeric_literal 2))) )))) }})
 )
