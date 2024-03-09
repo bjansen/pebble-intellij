@@ -2,6 +2,8 @@ package com.github.bjansen.intellij.pebble.psi
 
 import com.github.bjansen.intellij.pebble.lang.PebbleLanguage
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
+import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
+import com.github.bjansen.pebble.parser.PebbleLexer
 import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.project.Project
@@ -61,9 +63,18 @@ object PsiElementFactory {
             elType == rules[PebbleParser.RULE_numeric_literal]
         ) {
             return PebbleLiteral(node)
+        } else if (elType == rules[PebbleParser.RULE_expression] && isArrayAccess(node)) {
+            return PebbleArrayAccess(node)
         }
 
         return PebblePsiElement(node)
+    }
+
+    private fun isArrayAccess(node: ASTNode): Boolean {
+        val children = node.getChildren(null)
+        return children.size == 4
+                && children[1].elementType == tokens[PebbleLexer.LBRACKET]
+                && children[3].elementType == tokens[PebbleLexer.RBRACKET]
     }
 }
 

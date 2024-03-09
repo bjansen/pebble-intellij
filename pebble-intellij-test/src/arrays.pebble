@@ -1,0 +1,10 @@
+{# @pebvariable name="trucs" type="foo.bar.SomeClass[]" #}
+"{{ trucs[0].publicField.byteValue() }}"
+
+{% for truc in trucs %}
+    {{ truc.intMethod() }}
+    {{ truc.integerMethod().byteValue() }}
+{% endfor %}
+
+{{ trucs[0].toString().length() }}
+{{ trucs. }}

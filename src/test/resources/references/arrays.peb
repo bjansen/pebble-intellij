@@ -1,0 +1,9 @@
+{# @pebvariable name="foos" type="pebble.tests.MyClass[]" #}
+
+{% for foo in foos %}
+    {{ foo.property }}
+    {{ foo.child.child }}
+{% endfor %}
+
+{{ foos[0].property }}
+{{ foos[0].child.child }}

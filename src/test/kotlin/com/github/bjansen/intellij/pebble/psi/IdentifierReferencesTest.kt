@@ -4,6 +4,7 @@ import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiNamedElement
 import java.io.File
 
 class IdentifierReferencesTest : AbstractReferencesTest() {
@@ -323,6 +324,32 @@ class IdentifierReferencesTest : AbstractReferencesTest() {
         if (resolved != null) {
             assert(resolved is PsiMethod)
             assert((resolved as PsiMethod).name == "max")
+        } else {
+            fail("Reference resolved to nothing")
+        }
+    }
+
+    fun testArrayComponents() {
+        initFile("arrays.peb")
+        myFixture.addClass(File("src/test/resources/completion/identifiers/MyClass.java").readText(Charsets.UTF_8))
+
+        // `foo in foos`
+        assertElementAtResolvesTo<PsiMethod>(100, "getProperty")
+        assertElementAtResolvesTo<PsiMethod>(125, "getChild")
+
+        // `foos[0]`
+        assertElementAtResolvesTo<PsiMethod>(160, "getProperty")
+        assertElementAtResolvesTo<PsiMethod>(190, "getChild")
+    }
+
+    private inline fun <reified T : PsiNamedElement> assertElementAtResolvesTo(offset: Int, expectedName: String) {
+        moveCaret(offset)
+
+        val resolved = resolveRefAtCaret()
+
+        if (resolved != null) {
+            assert(resolved is T)
+            assert((resolved as T).name == expectedName)
         } else {
             fail("Reference resolved to nothing")
         }

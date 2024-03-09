@@ -1,0 +1,3 @@
+{# @pebvariable name="stuff" type="java.lang.Double[]" #}
+
+{{ stuff.<caret> }}

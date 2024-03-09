@@ -159,6 +159,10 @@ class PebbleInVariable(node: ASTNode) : PebblePsiElement(node), PsiNamedElement 
                         && it is PsiClassType && it.parameters.isNotEmpty()) {
                     iteratedType = it.parameters[0]
                 }
+                if (it is PsiArrayType) {
+                    iteratedType = it.componentType
+                    return@processSuperTypes false
+                }
 
                 true
             }
@@ -194,5 +198,43 @@ class PebbleLiteral(node: ASTNode) : PebblePsiElement(node) {
     private fun getNumericType(scope: GlobalSearchScope): PsiClassType {
         val typeName = if (node.text.contains('.')) "java.lang.Double" else "java.lang.Long"
         return PsiType.getTypeByName(typeName, project, scope)
+    }
+}
+
+class PebbleArrayAccess(node: ASTNode) : PebblePsiElement(node) {
+
+    fun getType(): PsiType? {
+        val expr = node.treeParent.findChildByType(rules[PebbleParser.RULE_expression], node)
+
+        return if (expr != null) inferVariableType(expr.psi) else null
+    }
+
+    private fun inferVariableType(iterableExpression: PsiElement): PsiType {
+        val visitor = ExpressionTypeVisitor()
+        iterableExpression.accept(visitor)
+
+        val type = visitor.type
+
+        if (type != null) {
+            var iteratedType: PsiType? = null
+
+            InheritanceUtil.processSuperTypes(type, true) {
+                if (it is PsiArrayType) {
+                    iteratedType = it.componentType
+                    return@processSuperTypes false
+                }
+
+                true
+            }
+
+            if (iteratedType != null) {
+                return iteratedType as PsiType
+            }
+        }
+
+        return PsiType.getJavaLangObject(
+            PsiManager.getInstance(containingFile.project),
+            GlobalSearchScope.allScope(containingFile.project)
+        )
     }
 }

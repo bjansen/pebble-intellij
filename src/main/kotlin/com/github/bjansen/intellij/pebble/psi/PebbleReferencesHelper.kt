@@ -7,8 +7,10 @@ import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.*
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.SuperMethodsSearch
 import com.intellij.psi.util.PropertyUtil
 import com.intellij.psi.util.PsiTreeUtil
@@ -17,7 +19,7 @@ object PebbleReferencesHelper {
     private fun isOverride(method: PsiMethod)
             = SuperMethodsSearch.search(method, null, true, false).findFirst() != null
 
-    fun buildPsiTypeLookups(type: PsiType?): Array<Any> {
+    fun buildPsiTypeLookups(type: PsiType?, project: Project): Array<Any> {
         if (type is PsiClassType) {
             val clazz = type.resolve() ?: return emptyArray()
             val resolveResult = type.resolveGenerics()
@@ -52,6 +54,20 @@ object PebbleReferencesHelper {
             )
 
             return lookups.toTypedArray()
+        } else if (type is PsiArrayType) {
+            val objectType = PsiType.getJavaLangObject(
+                PsiManager.getInstance(project),
+                GlobalSearchScope.allScope(project)
+            )
+
+            val objectLookups = arrayListOf(*buildPsiTypeLookups(objectType, project))
+            objectLookups.add(
+                LookupElementBuilder.create("length")
+                    .withTypeText("int")
+                    .withIcon(AllIcons.Nodes.Property)
+            )
+
+            return objectLookups.toTypedArray()
         }
 
         return emptyArray()
@@ -65,7 +81,7 @@ object PebbleReferencesHelper {
             for (prefix in listOf("get", "is", "has")) {
                 for (method in clazz.findMethodsByName(prefix + capitalizedName, true)) {
                     if (method.parameterList.parametersCount == 0) {
-                        return listOf(method);
+                        return listOf(method)
                     }
                 }
             }
@@ -108,12 +124,13 @@ object PebbleReferencesHelper {
         val prevLeaf = PsiTreeUtil.prevVisibleLeaf(psi)
 
         if (prevLeaf != null && prevLeaf.node.elementType == PebbleParserDefinition.tokens[PebbleLexer.OP_MEMBER]) {
-            val qualifier = prevLeaf.prevSibling
+            val qualifier = prevLeaf.prevSibling?.lastChild
 
             if (qualifier != null) {
                 val identifier = when (qualifier.node.elementType) {
                     PebbleParserDefinition.rules[PebbleParser.RULE_function_call_expression] -> qualifier.firstChild
                     PebbleParserDefinition.rules[PebbleParser.RULE_term] -> qualifier.firstChild
+                    PebbleParserDefinition.rules[PebbleParser.RULE_parenthesized_expression] -> qualifier.firstChild
                     else -> qualifier
                 }
 

@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
+import com.jetbrains.rd.util.ConcurrentHashMap
 
 object PebbleCore {
 
@@ -12,9 +13,9 @@ object PebbleCore {
     private val functionsKey = Key.create<PsiClass>("PEBBLE_FUNCTIONS_CLASS")
     private val testsKey = Key.create<PsiClass>("PEBBLE_TESTS_CLASS")
 
-    private val filtersByProject = hashMapOf<Project, Map<String, Filter>>()
-    private val functionsByProject = hashMapOf<Project, Map<String, Filter>>()
-    private val testsByProject = hashMapOf<Project, Map<String, Test>>()
+    private val filtersByProject = ConcurrentHashMap<Project, Map<String, Filter>>()
+    private val functionsByProject = ConcurrentHashMap<Project, Map<String, Filter>>()
+    private val testsByProject = ConcurrentHashMap<Project, Map<String, Test>>()
 
     fun getFilters(project: Project): Collection<Filter> {
         return filtersByProject.computeIfAbsent(project, this::initFilters).values

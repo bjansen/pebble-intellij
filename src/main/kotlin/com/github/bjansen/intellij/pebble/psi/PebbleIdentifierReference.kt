@@ -32,6 +32,8 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.type), referenceText))
         } else if (qualifyingMember is PsiMethod) {
             return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.returnType), referenceText))
+        } else if (qualifyingMember is PebbleArrayAccess) {
+            return createResults(findMembersByName(getPsiClassFromType(qualifyingMember.getType()), referenceText))
         } else {
             val parentTag = PsiTreeUtil.getParentOfType(psi, PebbleTagDirective::class.java)
 
@@ -104,15 +106,17 @@ class PebbleIdentifierReference(private val psi: PsiElement, private val range: 
         val qualifyingMember = findQualifyingMember(psi)
 
         if (qualifyingMember is PebbleInVariable) {
-            return buildPsiTypeLookups(qualifyingMember.getType())
+            return buildPsiTypeLookups(qualifyingMember.getType(), psi.project)
         } else if (qualifyingMember is PebbleLiteral) {
-            return buildPsiTypeLookups(qualifyingMember.getType())
+            return buildPsiTypeLookups(qualifyingMember.getType(), psi.project)
         } else if (qualifyingMember is PsiField) {
-            return buildPsiTypeLookups(qualifyingMember.type)
+            return buildPsiTypeLookups(qualifyingMember.type, psi.project)
         } else if (qualifyingMember is PsiVariable) {
-            return buildPsiTypeLookups(qualifyingMember.type)
+            return buildPsiTypeLookups(qualifyingMember.type, psi.project)
         } else if (qualifyingMember is PsiMethod) {
-            return buildPsiTypeLookups(qualifyingMember.returnType)
+            return buildPsiTypeLookups(qualifyingMember.returnType, psi.project)
+        } else if (qualifyingMember is PebbleArrayAccess) {
+            return buildPsiTypeLookups(qualifyingMember.getType(), psi.project)
         } else if (qualifyingMember == null) {
             val file = psi.containingFile
             if (file is PebbleFile) {

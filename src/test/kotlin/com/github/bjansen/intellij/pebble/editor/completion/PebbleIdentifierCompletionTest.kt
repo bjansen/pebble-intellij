@@ -257,4 +257,28 @@ class PebbleIdentifierCompletionTest : AbstractCompletionTest() {
 
         assertNoLookups()
     }
+
+    fun testCompletionOfArrayElement() {
+        myFixture.configureByFile("array.peb")
+        myFixture.addClass(File("$testDataPath/Double.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("intValue"))
+    }
+
+    fun testCompletionOfArrayElement2() {
+        myFixture.configureByFile("array2.peb")
+        myFixture.addClass(File("$testDataPath/Double.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("intValue"))
+    }
+
+    fun testCompletionOfArray() {
+        myFixture.configureByFile("array3.peb")
+        myFixture.addClass(File("$testDataPath/Double.java").readText(Charsets.UTF_8))
+        myFixture.complete(CompletionType.BASIC)
+
+        assertLookupsContain(listOf("length"))
+    }
 }

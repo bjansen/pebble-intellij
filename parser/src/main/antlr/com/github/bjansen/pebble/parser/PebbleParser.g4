@@ -64,7 +64,7 @@ expression
     | expression filters
     | unary_op expression
     | parenthesized_expression
-    | expression list_expression
+    | expression LBRACKET expression RBRACKET
     | expression WITH map_expression
     | expression OR expression
     | expression AND expression
@@ -79,7 +79,7 @@ expression
     | map_expression
     | in_expression
     | function_call_expression
-    | qualified_expression
+    | expression OP_MEMBER (function_call_expression | identifier)
     | term
     ;
 
@@ -105,10 +105,6 @@ map_expression
 
 map_element
     : string_literal OP_COLON (map_expression | expression)
-    ;
-
-qualified_expression
-    : (function_call_expression | term | parenthesized_expression) (OP_MEMBER (function_call_expression | identifier))+
     ;
 
 function_call_expression

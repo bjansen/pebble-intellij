@@ -172,7 +172,7 @@ class PebbleSpringReference(private val psi: PsiElement, private val range: Text
         } else if (qualifyingMember is PomTargetPsiElement) {
             val springBeanType = getBeanType(SpringBeanPomTargetUtils.getSpringBean(qualifyingMember))
             if (springBeanType is PsiClassType) {
-                return buildPsiTypeLookups(springBeanType)
+                return buildPsiTypeLookups(springBeanType, psi.project)
             }
         }
 

@@ -1,17 +1,16 @@
 package com.github.bjansen.intellij.pebble.psi
 
-import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.rules
 import com.github.bjansen.intellij.pebble.psi.PebbleParserDefinition.Companion.tokens
 import com.github.bjansen.intellij.pebble.psi.PebbleReferencesHelper.findMembersByName
 import com.github.bjansen.pebble.parser.PebbleLexer
-import com.github.bjansen.pebble.parser.PebbleParser
 import com.intellij.psi.*
+import com.intellij.psi.util.PsiTreeUtil
 
 class ExpressionTypeVisitor : PsiRecursiveElementVisitor(false) {
     var type: PsiType? = null
 
     override fun visitElement(element: PsiElement) {
-        if (element.node.elementType == rules[PebbleParser.RULE_qualified_expression]) {
+        if (isQualifiedExpression(element)) {
             type = typeOfQualifiedExpression(element)
         }
 
@@ -21,6 +20,10 @@ class ExpressionTypeVisitor : PsiRecursiveElementVisitor(false) {
         }
 
         super.visitElement(element)
+    }
+
+    private fun isQualifiedExpression(element: PsiElement): Boolean {
+        return element.children.any { it.node.elementType == tokens[PebbleLexer.OP_MEMBER] }
     }
 
     private fun typeOfIdentifier(element: PebbleIdentifier): PsiType? {
@@ -35,7 +38,7 @@ class ExpressionTypeVisitor : PsiRecursiveElementVisitor(false) {
                 qualifierType = if (child is PebbleIdentifier) {
                     typeOfIdentifier(child)
                 } else {
-                    typeOfIdentifier(child.firstChild as PebbleIdentifier)
+                    typeOfIdentifier(PsiTreeUtil.findChildOfType(child, PebbleIdentifier::class.java)!!)
                 }
             } else if (child.node.elementType == tokens[PebbleLexer.OP_MEMBER]) {
                 continue

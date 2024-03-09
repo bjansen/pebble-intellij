@@ -1,0 +1,5 @@
+{# @pebvariable name="stuff" type="java.lang.Double[]" #}
+
+{% for thing in stuff %}
+    {{ thing.<caret> }}
+{% endfor %}
