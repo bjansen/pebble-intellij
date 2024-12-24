@@ -1,6 +1,4 @@
-import org.jetbrains.intellij.tasks.PatchPluginXmlTask
-import org.jetbrains.intellij.tasks.PublishPluginTask
-import kotlin.collections.listOf
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 val ideaVersion: String by project
 val kotlinVersion: String by project
@@ -21,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "1.17.0"
+    id("org.jetbrains.intellij.platform") version "2.2.0"
     id("org.sonarqube") version "4.3.0.3225"
     kotlin("jvm")
     jacoco
@@ -30,6 +28,10 @@ plugins {
 project(":") {
     repositories {
         mavenCentral()
+
+        intellijPlatform {
+            defaultRepositories()
+        }
     }
 
     dependencies {
@@ -38,28 +40,24 @@ project(":") {
         }
         implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
         implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+
+        intellijPlatform {
+            create(ideaVersion)
+
+            bundledPlugins("com.intellij.spring", "com.intellij.spring.boot", "com.intellij.java", "org.intellij.intelliLang")
+            testFramework(TestFrameworkType.Plugin.Java)
+        }
+
+        testImplementation("junit:junit:4.13.2")
     }
 
     apply {
         plugin("kotlin")
-        plugin("org.jetbrains.intellij")
+        plugin("org.jetbrains.intellij.platform")
     }
 
-    intellij {
-        version.set(ideaVersion)
-        downloadSources.set(downloadIdeaSources.toBoolean())
-        updateSinceUntilBuild.set(true)
-        plugins.set(listOf("Spring", "java-i18n", "properties", "java", "org.intellij.intelliLang"))
-
-        tasks.withType<PatchPluginXmlTask> {
-            sinceBuild.set(sinceBuildVersion)
-            untilBuild.set(untilBuildVersion)
-        }
-
-        tasks.withType<PublishPluginTask> {
-            token.set(publishToken)
-            channels.set(publishChannels.split(','))
-        }
+    tasks.buildSearchableOptions {
+        enabled = false
     }
 
     tasks.jacocoTestReport {
