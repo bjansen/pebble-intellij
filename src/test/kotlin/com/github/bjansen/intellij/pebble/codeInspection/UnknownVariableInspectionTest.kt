@@ -46,7 +46,15 @@ class UnknownVariableInspectionTest : BasePlatformTestCase() {
 
         assertEquals(1, highlights.size)
 
-        val intention = highlights[0].quickFixActionRanges?.get(0)?.first?.action
+        val intention = highlights[0].findRegisteredQuickFix { intention, range ->
+            val action = intention.action
+
+            if (action is AddImplicitVariableQuickFix) {
+                return@findRegisteredQuickFix action
+            } else {
+                return@findRegisteredQuickFix null
+            }
+        }
 
         assertNotNull(intention)
         myFixture.launchAction(intention!!)
@@ -62,7 +70,15 @@ class UnknownVariableInspectionTest : BasePlatformTestCase() {
 
         assertEquals(3, highlights.size)
 
-        val intention = highlights[2].quickFixActionRanges?.get(0)?.first?.action
+        val intention = highlights[2].findRegisteredQuickFix { intention, range ->
+            val action = intention.action
+
+            if (action is AddImplicitVariableQuickFix) {
+                return@findRegisteredQuickFix action
+            } else {
+                return@findRegisteredQuickFix null
+            }
+        }
 
         assertNotNull(intention)
         myFixture.launchAction(intention!!)
