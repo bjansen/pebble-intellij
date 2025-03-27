@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij.platform") version "2.2.0"
+    id("org.jetbrains.intellij.platform") version "2.5.0"
     id("org.sonarqube") version "4.3.0.3225"
     kotlin("jvm")
     jacoco
@@ -45,10 +45,12 @@ project(":") {
             create(ideaVersion)
 
             bundledPlugins("com.intellij.spring", "com.intellij.spring.boot", "com.intellij.java", "org.intellij.intelliLang")
+            testFramework(TestFrameworkType.Platform)
             testFramework(TestFrameworkType.Plugin.Java)
         }
 
         testImplementation("junit:junit:4.13.2")
+         testImplementation("org.opentest4j:opentest4j:1.3.0")
     }
 
     apply {
