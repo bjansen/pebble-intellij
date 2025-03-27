@@ -19,14 +19,16 @@ jobs:
                     - IDEA_VERSION: IU-2023.3.3
                       KOTLIN_VERSION: 1.9.10
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
-                      KOTLIN_VERSION: 1.9.10
+                      KOTLIN_VERSION: 2.1.0
 
         steps:
-            - uses: actions/checkout@v1
+            - uses: actions/checkout@v4
             - name: Set up JDK 17
-              uses: actions/setup-java@v1
+              uses: actions/setup-java@v4
               with:
                   java-version: 17
+                  distribution: temurin
+
             - name: Build with Gradle
               run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PkotlinVersion=${KOTLIN_VERSION}
               env: ${{ matrix.env }}
@@ -35,7 +37,7 @@ jobs:
               run: cd build/distributions && unzip -d tmp pebble-intellij-next-SNAPSHOT.zip
 
             - name: Archive distribution artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: "pebble-intellij-development"
                 path: build/distributions/tmp
