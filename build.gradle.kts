@@ -21,7 +21,7 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "1.17.0"
+    id("org.jetbrains.intellij") version "1.17.4"
     id("org.sonarqube") version "4.3.0.3225"
     kotlin("jvm")
     jacoco
@@ -38,6 +38,7 @@ project(":") {
         }
         implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
         implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+        testImplementation("junit", "junit", "4.13.2")
     }
 
     apply {

@@ -18,8 +18,10 @@ jobs:
                     #  KOTLIN_VERSION: 1.8.0
                     - IDEA_VERSION: IU-2023.3.3
                       KOTLIN_VERSION: 1.9.10
-                    - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
-                      KOTLIN_VERSION: 2.1.0
+                    - IDEA_VERSION: IU-2024.2
+                      KOTLIN_VERSION: 1.9.24
+#                    - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
+#                      KOTLIN_VERSION: 2.1.0
 
         steps:
             - uses: actions/checkout@v4
