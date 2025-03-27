@@ -7,7 +7,9 @@ import com.intellij.openapi.project.Project
 
 class PebbleProjectSettings(private val project: Project) : SearchableConfigurable, Disposable {
 
-    private val form = PebbleSettingsForm(project)
+    private val form: PebbleSettingsForm by lazy {
+        PebbleSettingsForm(project)
+    }
 
     override fun isModified(): Boolean {
         val config = PropertiesComponent.getInstance(project)
