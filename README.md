@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=bjansen&project=pebble-intellij&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 # IntelliJ plugin for Pebble [![Gitter](https://badges.gitter.im/bjansen/pebble-intellij.svg)](https://gitter.im/bjansen/pebble-intellij) [![GitHub Actions](https://github.com/bjansen/pebble-intellij/workflows/Java%20CI/badge.svg?branch=master)](https://github.com/bjansen/pebble-intellij/actions) [![GitHub release](https://img.shields.io/github/release/bjansen/pebble-intellij.svg)](https://plugins.jetbrains.com/plugin/9407-pebble) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=pebble-intellij&metric=coverage)](https://sonarcloud.io/dashboard?id=pebble-intellij)
 
 This plugin provides support for the [Pebble templating engine](https://github.com/PebbleTemplates/pebble) in 
