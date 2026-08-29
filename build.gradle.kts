@@ -1,16 +1,18 @@
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import java.util.regex.Pattern
 
-val ideaVersion: String by project
-val kotlinVersion: String by project
-val intellilangName: String by project
-val downloadIdeaSources: String by project
-val publishToken: String by project
-val publishChannels: String by project
-val pluginVersion: String by project
-val sinceBuildVersion: String by project
-val untilBuildVersion: String by project
+val ideaVersion: String = project.property("ideaVersion").toString()
+val kotlinVersion: String = project.property("kotlinVersion").toString()
+val intellilangName = project.findProperty("intellilangName")
+val downloadIdeaSources: String = project.property("downloadIdeaSources").toString()
+val publishToken: String = project.property("publishToken").toString()
+val publishChannels: String = project.property("publishChannels").toString()
+val pluginVersion: String = project.property("pluginVersion").toString()
+val sinceBuildVersion: String = project.property("sinceBuildVersion").toString()
+val untilBuildVersion: String = project.property("untilBuildVersion").toString()
+val (platformType: String, platformVersion: String) = ideaVersion.split(Pattern.compile("-"), 2)
 
-version=pluginVersion
+version = pluginVersion
 
 buildscript {
     repositories {
@@ -19,8 +21,8 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij.platform") version "2.5.0"
-    id("org.sonarqube") version "4.3.0.3225"
+    id("org.jetbrains.intellij.platform") version "2.18.1"
+    id("org.sonarqube") version "7.4.0.8496"
     kotlin("jvm")
     jacoco
 }
@@ -38,19 +40,24 @@ project(":") {
         implementation(project(":parser")) {
             exclude(module = "antlr4")
         }
-        implementation("org.antlr", "antlr4-intellij-adaptor", "0.1")
-        implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+        implementation("org.antlr:antlr4-intellij-adaptor:0.1")
+        implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
         intellijPlatform {
-            create(ideaVersion)
+            create(platformType, platformVersion)
 
-            bundledPlugins("com.intellij.spring", "com.intellij.spring.boot", "com.intellij.java", "org.intellij.intelliLang")
+            bundledPlugins(
+                "com.intellij.spring",
+                "com.intellij.spring.boot",
+                "com.intellij.java",
+                "org.intellij.intelliLang"
+            )
             testFramework(TestFrameworkType.Platform)
             testFramework(TestFrameworkType.Plugin.Java)
         }
 
         testImplementation("junit:junit:4.13.2")
-         testImplementation("org.opentest4j:opentest4j:1.3.0")
+        testImplementation("org.opentest4j:opentest4j:1.3.0")
     }
 
     apply {
